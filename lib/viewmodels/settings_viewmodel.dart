@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/database/app_settings_database.dart';
-import 'package:vitalingu/services/navigation_service.dart';
 import 'package:vitalingu/viewmodels/view_model_base.dart';
 
 @injectable
@@ -64,6 +63,6 @@ class SettingsViewModel extends ViewModelBase {
   }
 
   Future<void> saveAndNavigate() async {
-    await navigationService.replaceWithLanguageView();
+    await navigationService.goToSelectLanguageView();
   }
 }

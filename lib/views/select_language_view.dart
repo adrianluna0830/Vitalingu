@@ -11,11 +11,16 @@ class SelectLanguageView extends StatelessWidget {
       final SelectLanguageViewModel viewModel = getIt<SelectLanguageViewModel>();
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(actions: [
+        IconButton(
+            onPressed: viewModel.goToSettings,
+            icon: const Icon(Icons.settings),
+          ),
+      ],),
       body: ListView.builder(itemCount: viewModel.languages.length, itemBuilder: (context, index) {
         return ListTile(
           title: ElevatedButton(
-            onPressed: () {print(viewModel.languages[index].nativeName);}, 
+            onPressed: () {viewModel.selectLanguage(viewModel.languages[index]);}, 
           child: Text(viewModel.languages[index].nativeName))
         );
       },),

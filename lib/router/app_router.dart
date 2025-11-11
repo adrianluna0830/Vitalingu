@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/views/language_view.dart';
 import 'package:vitalingu/views/select_language_view.dart';
 import 'package:vitalingu/views/settings_view.dart';

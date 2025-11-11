@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/router/app_router.dart';
 
 @singleton
@@ -12,19 +13,22 @@ class NavigationService {
 
   AppRouter get router => _appRouter;
 
-  Future<void> goToLanguageView() {
-    return _appRouter.push(const LanguageRoute());
+  Future<void> goToLanguageView(Language language) {
+    return _appRouter.push(LanguageRoute(language: language));
   }
 
+
+  Future<void> goToSelectLanguageView() {
+    return _appRouter.push(const SelectLanguageRoute());
+  }
   Future<void> goToSettings() {
     return _appRouter.push(const SettingsRoute());
+    
   }
 
   void popBack() {
     _appRouter.maybePop();
   }
 
-  Future<void> replaceWithLanguageView() {
-    return _appRouter.replace(const LanguageRoute());
-  }
+
 }

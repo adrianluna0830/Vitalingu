@@ -16,10 +16,12 @@ import 'package:vitalingu/database/app_settings_database.dart' as _i185;
 import 'package:vitalingu/database/sembast_database.dart' as _i500;
 import 'package:vitalingu/di/modules.dart' as _i938;
 import 'package:vitalingu/interfaces/database_interface.dart' as _i475;
+import 'package:vitalingu/language/language.dart' as _i473;
 import 'package:vitalingu/services/gemini_prompt_service.dart' as _i657;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
 import 'package:vitalingu/services/pixabay_service.dart' as _i626;
 import 'package:vitalingu/viewmodels/language_viewmodel.dart' as _i621;
+import 'package:vitalingu/viewmodels/select_language_view_models.dart' as _i459;
 import 'package:vitalingu/viewmodels/settings_viewmodel.dart' as _i543;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -45,10 +47,17 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i19.NavigationService>(() => _i19.NavigationService());
     gh.lazySingleton<_i626.PixabayService>(() => _i626.PixabayService());
-    gh.factory<_i621.LanguageViewModel>(() => _i621.LanguageViewModel(
-          gh<_i19.NavigationService>(),
+    gh.factoryParam<_i621.LanguageViewModel, _i473.Language, dynamic>((
+      language,
+      _,
+    ) =>
+        _i621.LanguageViewModel(
+          language: language,
           navigationService: gh<_i19.NavigationService>(),
         ));
+    gh.factory<_i459.SelectLanguageViewModel>(() =>
+        _i459.SelectLanguageViewModel(
+            navigationService: gh<_i19.NavigationService>()));
     gh.lazySingleton<_i475.DatabaseInterface<String, String>>(
         () => _i500.SembastDatabase(
               database: gh<_i310.Database>(),
