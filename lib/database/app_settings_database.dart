@@ -1,11 +1,11 @@
+import 'package:injectable/injectable.dart';
 import 'package:vitalingu/interfaces/database_interface.dart';
 
+@injectable
 class AppSettingsDatabase {
   final DatabaseInterface<String, String> _database;
 
-  AppSettingsDatabase({
-    required DatabaseInterface<String, String> database,
-  }) : _database = database;
+  AppSettingsDatabase(this._database);
 
   Future<void> saveGeminiApiKey(String apiKey) async {
     await _database.saveItem(apiKey, 'gemini_api_key');

@@ -1,47 +1,37 @@
+import 'package:injectable/injectable.dart';
 import 'package:sembast/sembast.dart';
 import 'package:vitalingu/interfaces/database_interface.dart';
 
+@LazySingleton(as: DatabaseInterface)
 class SembastDatabase implements DatabaseInterface<String, String> {
-  final Database _db;
+  final Database database;
+  final String storeName;
   late final StoreRef<String, String> _store;
-  final String _storeName;
 
   SembastDatabase({
-    required Database database,
-    required String storeName,
-  }) : _db = database, _storeName = storeName {
-    _store = StoreRef<String, String>(_storeName);
+    required this.database,
+    required this.storeName,
+  }) {
+    _store = StoreRef<String, String>(storeName);
   }
 
   @override
-  Future<void> open() async {}
-
-  @override
-  Future<void> close() async {}
-
-  @override
-  Future<void> saveItem(String item, String key) async {
-    await _store.record(key).put(_db, item);
+  Future<void> saveItem(String value, String key) async {
+    await _store.record(key).put(database, value);
   }
 
   @override
   Future<String?> getItem(String key) async {
-    return await _store.record(key).get(_db);
+    return await _store.record(key).get(database);
   }
 
   @override
   Future<void> deleteItem(String key) async {
-    await _store.record(key).delete(_db);
+    await _store.record(key).delete(database);
   }
 
   @override
-  Future<List<String>> getAllItems() async {
-    final records = await _store.find(_db);
-    return records.map((snapshot) => snapshot.value).toList();
-  }
-
-  @override
-  Future<void> clearDatabase() async {
-    await _store.delete(_db);
+  Future<void> clearAll() async {
+    await _store.delete(database);
   }
 }

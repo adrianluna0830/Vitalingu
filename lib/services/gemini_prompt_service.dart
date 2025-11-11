@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 
 class ChatMessage {
   final String role; 
@@ -39,17 +40,16 @@ class ChatHistory {
   }
 }
 
+@injectable
 class GeminiPromptService {
   static const String _baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
   static const String _model = 'gemini-2.5-flash-lite';
   late final String _apiKey;
 
-  GeminiPromptService._();
+  GeminiPromptService();
 
-  static Future<GeminiPromptService> initialize({required String apiKey}) async {
-    final instance = GeminiPromptService._();
-    instance._apiKey = apiKey;
-    return instance;
+  void setApiKey(String apiKey) {
+    _apiKey = apiKey;
   }
 
   Future<String> generatePrompt(

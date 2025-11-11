@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class PixabayService {
-  PixabayService();
-
   final String _baseUrl = 'https://pixabay.com/api/';
   late final String apiKey;
+
+  PixabayService();
 
   Future<Map<String, dynamic>> searchImages({
     String? q,
@@ -42,23 +44,8 @@ class PixabayService {
     if (response.statusCode == 200) {
       return json.decode(response.body) as Map<String, dynamic>;
     } else {
-      throw PixabayException(
-        statusCode: response.statusCode,
-        message: response.body,
-      );
+      throw Exception('Pixabay API error: ${response.statusCode} - ${response.body}');
     }
   }
 }
 
-class PixabayException implements Exception {
-  final int statusCode;
-  final String message;
-
-  PixabayException({
-    required this.statusCode,
-    required this.message,
-  });
-
-  @override
-  String toString() => 'PixabayException($statusCode): $message';
-}

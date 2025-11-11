@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/database/app_settings_database.dart';
+import 'package:vitalingu/services/navigation_service.dart';
 
 @injectable
 class SettingsViewModel {
+  final NavigationService _navigationService;
   final AppSettingsDatabase _database;
 
   final geminiApiKeyController = TextEditingController();
@@ -13,7 +15,7 @@ class SettingsViewModel {
   final isLoading = signal(false);
   final saveSuccess = signal<bool?>(null);
 
-  SettingsViewModel(this._database) {
+  SettingsViewModel(this._navigationService, this._database) {
     _loadSettings();
   }
 
@@ -32,7 +34,7 @@ class SettingsViewModel {
   Future<void> saveSettings() async {
     isLoading.value = true;
     saveSuccess.value = null;
-    
+
     try {
       await _database.saveGeminiApiKey(geminiApiKeyController.text.trim());
       await _database.savePixabayApiKey(pixabayApiKeyController.text.trim());
@@ -45,8 +47,23 @@ class SettingsViewModel {
     }
   }
 
+  Future<void> onSavePressed() async {
+    await saveSettings();
+    if (saveSuccess.value == true) {
+      await saveAndNavigate();
+    }
+  }
+
   void dispose() {
     geminiApiKeyController.dispose();
     pixabayApiKeyController.dispose();
+  }
+
+  void popBack() {
+    _navigationService.popBack();
+  }
+
+  Future<void> saveAndNavigate() async {
+    await _navigationService.replaceWithLanguageView();
   }
 }

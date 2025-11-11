@@ -1,9 +1,6 @@
-abstract class DatabaseInterface<TItem,TKey> {
-  Future<void> open();
-  Future<void> close();
-  Future<TItem?> getItem(TKey key);
-  Future<List<TItem>> getAllItems();
-  Future<void> saveItem(TItem item, TKey key);
-  Future<void> deleteItem(TKey key);
-  Future<void> clearDatabase();
+abstract class DatabaseInterface<K, V> {
+  Future<void> saveItem(V value, K key);
+  Future<V?> getItem(K key);
+  Future<void> deleteItem(K key);
+  Future<void> clearAll();
 }
