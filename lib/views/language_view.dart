@@ -20,13 +20,14 @@ class _LanguageViewState extends State<LanguageView> {
   void initState() {
     super.initState();
     viewModel = getIt<LanguageViewModel>(param1: widget.language);
+    print(viewModel.language.languageWord.defaultToJson());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(child: Placeholder()),
+      body: Center(child: Text(viewModel.language.languageWord.defaultToJson()),),
     );
   }
 }
