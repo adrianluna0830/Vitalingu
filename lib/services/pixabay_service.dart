@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:injectable/injectable.dart';
 
-@lazySingleton
 class PixabayService {
   final String _baseUrl = 'https://pixabay.com/api/';
-  late final String apiKey;
+   final String apiKey;
 
-  PixabayService();
+  PixabayService(this.apiKey);
 
   Future<Map<String, dynamic>> searchImages({
     String? q,

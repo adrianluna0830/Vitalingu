@@ -12,6 +12,7 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:sembast/sembast.dart' as _i310;
+import 'package:sembast/sembast_io.dart' as _i156;
 import 'package:vitalingu/database/app_settings_database.dart' as _i185;
 import 'package:vitalingu/database/sembast_database.dart' as _i500;
 import 'package:vitalingu/di/modules.dart' as _i938;
@@ -36,8 +37,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final databaseModule = _$DatabaseModule();
-    gh.factory<_i657.GeminiPromptService>(() => _i657.GeminiPromptService());
-    await gh.singletonAsync<_i310.Database>(
+    await gh.singletonAsync<_i156.Database>(
       () => databaseModule.database,
       preResolve: true,
     );
@@ -46,7 +46,6 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i19.NavigationService>(() => _i19.NavigationService());
-    gh.lazySingleton<_i626.PixabayService>(() => _i626.PixabayService());
     gh.factoryParam<_i621.LanguageViewModel, _i473.Language, dynamic>((
       language,
       _,
@@ -64,9 +63,17 @@ extension GetItInjectableX on _i174.GetIt {
               storeName: gh<String>(),
             ));
     gh.singleton<_i500.SembastDatabase>(
-        () => databaseModule.wordDatabase(gh<_i310.Database>()));
+        () => databaseModule.wordDatabase(gh<_i156.Database>()));
     gh.factory<_i185.AppSettingsDatabase>(() => _i185.AppSettingsDatabase(
         gh<_i475.DatabaseInterface<String, String>>()));
+    await gh.lazySingletonAsync<_i657.GeminiPromptService>(
+      () => databaseModule.geminiPromptService(gh<_i185.AppSettingsDatabase>()),
+      preResolve: true,
+    );
+    await gh.lazySingletonAsync<_i626.PixabayService>(
+      () => databaseModule.pixabayService(gh<_i185.AppSettingsDatabase>()),
+      preResolve: true,
+    );
     gh.factory<_i543.SettingsViewModel>(() => _i543.SettingsViewModel(
           gh<_i185.AppSettingsDatabase>(),
           navigationService: gh<_i19.NavigationService>(),
