@@ -6,6 +6,7 @@ class NavigationService {
   late final AppRouter _appRouter;
 
   void initialize(AppRouter router) {
+    
     _appRouter = router;
   }
 

@@ -27,6 +27,22 @@ class LanguageRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SelectLanguageView]
+class SelectLanguageRoute extends PageRouteInfo<void> {
+  const SelectLanguageRoute({List<PageRouteInfo>? children})
+      : super(SelectLanguageRoute.name, initialChildren: children);
+
+  static const String name = 'SelectLanguageRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SelectLanguageView();
+    },
+  );
+}
+
+/// generated route for
 /// [SettingsView]
 class SettingsRoute extends PageRouteInfo<void> {
   const SettingsRoute({List<PageRouteInfo>? children})

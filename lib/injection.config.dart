@@ -20,6 +20,7 @@ import 'package:vitalingu/services/gemini_prompt_service.dart' as _i657;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
 import 'package:vitalingu/services/pixabay_service.dart' as _i626;
 import 'package:vitalingu/viewmodels/language_viewmodel.dart' as _i621;
+import 'package:vitalingu/viewmodels/select_language_view_models.dart' as _i459;
 import 'package:vitalingu/viewmodels/settings_viewmodel.dart' as _i543;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -43,6 +44,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => databaseModule.applicationDocumentsPath,
       preResolve: true,
     );
+    gh.singleton<_i459.SelectLanguageViewModel>(
+        () => databaseModule.selectLanguageViewModel());
     gh.singleton<_i19.NavigationService>(() => _i19.NavigationService());
     gh.lazySingleton<_i626.PixabayService>(() => _i626.PixabayService());
     gh.factory<_i621.LanguageViewModel>(

@@ -4,6 +4,9 @@ import 'package:sembast/sembast_io.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vitalingu/database/sembast_database.dart';
+import 'package:vitalingu/viewmodels/select_language_view_models.dart';
+import 'package:vitalingu/language/language.dart';
+import 'package:vitalingu/word/german_word.dart';
 
 @module
 abstract class DatabaseModule {
@@ -27,6 +30,16 @@ abstract class DatabaseModule {
     return SembastDatabase(
       database: database,
       storeName: 'word_store',
+    );
+  }
+
+  @singleton
+  SelectLanguageViewModel selectLanguageViewModel() {
+    return SelectLanguageViewModel(
+      languages: [
+        Language(bcp47Code: "de-DE", nativeName: "Deutsch", languageWord: GermanWord()),
+        // Add more languages as needed
+      ],
     );
   }
 }

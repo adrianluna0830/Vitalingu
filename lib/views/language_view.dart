@@ -4,9 +4,14 @@ import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/viewmodels/language_viewmodel.dart';
 
 @RoutePage()
-class LanguageView extends StatelessWidget {
+class LanguageView extends StatefulWidget {
   const LanguageView({super.key});
 
+  @override
+  State<LanguageView> createState() => _LanguageViewState();
+}
+
+class _LanguageViewState extends State<LanguageView> {
   @override
   Widget build(BuildContext context) {
     final viewModel = getIt<LanguageViewModel>();
