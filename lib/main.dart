@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/german_word.dart';
-import 'package:vitalingu/word.dart';
+import 'di.dart';
 
-void main() {
-  runApp(const MaterialApp(home: MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
+  runApp(MyApp());
 }
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Sembast with Injectable')),
+        body: Center(child: Text('App Initialized')),
+      ),
+    );
+  }
+}
+
