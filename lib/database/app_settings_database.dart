@@ -1,4 +1,4 @@
-import 'package:vitalingu/database_interface.dart';
+import 'package:vitalingu/interfaces/database_interface.dart';
 
 class AppSettingsDatabase {
   final DatabaseInterface<String, String> _database;

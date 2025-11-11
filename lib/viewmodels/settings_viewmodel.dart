@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/database/app_settings_database.dart';
-import 'package:vitalingu/models/app_settings.dart';
 
 @injectable
 class SettingsViewModel {

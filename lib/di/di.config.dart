@@ -13,8 +13,8 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:sembast/sembast.dart' as _i310;
 import 'package:vitalingu/database/app_settings_database.dart' as _i185;
-import 'package:vitalingu/modules.dart' as _i127;
-import 'package:vitalingu/sembast_database.dart' as _i848;
+import 'package:vitalingu/database/sembast_database.dart' as _i500;
+import 'package:vitalingu/di/modules.dart' as _i938;
 import 'package:vitalingu/viewmodels/settings_viewmodel.dart' as _i543;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -40,11 +40,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i543.SettingsViewModel>(
       () => _i543.SettingsViewModel(gh<_i185.AppSettingsDatabase>()),
     );
-    gh.singleton<_i848.SembastDatabase>(
+    gh.singleton<_i500.SembastDatabase>(
       () => databaseModule.wordDatabase(gh<_i310.Database>()),
     );
     return this;
   }
 }
 
-class _$DatabaseModule extends _i127.DatabaseModule {}
+class _$DatabaseModule extends _i938.DatabaseModule {}

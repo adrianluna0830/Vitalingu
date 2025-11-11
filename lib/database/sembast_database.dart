@@ -1,5 +1,5 @@
 import 'package:sembast/sembast.dart';
-import 'package:vitalingu/database_interface.dart';
+import 'package:vitalingu/interfaces/database_interface.dart';
 
 class SembastDatabase implements DatabaseInterface<String, String> {
   final Database _db;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'di.dart';
+import 'di/di.dart';
 import 'package:vitalingu/views/settings_view.dart';
 
 void main() async {

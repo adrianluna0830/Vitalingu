@@ -5,7 +5,6 @@ class PixabayService {
   PixabayService();
 
   final String _baseUrl = 'https://pixabay.com/api/';
-  final String _videoBaseUrl = 'https://pixabay.com/api/videos/';
   late final String apiKey;
 
   Future<Map<String, dynamic>> searchImages({

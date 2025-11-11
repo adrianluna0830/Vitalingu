@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/di.dart';
+import 'package:vitalingu/di/di.dart';
 import 'package:vitalingu/viewmodels/settings_viewmodel.dart';
 
 class SettingsView extends StatefulWidget {
