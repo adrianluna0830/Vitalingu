@@ -14,15 +14,10 @@ class SembastDatabase implements DatabaseInterface<String, String> {
   }
 
   @override
-  Future<void> open() async {
-    // La base de datos ya está abierta, no se necesita hacer nada
-  }
+  Future<void> open() async {}
 
   @override
-  Future<void> close() async {
-    // No cerramos la base de datos aquí porque es compartida
-    // La base de datos se cerrará cuando se cierre GetIt
-  }
+  Future<void> close() async {}
 
   @override
   Future<void> saveItem(String item, String key) async {

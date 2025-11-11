@@ -13,6 +13,7 @@ class WordExample with WordExampleMappable {
     this.translatedExample = "The same untranslated sentence translated to the specified native language",
   });
 }
+
 const String universalPartsOfSpeech = "Noun, Verb, Adjective, Adverb, Pronoun, Preposition, Conjunction, Interjection, Article, Determiner, Numeral, Particle, Auxiliary Verb, Modal Verb, Phrase, Idiom";
 
 @MappableClass()
@@ -42,5 +43,4 @@ abstract class Word {
   Word fromJson(String json);
 
   String defaultToJson();
-
 }

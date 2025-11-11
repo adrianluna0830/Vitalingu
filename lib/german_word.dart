@@ -2,13 +2,12 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:vitalingu/word.dart';
-import 'dart:convert'; // Importa dart:convert para usar jsonEncode
+import 'dart:convert';
 
 part 'german_word.mapper.dart';
-@MappableClass()
 
-class GermanPreposition with GermanPrepositionMappable
-{
+@MappableClass()
+class GermanPreposition with GermanPrepositionMappable {
   final String prepositionCase;
   final List<String> commonContractions;
 
@@ -17,10 +16,9 @@ class GermanPreposition with GermanPrepositionMappable
     this.commonContractions = const ["List of common contractions with articles. Examples: ins, im, zum, am, beim, vom, ans, aufs. Use empty list if not applicable."]
   });
 }
-@MappableClass()
 
-class GermanVerb with GermanVerbMappable
-{
+@MappableClass()
+class GermanVerb with GermanVerbMappable {
   final String simplePast;
   final String pastParticiple;
   final String thirdPersonPresent;
@@ -41,10 +39,9 @@ class GermanVerb with GermanVerbMappable
     this.governedCase = "ACCUSATIVE, DATIVE, GENITIVE. Use empty string if not applicable."
   });
 }
-@MappableClass()
 
-class GermanNoun with GermanNounMappable
-{
+@MappableClass()
+class GermanNoun with GermanNounMappable {
   final String gender;
   final String pluralForm;
 
@@ -53,10 +50,9 @@ class GermanNoun with GermanNounMappable
     this.pluralForm = "The exact plural form of the noun. Example: Kinder, Häuser, Frauen. If the noun has no plural form, use the same word as singular."
   });
 }
-@MappableClass()
 
-class GermanAdjective with GermanAdjectiveMappable
-{
+@MappableClass()
+class GermanAdjective with GermanAdjectiveMappable {
   final String comparative;
   final String superlative;
 
@@ -65,10 +61,9 @@ class GermanAdjective with GermanAdjectiveMappable
     this.superlative = "The superlative form WITHOUT 'am'. Example: best, schönst, größt. Use base+st for regular forms. Use the base form if not applicable."
   });
 }
-@MappableClass()
 
-class GermanAdverb with GermanAdverbMappable
-{
+@MappableClass()
+class GermanAdverb with GermanAdverbMappable {
   final String comparativeForm;
   final String superlativeForm;
 
@@ -79,8 +74,7 @@ class GermanAdverb with GermanAdverbMappable
 }
 
 @MappableClass()
-class GermanWordDefinition extends WordDefinition with GermanWordDefinitionMappable
-{
+class GermanWordDefinition extends WordDefinition with GermanWordDefinitionMappable {
   final GermanNoun? nounInfo;
   final GermanVerb? verbInfo;
   final GermanPreposition? prepositionInfo;
@@ -100,8 +94,7 @@ class GermanWordDefinition extends WordDefinition with GermanWordDefinitionMappa
 }
 
 @MappableClass()
-class GermanWord extends Word with GermanWordMappable
-{
+class GermanWord extends Word with GermanWordMappable {
   @override
   final List<GermanWordDefinition> definitions;
 
@@ -125,6 +118,4 @@ class GermanWord extends Word with GermanWordMappable
   Widget wordWidget() {
     return Text("German Word Widget for $wordLema");
   }
-
-
 }
