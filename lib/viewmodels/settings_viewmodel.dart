@@ -3,10 +3,10 @@ import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/database/app_settings_database.dart';
 import 'package:vitalingu/services/navigation_service.dart';
+import 'package:vitalingu/viewmodels/view_model_base.dart';
 
 @injectable
-class SettingsViewModel {
-  final NavigationService _navigationService;
+class SettingsViewModel extends ViewModelBase {
   final AppSettingsDatabase _database;
 
   final geminiApiKeyController = TextEditingController();
@@ -15,7 +15,7 @@ class SettingsViewModel {
   final isLoading = signal(false);
   final saveSuccess = signal<bool?>(null);
 
-  SettingsViewModel(this._navigationService, this._database) {
+  SettingsViewModel( this._database, {required super.navigationService}) {
     _loadSettings();
   }
 
@@ -60,10 +60,10 @@ class SettingsViewModel {
   }
 
   void popBack() {
-    _navigationService.popBack();
+    navigationService.popBack();
   }
 
   Future<void> saveAndNavigate() async {
-    await _navigationService.replaceWithLanguageView();
+    await navigationService.replaceWithLanguageView();
   }
 }

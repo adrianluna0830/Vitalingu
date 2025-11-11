@@ -33,13 +33,5 @@ abstract class DatabaseModule {
     );
   }
 
-  @singleton
-  SelectLanguageViewModel selectLanguageViewModel() {
-    return SelectLanguageViewModel(
-      languages: [
-        Language(bcp47Code: "de-DE", nativeName: "Deutsch", languageWord: GermanWord()),
-        // Add more languages as needed
-      ],
-    );
-  }
+
 }
