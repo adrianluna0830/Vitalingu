@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/services/gemini_prompt_service.dart';
@@ -17,13 +16,13 @@ class WordPromptsService {
 
   Future<String> _getWordLema(String word) async
   {
-        String prompt = "Return the word lema for the word '$word' in ${targetLanguage.bcp47Code} language.";
+        String prompt = "Return the word lema for the word '$word' in ${targetLanguage.nativeName} language.";
         return await geminiPromptService.generatePrompt(prompt);
   }
 
   String _getWordPrompt(String wordLema)
   {
-     return targetLanguage.languageWord.getWordPrompt(word: wordLema, nativeLanguage: nativeLanguage.bcp47Code, targetLanguage: targetLanguage.bcp47Code);
+     return targetLanguage.languageWord.getWordPrompt(word: wordLema, nativeLanguage: nativeLanguage.nativeName, targetLanguage: targetLanguage.nativeName);
   }
 
   Future<Word> getWord(String word) async

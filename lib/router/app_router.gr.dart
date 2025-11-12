@@ -28,18 +28,49 @@ class AppStartupLoadingRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [LanguageView]
-class LanguageRoute extends PageRouteInfo<void> {
-  const LanguageRoute({List<PageRouteInfo>? children})
-      : super(LanguageRoute.name, initialChildren: children);
+class LanguageRoute extends PageRouteInfo<LanguageRouteArgs> {
+  LanguageRoute({
+    Key? key,
+    required Language language,
+    List<PageRouteInfo>? children,
+  }) : super(
+          LanguageRoute.name,
+          args: LanguageRouteArgs(key: key, language: language),
+          initialChildren: children,
+        );
 
   static const String name = 'LanguageRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LanguageView();
+      final args = data.argsAs<LanguageRouteArgs>();
+      return LanguageView(key: args.key, language: args.language);
     },
   );
+}
+
+class LanguageRouteArgs {
+  const LanguageRouteArgs({this.key, required this.language});
+
+  final Key? key;
+
+  final Language language;
+
+  @override
+  String toString() {
+    return 'LanguageRouteArgs{key: $key, language: $language}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! LanguageRouteArgs) return false;
+    return key == other.key && language == other.language;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ language.hashCode;
 }
 
 /// generated route for
@@ -72,48 +103,4 @@ class SettingsRoute extends PageRouteInfo<void> {
       return const SettingsView();
     },
   );
-}
-
-/// generated route for
-/// [WordInfoView]
-class WordInfoRoute extends PageRouteInfo<WordInfoRouteArgs> {
-  WordInfoRoute({Key? key, required Word word, List<PageRouteInfo>? children})
-      : super(
-          WordInfoRoute.name,
-          args: WordInfoRouteArgs(key: key, word: word),
-          initialChildren: children,
-        );
-
-  static const String name = 'WordInfoRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<WordInfoRouteArgs>();
-      return WordInfoView(key: args.key, word: args.word);
-    },
-  );
-}
-
-class WordInfoRouteArgs {
-  const WordInfoRouteArgs({this.key, required this.word});
-
-  final Key? key;
-
-  final Word word;
-
-  @override
-  String toString() {
-    return 'WordInfoRouteArgs{key: $key, word: $word}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! WordInfoRouteArgs) return false;
-    return key == other.key && word == other.word;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ word.hashCode;
 }

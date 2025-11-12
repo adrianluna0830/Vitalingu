@@ -38,12 +38,14 @@ dependencies:
   cupertino_icons: ^1.0.8
   dart_mappable: ^4.6.1
   http: ^1.6.0
-  sembast: ^3.8.5+2
   get_it: ^9.0.5
   injectable: ^2.6.0
   injectable_generator: ^2.9.1
   path_provider: ^2.1.5
   signals: ^6.2.0
+  hive_ce: ^2.15.1
+  hive_ce_flutter: ^2.3.3
+  hive_ce_generator: ^1.10.0
 
 dev_dependencies:
   flutter_test:

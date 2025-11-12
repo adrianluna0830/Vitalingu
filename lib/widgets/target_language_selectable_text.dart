@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/language/language.dart';
@@ -9,140 +8,111 @@ import 'package:vitalingu/language/language.dart';
 class TargetLanguageSelectableTextController {
   final Language language;
 
-  TargetLanguageSelectableTextController({
-    required this.language,
-  });
+  TargetLanguageSelectableTextController({required this.language});
 
   bool isEmptyOrPunctuation(String text) {
     if (text.trim().isEmpty) return true;
-    final punctuationRegex = RegExp(r'^[\s\p{P}\p{S}]+$', unicode: true);
-    return punctuationRegex.hasMatch(text);
+    return RegExp(r'^[\s\p{P}\p{S}]+$', unicode: true).hasMatch(text);
   }
 
-  (String, int, int) getExpandedToNearestWord(int startIndex, int endIndex, String fullText) {
-    if (fullText.isEmpty) return ('', 0, 0);
-    int newStart = startIndex;
-    int newEnd = endIndex;
-
-    while (newStart > 0 && !_isWordBoundary(fullText[newStart - 1])) {
-      newStart--;
-    }
-    while (newEnd < fullText.length && !_isWordBoundary(fullText[newEnd])) {
-      newEnd++;
-    }
-    while (newStart < newEnd && _isWordBoundary(fullText[newStart])) {
-      newStart++;
-    }
-    while (newEnd > newStart && _isWordBoundary(fullText[newEnd - 1])) {
-      newEnd--;
-    }
-    if (newStart >= newEnd) {
-      return ('', 0, 0);
-    }
-    String expandedText = fullText.substring(newStart, newEnd);
-    return (expandedText, newStart, newEnd);
+  bool isSingleWord(String text) {
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) return false;
+    final words = trimmed.split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
+    return words.length == 1;
   }
 
-  (String, int, int) getExpandedToInvolvedWords(int startIndex, int endIndex, String fullText) {
-    if (fullText.isEmpty) return ('', 0, 0);
-    int adjustedStart = startIndex;
-    int adjustedEnd = endIndex;
-
-    while (adjustedStart < adjustedEnd && _isWordBoundary(fullText[adjustedStart])) {
-      adjustedStart++;
-    }
-    while (adjustedEnd > adjustedStart && _isWordBoundary(fullText[adjustedEnd - 1])) {
-      adjustedEnd--;
-    }
-    if (adjustedStart >= adjustedEnd) {
-      return ('', 0, 0);
-    }
-
-    int newStart = adjustedStart;
-    int newEnd = adjustedEnd;
-
-    if (adjustedStart > 0 && !_isWordBoundary(fullText[adjustedStart - 1])) {
-      while (newStart > 0 && !_isWordBoundary(fullText[newStart - 1])) {
-        newStart--;
-      }
-    }
-    if (adjustedEnd < fullText.length && !_isWordBoundary(fullText[adjustedEnd])) {
-      while (newEnd < fullText.length && !_isWordBoundary(fullText[newEnd])) {
-        newEnd++;
-      }
-    }
-
-    String expandedText = fullText.substring(newStart, newEnd);
-    return (expandedText, newStart, newEnd);
-  }
-
-  (String, int, int) getExpandedToNearestParagraph(int startIndex, int endIndex, String fullText) {
-    if (fullText.isEmpty) return ('', 0, 0);
-    int newStart = startIndex;
-    int newEnd = endIndex;
-
-    while (newStart > 0 && !_isWordBoundary(fullText[newStart - 1])) {
-      newStart--;
-    }
-    while (newEnd < fullText.length && !_isWordBoundary(fullText[newEnd])) {
-      newEnd++;
-    }
-    while (newStart > 0) {
-      if (fullText[newStart - 1] == '\n') break;
-      newStart--;
-    }
-    while (newEnd < fullText.length) {
-      if (fullText[newEnd] == '\n') break;
-      newEnd++;
-    }
-    while (newStart < fullText.length && _isWordBoundary(fullText[newStart])) {
-      newStart++;
-    }
-    while (newEnd > newStart && _isWordBoundary(fullText[newEnd - 1])) {
-      newEnd--;
-    }
-    if (newStart >= newEnd) {
-      return ('', 0, 0);
-    }
-    String expandedText = fullText.substring(newStart, newEnd);
-    return (expandedText, newStart, newEnd);
-  }
-
-  bool _isWordBoundary(String char) {
-    return char == ' ' || char == '\n' || char == '\t' ||
-        RegExp(r'[\p{P}\p{S}]', unicode: true).hasMatch(char);
-  }
-
-  bool isWord(int startIndex, int endIndex, String fullText) {
-    if (startIndex == endIndex) return true;
-    String selectedText = fullText.substring(startIndex, endIndex);
-    String trimmedText = selectedText.trim();
-    if (trimmedText.isEmpty) return false;
-    List<String> words = trimmedText.split(RegExp(r'\s+'));
-    words = words.where((word) => word.isNotEmpty).toList();
+  bool isShortSelection(int start, int end, String fullText) {
+    if (start == end) return true;
+    final selected = fullText.substring(start, end).trim();
+    if (selected.isEmpty) return false;
+    final words = selected.split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
     return words.length <= 2;
   }
 
-  String getLineContext(int startIndex, int endIndex, String fullText) {
-    if (fullText.isEmpty) return '';
-    int lineStart = startIndex;
-    int lineEnd = endIndex;
+  (String text, int start, int end) expandToInvolvedWords(int start, int end, String fullText) {
+    if (fullText.isEmpty) return ('', 0, 0);
+    final (adjStart, adjEnd) = _skipBoundaries(start, end, fullText);
+    if (adjStart >= adjEnd) return ('', 0, 0);
+    int newStart = adjStart;
+    int newEnd = adjEnd;
+    if (adjStart > 0 && !_isWordBoundary(fullText[adjStart - 1])) {
+      newStart = _findWordStart(adjStart, fullText);
+    }
+    if (adjEnd < fullText.length && !_isWordBoundary(fullText[adjEnd])) {
+      newEnd = _findWordEnd(adjEnd, fullText);
+    }
+    return (fullText.substring(newStart, newEnd), newStart, newEnd);
+  }
 
-    while (lineStart > 0 && fullText[lineStart - 1] != '\n') {
-      lineStart--;
+  (String text, int start, int end) expandToParagraph(int start, int end, String fullText) {
+    if (fullText.isEmpty) return ('', 0, 0);
+    int newStart = _findWordStart(start, fullText);
+    int newEnd = _findWordEnd(end, fullText);
+    while (newStart > 0 && fullText[newStart - 1] != '\n') {
+      newStart--;
     }
-    while (lineEnd < fullText.length && fullText[lineEnd] != '\n') {
-      lineEnd++;
+    while (newEnd < fullText.length && fullText[newEnd] != '\n') {
+      newEnd++;
     }
-    return fullText.substring(lineStart, lineEnd).trim();
+    final (cleanStart, cleanEnd) = _trimBoundaries(newStart, newEnd, fullText);
+    if (cleanStart >= cleanEnd) return ('', 0, 0);
+    return (fullText.substring(cleanStart, cleanEnd), cleanStart, cleanEnd);
+  }
+
+  bool _isWordBoundary(String char) {
+    return char == ' ' ||
+        char == '\n' ||
+        char == '\t' ||
+        RegExp(r'[\p{P}\p{S}]', unicode: true).hasMatch(char);
+  }
+
+  int _findWordStart(int index, String text) {
+    int pos = index;
+    while (pos > 0 && !_isWordBoundary(text[pos - 1])) {
+      pos--;
+    }
+    return pos;
+  }
+
+  int _findWordEnd(int index, String text) {
+    int pos = index;
+    while (pos < text.length && !_isWordBoundary(text[pos])) {
+      pos++;
+    }
+    return pos;
+  }
+
+  (int start, int end) _skipBoundaries(int start, int end, String text) {
+    int newStart = start;
+    int newEnd = end;
+    while (newStart < newEnd && _isWordBoundary(text[newStart])) {
+      newStart++;
+    }
+    while (newEnd > newStart && _isWordBoundary(text[newEnd - 1])) {
+      newEnd--;
+    }
+    return (newStart, newEnd);
+  }
+
+  (int start, int end) _trimBoundaries(int start, int end, String text) {
+    int newStart = start;
+    int newEnd = end;
+    while (newStart < text.length && _isWordBoundary(text[newStart])) {
+      newStart++;
+    }
+    while (newEnd > newStart && _isWordBoundary(text[newEnd - 1])) {
+      newEnd--;
+    }
+    return (newStart, newEnd);
   }
 }
 
 class TargetLanguageSelectableText extends StatefulWidget {
   final String fullText;
-  final void Function(String expandedSelection) translateSelectedTextCallback;
-  final void Function(String expandedSelection) explainSelectedTextDoubtCallback;
-  final void Function(String expandedSelection) getSelectedWord;
+  final void Function(String) translateSelectedTextCallback;
+  final void Function(String) explainSelectedTextDoubtCallback;
+  final void Function(String) getSelectedWord;
 
   const TargetLanguageSelectableText({
     super.key,
@@ -157,8 +127,8 @@ class TargetLanguageSelectableText extends StatefulWidget {
 }
 
 class _TargetLanguageSelectableTextState extends State<TargetLanguageSelectableText> {
-  final TargetLanguageSelectableTextController _controller = getIt<TargetLanguageSelectableTextController>();
-  final FocusNode _focusNode = FocusNode();
+  final _controller = getIt<TargetLanguageSelectableTextController>();
+  final _focusNode = FocusNode();
 
   @override
   void dispose() {
@@ -167,32 +137,18 @@ class _TargetLanguageSelectableTextState extends State<TargetLanguageSelectableT
   }
 
   void _handleSelectionChange(TextSelection selection) {
-    if (!selection.isCollapsed) {
-      final selectedText = widget.fullText.substring(selection.start, selection.end);
-      if (_controller.isEmptyOrPunctuation(selectedText)) {
-        _focusNode.unfocus();
-        return;
-      }
-      final bool isSingleWord = _controller.isWord(selection.start, selection.end, widget.fullText);
-      if (isSingleWord) {
-        final (expandedWord, _, _) = _controller.getExpandedToInvolvedWords(
-          selection.start,
-          selection.end,
-          widget.fullText,
-        );
-        if (expandedWord.isEmpty) {
-          _focusNode.unfocus();
-        }
-      } else {
-        final (expandedParagraph, _, _) = _controller.getExpandedToNearestParagraph(
-          selection.start,
-          selection.end,
-          widget.fullText,
-        );
-        if (expandedParagraph.isEmpty) {
-          _focusNode.unfocus();
-        }
-      }
+    if (selection.isCollapsed) return;
+    final selectedText = widget.fullText.substring(selection.start, selection.end);
+    if (_controller.isEmptyOrPunctuation(selectedText)) {
+      _focusNode.unfocus();
+      return;
+    }
+    final isShort = _controller.isShortSelection(selection.start, selection.end, widget.fullText);
+    final (expandedText, _, _) = isShort
+        ? _controller.expandToInvolvedWords(selection.start, selection.end, widget.fullText)
+        : _controller.expandToParagraph(selection.start, selection.end, widget.fullText);
+    if (expandedText.isEmpty) {
+      _focusNode.unfocus();
     }
   }
 
@@ -210,9 +166,7 @@ class _TargetLanguageSelectableTextState extends State<TargetLanguageSelectableT
         focusNode: _focusNode,
       ),
       onSelectionChanged: (selection, cause) {
-        if (selection != null) {
           _handleSelectionChange(selection);
-        }
       },
       showCursor: false,
       style: const TextStyle(fontSize: 16),
@@ -253,59 +207,39 @@ class _CustomTextSelectionControls extends TextSelectionControls {
     ValueListenable<ClipboardStatus>? clipboardStatus,
     Offset? lastSecondaryTapDownPosition,
   ) {
-    final TextSelection selection = delegate.textEditingValue.selection;
+    final selection = delegate.textEditingValue.selection;
     if (selection.isCollapsed) return const SizedBox.shrink();
-    final String selectedText = fullText.substring(selection.start, selection.end);
+    final selectedText = fullText.substring(selection.start, selection.end);
     if (controller.isEmptyOrPunctuation(selectedText)) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        focusNode.unfocus();
-      });
+      _unfocusAfterFrame();
       return const SizedBox.shrink();
     }
-    final bool isSingleWord = controller.isWord(selection.start, selection.end, fullText);
-
+    final isShort = controller.isShortSelection(selection.start, selection.end, fullText);
+    final (expandedText, _, _) = isShort
+        ? controller.expandToInvolvedWords(selection.start, selection.end, fullText)
+        : controller.expandToParagraph(selection.start, selection.end, fullText);
+    if (expandedText.isEmpty) {
+      _unfocusAfterFrame();
+      return const SizedBox.shrink();
+    }
+    final isSingleWord = controller.isSingleWord(expandedText);
     return _CustomToolbar(
       globalEditableRegion: globalEditableRegion,
       selectionMidpoint: selectionMidpoint,
       isSingleWord: isSingleWord,
-      onWordInfo: () {
-        final (word, _, _) = controller.getExpandedToInvolvedWords(
-          selection.start,
-          selection.end,
-          fullText,
-        );
-        if (word.isEmpty) {
-          focusNode.unfocus();
-          return;
-        }
-        wordLemaCallback(word);
-        focusNode.unfocus();
-      },
-      onTranslate: () {
-        final bool isShortSelection = controller.isWord(selection.start, selection.end, fullText);
-        final (expandedText, _, _) = isShortSelection
-            ? controller.getExpandedToInvolvedWords(selection.start, selection.end, fullText)
-            : controller.getExpandedToNearestParagraph(selection.start, selection.end, fullText);
-        if (expandedText.isEmpty) {
-          focusNode.unfocus();
-          return;
-        }
-        translateCallback(expandedText);
-        focusNode.unfocus();
-      },
-      onDoubt: () {
-        final bool isShortSelection = controller.isWord(selection.start, selection.end, fullText);
-        final (expandedText, _, _) = isShortSelection
-            ? controller.getExpandedToInvolvedWords(selection.start, selection.end, fullText)
-            : controller.getExpandedToNearestParagraph(selection.start, selection.end, fullText);
-        if (expandedText.isEmpty) {
-          focusNode.unfocus();
-          return;
-        }
-        doubtCallback(expandedText);
-        focusNode.unfocus();
-      },
+      onWordInfo: () => _handleAction(() => wordLemaCallback(expandedText)),
+      onTranslate: () => _handleAction(() => translateCallback(expandedText)),
+      onDoubt: () => _handleAction(() => doubtCallback(expandedText)),
     );
+  }
+
+  void _unfocusAfterFrame() {
+    WidgetsBinding.instance.addPostFrameCallback((_) => focusNode.unfocus());
+  }
+
+  void _handleAction(VoidCallback action) {
+    action();
+    focusNode.unfocus();
   }
 
   @override
@@ -340,16 +274,8 @@ class _CustomToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final toolbarWidth = isSingleWord ? 100.0 : 220.0;
-    double leftPosition = globalEditableRegion.left + selectionMidpoint.dx - (toolbarWidth / 2);
-
-    if (leftPosition < 16) {
-      leftPosition = 16;
-    }
-    if (leftPosition + toolbarWidth > screenWidth - 16) {
-      leftPosition = screenWidth - toolbarWidth - 16;
-    }
+    final leftPosition = _calculateLeftPosition(screenWidth, toolbarWidth);
     final topPosition = globalEditableRegion.top + selectionMidpoint.dy - 70;
-
     return Stack(
       children: [
         Positioned(
@@ -361,52 +287,77 @@ class _CustomToolbar extends StatelessWidget {
             color: Colors.transparent,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2C2C2E),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
+              decoration: _toolbarDecoration(),
               child: IntrinsicWidth(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: isSingleWord
-                      ? [
-                          _ToolbarButton(
-                            icon: Icons.info_outline,
-                            label: 'Info',
-                            onPressed: onWordInfo,
-                          ),
-                        ]
-                      : [
-                          _ToolbarButton(
-                            icon: Icons.translate,
-                            label: 'Translate',
-                            onPressed: onTranslate,
-                          ),
-                          Container(
-                            width: 1,
-                            height: 30,
-                            color: Colors.white.withOpacity(0.2),
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                          ),
-                          _ToolbarButton(
-                            icon: Icons.help_outline,
-                            label: 'Doubt',
-                            onPressed: onDoubt,
-                          ),
-                        ],
+                  children: _buildButtons(),
                 ),
               ),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  double _calculateLeftPosition(double screenWidth, double toolbarWidth) {
+    const padding = 16.0;
+    double left = globalEditableRegion.left + selectionMidpoint.dx - (toolbarWidth / 2);
+    if (left < padding) {
+      return padding;
+    }
+    if (left + toolbarWidth > screenWidth - padding) {
+      return screenWidth - toolbarWidth - padding;
+    }
+    return left;
+  }
+
+  BoxDecoration _toolbarDecoration() {
+    return BoxDecoration(
+      color: const Color(0xFF2C2C2E),
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha:  0.3),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _buildButtons() {
+    if (isSingleWord) {
+      return [
+        _ToolbarButton(
+          icon: Icons.info_outline,
+          label: 'Info',
+          onPressed: onWordInfo,
+        ),
+      ];
+    }
+    return [
+      _ToolbarButton(
+        icon: Icons.translate,
+        label: 'Translate',
+        onPressed: onTranslate,
+      ),
+      _buildDivider(),
+      _ToolbarButton(
+        icon: Icons.help_outline,
+        label: 'Doubt',
+        onPressed: onDoubt,
+      ),
+    ];
+  }
+
+  Widget _buildDivider() {
+    return Container(
+      width: 1,
+      height: 30,
+      color: Colors.white.withValues(alpha:  0.2),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
     );
   }
 }

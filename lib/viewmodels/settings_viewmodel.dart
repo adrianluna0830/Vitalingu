@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/database/app_settings_database.dart';
+import 'package:vitalingu/injection.dart';
+import 'package:vitalingu/language/language.dart';
+import 'package:vitalingu/models/app_settings.dart';
 import 'package:vitalingu/viewmodels/view_model_base.dart';
+import 'package:vitalingu/register_languages.dart';
 
 @injectable
 class SettingsViewModel extends ViewModelBase {
@@ -10,23 +14,47 @@ class SettingsViewModel extends ViewModelBase {
 
   final geminiApiKeyController = TextEditingController();
   final pixabayApiKeyController = TextEditingController();
+  final microsoftApiKeyController = TextEditingController();
+  final microsoftRegionController = TextEditingController();
 
   final isLoading = signal(false);
   final saveSuccess = signal<bool?>(null);
 
-  SettingsViewModel( this._database, {required super.navigationService}) {
+  List<Language> get availableLanguages => LanguageRegistry.languages;
+  
+  final selectedNativeLanguage = signal<Language?>(null);
+
+  SettingsViewModel(this._database, {required super.navigationService}) {
     _loadSettings();
   }
 
   Future<void> _loadSettings() async {
     isLoading.value = true;
     try {
-      geminiApiKeyController.text = await _database.getGeminiApiKey();
-      pixabayApiKeyController.text = await _database.getPixabayApiKey();
+      final settings = await _database.getAppSettings();
+      if (settings != null) {
+        geminiApiKeyController.text = settings.geminiApiKey;
+        pixabayApiKeyController.text = settings.pixabayApiKey;
+        microsoftApiKeyController.text = settings.microsoftSpeechApiKey;
+        microsoftRegionController.text = settings.microsoftSpeechRegion;
+        final matchingLanguage = availableLanguages.firstWhere(
+          (lang) => lang.bcp47Code == settings.nativeLanguage.bcp47Code,
+          orElse: () => availableLanguages.first,
+        );
+        selectedNativeLanguage.value = matchingLanguage;
+      } else {
+        selectedNativeLanguage.value = availableLanguages.isNotEmpty ? availableLanguages.first : null;
+      }
     } catch (e) {
-      print('Error loading settings: $e');
+      selectedNativeLanguage.value = availableLanguages.isNotEmpty ? availableLanguages.first : null;
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  void setNativeLanguage(Language? language) {
+    if (language != null) {
+      selectedNativeLanguage.value = language;
     }
   }
 
@@ -35,11 +63,22 @@ class SettingsViewModel extends ViewModelBase {
     saveSuccess.value = null;
 
     try {
-      await _database.saveGeminiApiKey(geminiApiKeyController.text.trim());
-      await _database.savePixabayApiKey(pixabayApiKeyController.text.trim());
+      if (selectedNativeLanguage.value == null) {
+        saveSuccess.value = false;
+        return;
+      }
+
+      final settings = AppSettings(
+        geminiApiKey: geminiApiKeyController.text.trim(),
+        pixabayApiKey: pixabayApiKeyController.text.trim(),
+        microsoftSpeechApiKey: microsoftApiKeyController.text.trim(),
+        microsoftSpeechRegion: microsoftRegionController.text.trim(),
+        nativeLanguage: selectedNativeLanguage.value!,
+      );
+
+      await _database.saveAppSettings(settings);
       saveSuccess.value = true;
     } catch (e) {
-      print('Error saving settings: $e');
       saveSuccess.value = false;
     } finally {
       isLoading.value = false;
@@ -56,6 +95,8 @@ class SettingsViewModel extends ViewModelBase {
   void dispose() {
     geminiApiKeyController.dispose();
     pixabayApiKeyController.dispose();
+    microsoftApiKeyController.dispose();
+    microsoftRegionController.dispose();
   }
 
   void popBack() {
@@ -63,6 +104,9 @@ class SettingsViewModel extends ViewModelBase {
   }
 
   Future<void> saveAndNavigate() async {
-    await navigationService.goToSelectLanguageView();
+    if (getIt.hasScope('user-config-session')) {
+      await getIt.popScope();
+    }
+    await navigationService.replaceWithSelectLanguageView();
   }
 }

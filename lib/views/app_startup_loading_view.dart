@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart';
+
 @RoutePage()
 class AppStartupLoadingView extends StatefulWidget {
   const AppStartupLoadingView({super.key});
@@ -11,15 +12,18 @@ class AppStartupLoadingView extends StatefulWidget {
 }
 
 class _AppStartupLoadingViewState extends State<AppStartupLoadingView> {
-  AppStartupLoadingViewModel viewModel  = getIt<AppStartupLoadingViewModel>();
+  late final AppStartupLoadingViewModel viewModel;
+
   @override
   void initState() {
     super.initState();
+    viewModel = getIt<AppStartupLoadingViewModel>();
     viewModel.initializeApp();
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),

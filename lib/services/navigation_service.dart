@@ -4,31 +4,30 @@ import 'package:vitalingu/router/app_router.dart';
 
 @singleton
 class NavigationService {
-  late final AppRouter _appRouter;
+  final AppRouter _appRouter;
 
-  void initialize(AppRouter router) {
-    
-    _appRouter = router;
-  }
-
+  NavigationService(this._appRouter);
+  
   AppRouter get router => _appRouter;
 
   Future<void> goToLanguageView(Language language) {
-    return _appRouter.push(LanguageRoute());
+    return _appRouter.push(LanguageRoute(language: language));
   }
 
-
-  Future<void> goToSelectLanguageView() {
-    return _appRouter.push(const SelectLanguageRoute());
+ 
+  Future<void> replaceWithSelectLanguageView() {
+    return _appRouter.replace(const SelectLanguageRoute());
   }
+  
   Future<void> goToSettings() {
     return _appRouter.push(const SettingsRoute());
-    
+  }
+
+  Future<void> goToAppStartupLoadingView() {
+    return _appRouter.replace(const AppStartupLoadingRoute());
   }
 
   void popBack() {
     _appRouter.maybePop();
   }
-
-
 }

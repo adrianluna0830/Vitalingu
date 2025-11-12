@@ -1,10 +1,28 @@
-import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/word/english_word.dart';
 import 'package:vitalingu/word/german_word.dart';
 
-void registerLanguages()
-{
-  getIt.registerSingleton<Language>(Language(bcp47Code: "en-US", nativeName: "English", languageWord: EnglishWord()),instanceName: "en-US");
-    getIt.registerSingleton<Language>(Language(bcp47Code: "de-DE", nativeName: "German", languageWord: GermanWord()),instanceName: "de-DE");
+class LanguageRegistry {
+  static final List<Language> _languages = [
+    Language(
+      bcp47Code: "en-US",
+      nativeName: "English",
+      languageWord: EnglishWord()
+    ),
+    Language(
+      bcp47Code: "de-DE",
+      nativeName: "German",
+      languageWord: GermanWord()
+    ),
+  ];
+
+  static List<Language> get languages => List.unmodifiable(_languages);
+  
+  static Language? getLanguageByCode(String bcp47Code) {
+    try {
+      return _languages.firstWhere((lang) => lang.bcp47Code == bcp47Code);
+    } catch (e) {
+      return null;
+    }
+  }
 }

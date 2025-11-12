@@ -50,7 +50,7 @@ abstract class Word {
       "All fields, except the `untranslatedExample` within `examples`, should be in **$nativeLanguage**. "
       "The `untranslatedExample` must be in **$targetLanguage**.";
 
-  return initialPrompt + definitionInstruction + languageInstructions + "\n" + defaultToJson();
+      return "$initialPrompt$definitionInstruction$languageInstructions\n${defaultToJson()}";
 }
 
   List<Widget> getWordWidgets()

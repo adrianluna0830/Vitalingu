@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:vitalingu/word/word.dart';
 import 'dart:convert';
 
@@ -94,21 +93,17 @@ class GermanWordDefinition extends WordDefinition with GermanWordDefinitionMappa
   
   @override
   Widget getDefinitionWidget(String word) {
-    // TODO: implement getDefinitionWidget
     throw UnimplementedError();
   }
 }
 
 @MappableClass()
 class GermanWord extends Word with GermanWordMappable {
-  @override
-  final List<GermanWordDefinition> definitions;
 
   GermanWord({
     super.wordLema,
-    this.definitions = const [GermanWordDefinition(),GermanWordDefinition()],
-  }) : super(definitions: definitions);
-
+    super.definitions = const [GermanWordDefinition(),GermanWordDefinition()],
+  });
 
   @override
   String defaultToJson() {
@@ -120,8 +115,4 @@ class GermanWord extends Word with GermanWordMappable {
     return GermanWordMapper.fromJson(json);
   }
 
-  @override
-  Widget geTwordWidgets() {
-    return Text("German Word Widget for $wordLema");
-  }
 }

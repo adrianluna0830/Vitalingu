@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:vitalingu/word/word.dart';
 import 'dart:convert';
 
@@ -68,20 +67,17 @@ class EnglishWordDefinition extends WordDefinition with EnglishWordDefinitionMap
   
   @override
   Widget getDefinitionWidget(String word) {
-    // TODO: implement getDefinitionWidget
     throw UnimplementedError();
   }
 }
 
 @MappableClass()
 class EnglishWord extends Word with EnglishWordMappable {
-  @override
-  final List<EnglishWordDefinition> definitions;
 
   EnglishWord({
     super.wordLema,
-    this.definitions = const [EnglishWordDefinition()],
-  }) : super(definitions: definitions);
+    super.definitions = const [EnglishWordDefinition()],
+  });
 
   @override
   String defaultToJson() {
@@ -93,8 +89,5 @@ class EnglishWord extends Word with EnglishWordMappable {
     return EnglishWordMapper.fromJson(json);
   }
 
-  @override
-  Widget geTwordWidgets() {
-    return Text("English Word Widget for $wordLema");
-  }
+ 
 }
