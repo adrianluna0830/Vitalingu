@@ -91,6 +91,12 @@ class GermanWordDefinition extends WordDefinition with GermanWordDefinitionMappa
     this.adjectiveInfo = const GermanAdjective(),
     this.adverbInfo = const GermanAdverb()
   });
+  
+  @override
+  Widget getDefinitionWidget(String word) {
+    // TODO: implement getDefinitionWidget
+    throw UnimplementedError();
+  }
 }
 
 @MappableClass()
@@ -115,7 +121,7 @@ class GermanWord extends Word with GermanWordMappable {
   }
 
   @override
-  Widget wordWidget() {
+  Widget geTwordWidgets() {
     return Text("German Word Widget for $wordLema");
   }
 }

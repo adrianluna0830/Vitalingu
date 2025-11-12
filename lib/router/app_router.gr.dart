@@ -88,3 +88,47 @@ class SettingsRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [WordInfoView]
+class WordInfoRoute extends PageRouteInfo<WordInfoRouteArgs> {
+  WordInfoRoute({Key? key, required Word word, List<PageRouteInfo>? children})
+      : super(
+          WordInfoRoute.name,
+          args: WordInfoRouteArgs(key: key, word: word),
+          initialChildren: children,
+        );
+
+  static const String name = 'WordInfoRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<WordInfoRouteArgs>();
+      return WordInfoView(key: args.key, word: args.word);
+    },
+  );
+}
+
+class WordInfoRouteArgs {
+  const WordInfoRouteArgs({this.key, required this.word});
+
+  final Key? key;
+
+  final Word word;
+
+  @override
+  String toString() {
+    return 'WordInfoRouteArgs{key: $key, word: $word}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! WordInfoRouteArgs) return false;
+    return key == other.key && word == other.word;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ word.hashCode;
+}

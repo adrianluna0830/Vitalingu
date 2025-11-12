@@ -542,7 +542,6 @@ class EnglishWordDefinitionMapper
   static EnglishWordDefinitionMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = EnglishWordDefinitionMapper._());
-      WordDefinitionMapper.ensureInitialized();
       WordExampleMapper.ensureInitialized();
       EnglishNounMapper.ensureInitialized();
       EnglishVerbMapper.ensureInitialized();
@@ -575,7 +574,7 @@ class EnglishWordDefinitionMapper
     'partOfSpeech',
     _$partOfSpeech,
     opt: true,
-    def: "Choose one of these: $universalPartsOfSpeech",
+    def: "Part of speech of the word in this specific context",
   );
   static EnglishNoun? _$nounInfo(EnglishWordDefinition v) => v.nounInfo;
   static const Field<EnglishWordDefinition, EnglishNoun> _f$nounInfo = Field(
@@ -696,8 +695,7 @@ abstract class EnglishWordDefinitionCopyWith<
   $In extends EnglishWordDefinition,
   $Out
 >
-    implements WordDefinitionCopyWith<$R, $In, $Out> {
-  @override
+    implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
     $R,
     WordExample,
@@ -709,7 +707,6 @@ abstract class EnglishWordDefinitionCopyWith<
   EnglishAdjectiveCopyWith<$R, EnglishAdjective, EnglishAdjective>?
   get adjectiveInfo;
   EnglishAdverbCopyWith<$R, EnglishAdverb, EnglishAdverb>? get adverbInfo;
-  @override
   $R call({
     List<WordExample>? examples,
     String? meaning,

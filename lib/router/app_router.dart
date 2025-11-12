@@ -4,6 +4,8 @@ import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/views/language_view.dart';
 import 'package:vitalingu/views/select_language_view.dart';
 import 'package:vitalingu/views/settings_view.dart';
+import 'package:vitalingu/views/word_info_view.dart';
+import 'package:vitalingu/word/word.dart';
 
 part 'app_router.gr.dart';
 
@@ -17,6 +19,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: LanguageRoute.page, initial: false),
         AutoRoute(page: SettingsRoute.page),
         AutoRoute(page: SelectLanguageRoute.page, initial: true),
+        AutoRoute(page: WordInfoRoute.page),
 
       ];
 }

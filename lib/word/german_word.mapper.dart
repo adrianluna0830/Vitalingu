@@ -812,7 +812,6 @@ class GermanWordDefinitionMapper extends ClassMapperBase<GermanWordDefinition> {
   static GermanWordDefinitionMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GermanWordDefinitionMapper._());
-      WordDefinitionMapper.ensureInitialized();
       WordExampleMapper.ensureInitialized();
       GermanNounMapper.ensureInitialized();
       GermanVerbMapper.ensureInitialized();
@@ -846,7 +845,7 @@ class GermanWordDefinitionMapper extends ClassMapperBase<GermanWordDefinition> {
     'partOfSpeech',
     _$partOfSpeech,
     opt: true,
-    def: "Choose one of these: $universalPartsOfSpeech",
+    def: "Part of speech of the word in this specific context",
   );
   static GermanNoun? _$nounInfo(GermanWordDefinition v) => v.nounInfo;
   static const Field<GermanWordDefinition, GermanNoun> _f$nounInfo = Field(
@@ -982,8 +981,7 @@ abstract class GermanWordDefinitionCopyWith<
   $In extends GermanWordDefinition,
   $Out
 >
-    implements WordDefinitionCopyWith<$R, $In, $Out> {
-  @override
+    implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
     $R,
     WordExample,
@@ -997,7 +995,6 @@ abstract class GermanWordDefinitionCopyWith<
   GermanAdjectiveCopyWith<$R, GermanAdjective, GermanAdjective>?
   get adjectiveInfo;
   GermanAdverbCopyWith<$R, GermanAdverb, GermanAdverb>? get adverbInfo;
-  @override
   $R call({
     List<WordExample>? examples,
     String? meaning,

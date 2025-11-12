@@ -15,6 +15,7 @@ class EnglishVerb with EnglishVerbMappable {
     this.simplePast = "Simple past form. Example: went, had, was, took, made. Use base form if regular (-ed rule applies).",
     this.pastParticiple = "Past participle form. Example: gone, had, been, taken, made. Use base form if regular (-ed rule applies).",
   });
+
 }
 
 @MappableClass()
@@ -64,6 +65,12 @@ class EnglishWordDefinition extends WordDefinition with EnglishWordDefinitionMap
     this.adjectiveInfo = const EnglishAdjective(),
     this.adverbInfo = const EnglishAdverb(),
   });
+  
+  @override
+  Widget getDefinitionWidget(String word) {
+    // TODO: implement getDefinitionWidget
+    throw UnimplementedError();
+  }
 }
 
 @MappableClass()
@@ -87,7 +94,7 @@ class EnglishWord extends Word with EnglishWordMappable {
   }
 
   @override
-  Widget wordWidget() {
+  Widget geTwordWidgets() {
     return Text("English Word Widget for $wordLema");
   }
 }
