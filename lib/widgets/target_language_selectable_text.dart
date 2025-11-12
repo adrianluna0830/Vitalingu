@@ -30,34 +30,89 @@ class TargetLanguageSelectableTextController {
     return words.length <= 2;
   }
 
-  (String text, int start, int end) expandToInvolvedWords(int start, int end, String fullText) {
+  (String text, int start, int end) expandToWords(int start, int end, String fullText) {
     if (fullText.isEmpty) return ('', 0, 0);
-    final (adjStart, adjEnd) = _skipBoundaries(start, end, fullText);
-    if (adjStart >= adjEnd) return ('', 0, 0);
-    int newStart = adjStart;
-    int newEnd = adjEnd;
-    if (adjStart > 0 && !_isWordBoundary(fullText[adjStart - 1])) {
-      newStart = _findWordStart(adjStart, fullText);
+    final (adjustedStart, adjustedEnd) = _skipBoundaries(start, end, fullText);
+    if (adjustedStart >= adjustedEnd) return ('', 0, 0);
+    
+    int expandedStart = adjustedStart;
+    int expandedEnd = adjustedEnd;
+    
+    if (adjustedStart > 0 && !_isWordBoundary(fullText[adjustedStart - 1])) {
+      expandedStart = _findWordStart(adjustedStart, fullText);
     }
-    if (adjEnd < fullText.length && !_isWordBoundary(fullText[adjEnd])) {
-      newEnd = _findWordEnd(adjEnd, fullText);
+    if (adjustedEnd < fullText.length && !_isWordBoundary(fullText[adjustedEnd])) {
+      expandedEnd = _findWordEnd(adjustedEnd, fullText);
     }
-    return (fullText.substring(newStart, newEnd), newStart, newEnd);
+    
+    return (fullText.substring(expandedStart, expandedEnd), expandedStart, expandedEnd);
   }
 
   (String text, int start, int end) expandToParagraph(int start, int end, String fullText) {
     if (fullText.isEmpty) return ('', 0, 0);
-    int newStart = _findWordStart(start, fullText);
-    int newEnd = _findWordEnd(end, fullText);
-    while (newStart > 0 && fullText[newStart - 1] != '\n') {
-      newStart--;
+    
+    int expandedStart = _findWordStart(start, fullText);
+    int expandedEnd = _findWordEnd(end, fullText);
+    
+    while (expandedStart > 0 && fullText[expandedStart - 1] != '\n') {
+      expandedStart--;
     }
-    while (newEnd < fullText.length && fullText[newEnd] != '\n') {
-      newEnd++;
+    while (expandedEnd < fullText.length && fullText[expandedEnd] != '\n') {
+      expandedEnd++;
     }
-    final (cleanStart, cleanEnd) = _trimBoundaries(newStart, newEnd, fullText);
+    
+    final (cleanStart, cleanEnd) = _trimBoundaries(expandedStart, expandedEnd, fullText);
     if (cleanStart >= cleanEnd) return ('', 0, 0);
+    
     return (fullText.substring(cleanStart, cleanEnd), cleanStart, cleanEnd);
+  }
+
+  String getSentenceWithMarkedSelection(
+    int originalStart,
+    int originalEnd,
+    String fullText,
+    int expandedStart,
+    int expandedEnd,
+  ) {
+    if (expandedStart < 0 || expandedEnd > fullText.length || expandedStart >= expandedEnd) {
+      return fullText;
+    }
+    
+    int sentenceStart = expandedStart;
+    while (sentenceStart > 0) {
+      final char = fullText[sentenceStart - 1];
+      if (char == '.' || char == '!' || char == '?' || char == '\n') {
+        break;
+      }
+      sentenceStart--;
+    }
+    
+    while (sentenceStart < fullText.length && 
+           (fullText[sentenceStart] == ' ' || 
+            fullText[sentenceStart] == '\t' || 
+            fullText[sentenceStart] == '\n')) {
+      sentenceStart++;
+    }
+    
+    int sentenceEnd = expandedEnd;
+    while (sentenceEnd < fullText.length) {
+      final char = fullText[sentenceEnd];
+      if (char == '.' || char == '!' || char == '?' || char == '\n') {
+        sentenceEnd++;
+        break;
+      }
+      sentenceEnd++;
+    }
+    
+    final selectionStartInSentence = expandedStart - sentenceStart;
+    final selectionEndInSentence = expandedEnd - sentenceStart;
+    
+    final sentence = fullText.substring(sentenceStart, sentenceEnd);
+    final before = sentence.substring(0, selectionStartInSentence);
+    final selected = sentence.substring(selectionStartInSentence, selectionEndInSentence);
+    final after = sentence.substring(selectionEndInSentence);
+    
+    return '$before<$selected>$after';
   }
 
   bool _isWordBoundary(String char) {
@@ -68,57 +123,61 @@ class TargetLanguageSelectableTextController {
   }
 
   int _findWordStart(int index, String text) {
-    int pos = index;
-    while (pos > 0 && !_isWordBoundary(text[pos - 1])) {
-      pos--;
+    int position = index;
+    while (position > 0 && !_isWordBoundary(text[position - 1])) {
+      position--;
     }
-    return pos;
+    return position;
   }
 
   int _findWordEnd(int index, String text) {
-    int pos = index;
-    while (pos < text.length && !_isWordBoundary(text[pos])) {
-      pos++;
+    int position = index;
+    while (position < text.length && !_isWordBoundary(text[position])) {
+      position++;
     }
-    return pos;
+    return position;
   }
 
   (int start, int end) _skipBoundaries(int start, int end, String text) {
-    int newStart = start;
-    int newEnd = end;
-    while (newStart < newEnd && _isWordBoundary(text[newStart])) {
-      newStart++;
+    int adjustedStart = start;
+    int adjustedEnd = end;
+    
+    while (adjustedStart < adjustedEnd && _isWordBoundary(text[adjustedStart])) {
+      adjustedStart++;
     }
-    while (newEnd > newStart && _isWordBoundary(text[newEnd - 1])) {
-      newEnd--;
+    while (adjustedEnd > adjustedStart && _isWordBoundary(text[adjustedEnd - 1])) {
+      adjustedEnd--;
     }
-    return (newStart, newEnd);
+    
+    return (adjustedStart, adjustedEnd);
   }
 
   (int start, int end) _trimBoundaries(int start, int end, String text) {
-    int newStart = start;
-    int newEnd = end;
-    while (newStart < text.length && _isWordBoundary(text[newStart])) {
-      newStart++;
+    int trimmedStart = start;
+    int trimmedEnd = end;
+    
+    while (trimmedStart < text.length && _isWordBoundary(text[trimmedStart])) {
+      trimmedStart++;
     }
-    while (newEnd > newStart && _isWordBoundary(text[newEnd - 1])) {
-      newEnd--;
+    while (trimmedEnd > trimmedStart && _isWordBoundary(text[trimmedEnd - 1])) {
+      trimmedEnd--;
     }
-    return (newStart, newEnd);
+    
+    return (trimmedStart, trimmedEnd);
   }
 }
 
 class TargetLanguageSelectableText extends StatefulWidget {
   final String fullText;
-  final void Function(String) translateSelectedTextCallback;
-  final void Function(String) explainSelectedTextDoubtCallback;
-  final void Function(String) getSelectedWord;
+  final void Function(String selection, String selectionContext) onTranslate;
+  final void Function(String selection, String selectionContext) onExplainDoubt;
+  final void Function(String selection, String selectionContext) onWordInfo;
 
   const TargetLanguageSelectableText({
     super.key,
-    required this.translateSelectedTextCallback,
-    required this.explainSelectedTextDoubtCallback,
-    required this.getSelectedWord,
+    required this.onTranslate,
+    required this.onExplainDoubt,
+    required this.onWordInfo,
     required this.fullText,
   });
 
@@ -138,15 +197,18 @@ class _TargetLanguageSelectableTextState extends State<TargetLanguageSelectableT
 
   void _handleSelectionChange(TextSelection selection) {
     if (selection.isCollapsed) return;
+    
     final selectedText = widget.fullText.substring(selection.start, selection.end);
     if (_controller.isEmptyOrPunctuation(selectedText)) {
       _focusNode.unfocus();
       return;
     }
+    
     final isShort = _controller.isShortSelection(selection.start, selection.end, widget.fullText);
     final (expandedText, _, _) = isShort
-        ? _controller.expandToInvolvedWords(selection.start, selection.end, widget.fullText)
+        ? _controller.expandToWords(selection.start, selection.end, widget.fullText)
         : _controller.expandToParagraph(selection.start, selection.end, widget.fullText);
+        
     if (expandedText.isEmpty) {
       _focusNode.unfocus();
     }
@@ -160,13 +222,13 @@ class _TargetLanguageSelectableTextState extends State<TargetLanguageSelectableT
       selectionControls: _CustomTextSelectionControls(
         controller: _controller,
         fullText: widget.fullText,
-        translateCallback: widget.translateSelectedTextCallback,
-        doubtCallback: widget.explainSelectedTextDoubtCallback,
-        wordLemaCallback: widget.getSelectedWord,
+        onTranslate: widget.onTranslate,
+        onExplainDoubt: widget.onExplainDoubt,
+        onWordInfo: widget.onWordInfo,
         focusNode: _focusNode,
       ),
       onSelectionChanged: (selection, cause) {
-          _handleSelectionChange(selection);
+        _handleSelectionChange(selection);
       },
       showCursor: false,
       style: const TextStyle(fontSize: 16),
@@ -177,17 +239,17 @@ class _TargetLanguageSelectableTextState extends State<TargetLanguageSelectableT
 class _CustomTextSelectionControls extends TextSelectionControls {
   final TargetLanguageSelectableTextController controller;
   final String fullText;
-  final void Function(String) translateCallback;
-  final void Function(String) doubtCallback;
-  final void Function(String) wordLemaCallback;
+  final void Function(String, String) onTranslate;
+  final void Function(String, String) onExplainDoubt;
+  final void Function(String, String) onWordInfo;
   final FocusNode focusNode;
 
   _CustomTextSelectionControls({
     required this.controller,
     required this.fullText,
-    required this.translateCallback,
-    required this.doubtCallback,
-    required this.wordLemaCallback,
+    required this.onTranslate,
+    required this.onExplainDoubt,
+    required this.onWordInfo,
     required this.focusNode,
   });
 
@@ -209,27 +271,39 @@ class _CustomTextSelectionControls extends TextSelectionControls {
   ) {
     final selection = delegate.textEditingValue.selection;
     if (selection.isCollapsed) return const SizedBox.shrink();
+    
     final selectedText = fullText.substring(selection.start, selection.end);
     if (controller.isEmptyOrPunctuation(selectedText)) {
       _unfocusAfterFrame();
       return const SizedBox.shrink();
     }
+    
     final isShort = controller.isShortSelection(selection.start, selection.end, fullText);
-    final (expandedText, _, _) = isShort
-        ? controller.expandToInvolvedWords(selection.start, selection.end, fullText)
+    final (expandedText, expandedStart, expandedEnd) = isShort
+        ? controller.expandToWords(selection.start, selection.end, fullText)
         : controller.expandToParagraph(selection.start, selection.end, fullText);
+        
     if (expandedText.isEmpty) {
       _unfocusAfterFrame();
       return const SizedBox.shrink();
     }
+    
+    final sentenceContext = controller.getSentenceWithMarkedSelection(
+      selection.start, 
+      selection.end, 
+      fullText,
+      expandedStart,
+      expandedEnd,
+    );
     final isSingleWord = controller.isSingleWord(expandedText);
+    
     return _CustomToolbar(
       globalEditableRegion: globalEditableRegion,
       selectionMidpoint: selectionMidpoint,
       isSingleWord: isSingleWord,
-      onWordInfo: () => _handleAction(() => wordLemaCallback(expandedText)),
-      onTranslate: () => _handleAction(() => translateCallback(expandedText)),
-      onDoubt: () => _handleAction(() => doubtCallback(expandedText)),
+      onWordInfo: () => _handleAction(() => onWordInfo(expandedText, sentenceContext)),
+      onTranslate: () => _handleAction(() => onTranslate(expandedText, sentenceContext)),
+      onDoubt: () => _handleAction(() => onExplainDoubt(expandedText, sentenceContext)),
     );
   }
 
@@ -276,6 +350,7 @@ class _CustomToolbar extends StatelessWidget {
     final toolbarWidth = isSingleWord ? 320.0 : 220.0;
     final leftPosition = _calculateLeftPosition(screenWidth, toolbarWidth);
     final topPosition = globalEditableRegion.top + selectionMidpoint.dy - 70;
+    
     return Stack(
       children: [
         Positioned(
@@ -287,7 +362,7 @@ class _CustomToolbar extends StatelessWidget {
             color: Colors.transparent,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-              decoration: _toolbarDecoration(),
+              decoration: _buildToolbarDecoration(),
               child: IntrinsicWidth(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -304,22 +379,21 @@ class _CustomToolbar extends StatelessWidget {
   double _calculateLeftPosition(double screenWidth, double toolbarWidth) {
     const padding = 16.0;
     double left = globalEditableRegion.left + selectionMidpoint.dx - (toolbarWidth / 2);
-    if (left < padding) {
-      return padding;
-    }
+    
+    if (left < padding) return padding;
     if (left + toolbarWidth > screenWidth - padding) {
       return screenWidth - toolbarWidth - padding;
     }
     return left;
   }
 
-  BoxDecoration _toolbarDecoration() {
+  BoxDecoration _buildToolbarDecoration() {
     return BoxDecoration(
       color: const Color(0xFF2C2C2E),
       borderRadius: BorderRadius.circular(20),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha:  0.3),
+          color: Colors.black.withValues(alpha: 0.3),
           blurRadius: 12,
           offset: const Offset(0, 4),
         ),
@@ -330,37 +404,28 @@ class _CustomToolbar extends StatelessWidget {
   List<Widget> _buildButtons() {
     final buttons = <Widget>[];
     
-    // Si es una sola palabra, agregar el botón Info primero
     if (isSingleWord) {
-      buttons.add(
-        _ToolbarButton(
-          icon: Icons.info_outline,
-          label: 'Info',
-          onPressed: onWordInfo,
-        ),
-      );
+      buttons.add(_ToolbarButton(
+        icon: Icons.info_outline,
+        label: 'Info',
+        onPressed: onWordInfo,
+      ));
       buttons.add(_buildDivider());
     }
     
-    // Siempre agregar Translate
-    buttons.add(
-      _ToolbarButton(
-        icon: Icons.translate,
-        label: 'Translate',
-        onPressed: onTranslate,
-      ),
-    );
+    buttons.add(_ToolbarButton(
+      icon: Icons.translate,
+      label: 'Translate',
+      onPressed: onTranslate,
+    ));
     
     buttons.add(_buildDivider());
     
-    // Siempre agregar Doubt
-    buttons.add(
-      _ToolbarButton(
-        icon: Icons.help_outline,
-        label: 'Doubt',
-        onPressed: onDoubt,
-      ),
-    );
+    buttons.add(_ToolbarButton(
+      icon: Icons.help_outline,
+      label: 'Doubt',
+      onPressed: onDoubt,
+    ));
     
     return buttons;
   }
@@ -369,7 +434,7 @@ class _CustomToolbar extends StatelessWidget {
     return Container(
       width: 1,
       height: 30,
-      color: Colors.white.withValues(alpha:  0.2),
+      color: Colors.white.withValues(alpha: 0.2),
       margin: const EdgeInsets.symmetric(horizontal: 4),
     );
   }

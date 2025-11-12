@@ -30,10 +30,20 @@ class _LanguageViewState extends State<LanguageView> {
       appBar: AppBar(),
       body: Center(
         child: TargetLanguageSelectableText(
-          fullText: 'hola como estas',
-          translateSelectedTextCallback: (String expandedSelection) {print( expandedSelection);},
-          explainSelectedTextDoubtCallback: (String expandedSelection) { print( expandedSelection);},
-          getSelectedWord: (String expandedSelection) { print( expandedSelection); },
+          fullText: """
+La inteligencia artificial ha revolucionado el mundo moderno de maneras inimaginables. Desde asistentes virtuales hasta vehículos autónomos, la tecnología continúa avanzando a pasos agigantados. Los científicos trabajan incansablemente para mejorar estos sistemas.
+
+En el campo de la medicina, los algoritmos de aprendizaje automático pueden detectar enfermedades con una precisión sorprendente. Esto ha salvado innumerables vidas en todo el mundo. Los médicos ahora tienen herramientas más poderosas que nunca.
+
+¿Qué nos depara el futuro? Nadie lo sabe con certeza. Sin embargo, una cosa es clara: la tecnología seguirá transformando nuestras vidas. Debemos adaptarnos y aprender continuamente para mantenernos relevantes en este mundo cambiante.
+
+La educación también está experimentando una revolución digital. Las plataformas de aprendizaje en línea permiten a estudiantes de todo el mundo acceder a conocimientos de alta calidad. ¡Es una época emocionante para estar vivo! La democratización del conocimiento es fundamental.
+
+Por último, la sostenibilidad se ha convertido en una prioridad global. Las energías renovables están reemplazando gradualmente a los combustibles fósiles. Empresas innovadoras desarrollan soluciones creativas para combatir el cambio climático. Nuestro planeta merece ser protegido para las futuras generaciones.
+""",
+          onTranslate: (String expandedSelection, String additionalParam) { print('$expandedSelection, $additionalParam'); },
+          onExplainDoubt: (String expandedSelection, String additionalParam) { print('$expandedSelection, $additionalParam'); },
+          onWordInfo: (String expandedSelection, String additionalParam) { print('$expandedSelection, $additionalParam'); },
         ),
       ),
     );
