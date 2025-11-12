@@ -18,14 +18,14 @@ import 'package:vitalingu/database/sembast_database.dart' as _i500;
 import 'package:vitalingu/di/modules.dart' as _i938;
 import 'package:vitalingu/interfaces/database_interface.dart' as _i475;
 import 'package:vitalingu/language/language.dart' as _i473;
-import 'package:vitalingu/services/gemini_prompt_service.dart' as _i657;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
-import 'package:vitalingu/services/pixabay_service.dart' as _i626;
 import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart'
     as _i256;
 import 'package:vitalingu/viewmodels/language_viewmodel.dart' as _i621;
 import 'package:vitalingu/viewmodels/select_language_view_models.dart' as _i459;
 import 'package:vitalingu/viewmodels/settings_viewmodel.dart' as _i543;
+import 'package:vitalingu/widgets/target_language_selectable_text.dart'
+    as _i521;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -64,14 +64,9 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i185.AppSettingsDatabase>(() => _i185.AppSettingsDatabase(
         gh<_i475.DatabaseInterface<String, String>>()));
-    await gh.lazySingletonAsync<_i657.GeminiPromptService>(
-      () => databaseModule.geminiPromptService(gh<_i185.AppSettingsDatabase>()),
-      preResolve: true,
-    );
-    await gh.lazySingletonAsync<_i626.PixabayService>(
-      () => databaseModule.pixabayService(gh<_i185.AppSettingsDatabase>()),
-      preResolve: true,
-    );
+    gh.factory<_i521.TargetLanguageSelectableTextController>(() =>
+        _i521.TargetLanguageSelectableTextController(
+            language: gh<_i473.Language>()));
     gh.factory<_i543.SettingsViewModel>(() => _i543.SettingsViewModel(
           gh<_i185.AppSettingsDatabase>(),
           navigationService: gh<_i19.NavigationService>(),
