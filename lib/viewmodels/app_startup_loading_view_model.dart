@@ -1,16 +1,16 @@
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/database/app_settings_database.dart';
-import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/app_settings.dart';
-import 'package:vitalingu/services/gemini_prompt_service.dart';
-import 'package:vitalingu/services/pixabay_service.dart';
 import 'package:vitalingu/viewmodels/view_model_base.dart';
 
 @injectable
 class AppStartupLoadingViewModel extends ViewModelBase {
   final AppSettingsDatabase appSettingsDatabase;
-  AppStartupLoadingViewModel(
-      {required this.appSettingsDatabase, required super.navigationService});
+  
+  AppStartupLoadingViewModel({
+    required this.appSettingsDatabase,
+    required super.navigationService,
+    required super.scopeManagerService,
+  });
 
   Future<void> initializeApp() async {
     final hasSettings = await appSettingsDatabase.hasAppSettings();
@@ -27,20 +27,7 @@ class AppStartupLoadingViewModel extends ViewModelBase {
       return;
     }
 
-    if (getIt.hasScope('user-config-session')) {
-      await getIt.popScope();
-    }
-
-    await getIt.pushNewScopeAsync(
-      scopeName: "user-config-session",
-      init: (getIt) async {
-        getIt.registerSingleton<AppSettings>(appSettings);
-        getIt.registerSingleton<GeminiPromptService>(
-            GeminiPromptService(appSettings.geminiApiKey));
-        getIt.registerSingleton<PixabayService>(
-            PixabayService(appSettings.pixabayApiKey));
-      },
-    );
+    await scopeManagerService.createUserConfigScope(appSettings);
 
     await navigationService.replaceWithSelectLanguageView();
   }

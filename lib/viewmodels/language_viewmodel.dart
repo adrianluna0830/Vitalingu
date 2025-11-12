@@ -9,5 +9,6 @@ class LanguageViewModel extends ViewModelBase {
   LanguageViewModel({
     required this.language,
     required super.navigationService,
+    required super.scopeManagerService,
   });
 }

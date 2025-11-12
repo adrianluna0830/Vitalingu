@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/database/app_settings_database.dart';
-import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/models/app_settings.dart';
 import 'package:vitalingu/viewmodels/view_model_base.dart';
@@ -24,7 +23,11 @@ class SettingsViewModel extends ViewModelBase {
   
   final selectedNativeLanguage = signal<Language?>(null);
 
-  SettingsViewModel(this._database, {required super.navigationService}) {
+  SettingsViewModel(
+    this._database, {
+    required super.navigationService,
+    required super.scopeManagerService,
+  }) {
     _loadSettings();
   }
 
@@ -104,9 +107,7 @@ class SettingsViewModel extends ViewModelBase {
   }
 
   Future<void> saveAndNavigate() async {
-    if (getIt.hasScope('user-config-session')) {
-      await getIt.popScope();
-    }
+    await scopeManagerService.disposeUserConfigScope();
     await navigationService.replaceWithSelectLanguageView();
   }
 }
