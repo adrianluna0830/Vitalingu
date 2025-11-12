@@ -5,6 +5,6 @@ import 'package:vitalingu/viewmodels/view_model_base.dart';
 @injectable
 class LanguageViewModel  extends ViewModelBase {
   final Language language;
-  LanguageViewModel({@factoryParam required this.language, required super.navigationService});
+  LanguageViewModel({required this.language, required super.navigationService});
 
 }

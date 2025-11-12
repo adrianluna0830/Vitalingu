@@ -14,7 +14,7 @@ class NavigationService {
   AppRouter get router => _appRouter;
 
   Future<void> goToLanguageView(Language language) {
-    return _appRouter.push(LanguageRoute(language: language));
+    return _appRouter.push(LanguageRoute());
   }
 
 

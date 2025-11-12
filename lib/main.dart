@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitalingu/injection.dart';
+import 'package:vitalingu/register_languages.dart';
 import 'package:vitalingu/router/app_router.dart';
 import 'package:vitalingu/services/navigation_service.dart';
 
@@ -7,7 +8,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   await configureDependencies();
-  
+  registerLanguages();
   runApp(const MyApp());
 }
 

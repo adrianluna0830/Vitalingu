@@ -46,14 +46,6 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i19.NavigationService>(() => _i19.NavigationService());
-    gh.factoryParam<_i621.LanguageViewModel, _i473.Language, dynamic>((
-      language,
-      _,
-    ) =>
-        _i621.LanguageViewModel(
-          language: language,
-          navigationService: gh<_i19.NavigationService>(),
-        ));
     gh.factory<_i459.SelectLanguageViewModel>(() =>
         _i459.SelectLanguageViewModel(
             navigationService: gh<_i19.NavigationService>()));
@@ -64,6 +56,10 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.singleton<_i500.SembastDatabase>(
         () => databaseModule.wordDatabase(gh<_i156.Database>()));
+    gh.factory<_i621.LanguageViewModel>(() => _i621.LanguageViewModel(
+          language: gh<_i473.Language>(),
+          navigationService: gh<_i19.NavigationService>(),
+        ));
     gh.factory<_i185.AppSettingsDatabase>(() => _i185.AppSettingsDatabase(
         gh<_i475.DatabaseInterface<String, String>>()));
     await gh.lazySingletonAsync<_i657.GeminiPromptService>(

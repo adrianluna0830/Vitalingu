@@ -17,11 +17,11 @@ class SelectLanguageView extends StatelessWidget {
             icon: const Icon(Icons.settings),
           ),
       ],),
-      body: ListView.builder(itemCount: viewModel.languages.length, itemBuilder: (context, index) {
+      body: ListView.builder(itemCount: viewModel.availableLanguages.length, itemBuilder: (context, index) {
         return ListTile(
           title: ElevatedButton(
-            onPressed: () {viewModel.selectLanguage(viewModel.languages[index]);}, 
-          child: Text(viewModel.languages[index].nativeName))
+            onPressed: () {viewModel.selectLanguage(viewModel.availableLanguages[index]);}, 
+          child: Text(viewModel.availableLanguages[index].nativeName))
         );
       },),
     );
