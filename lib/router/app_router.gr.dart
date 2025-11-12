@@ -11,6 +11,22 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [AppStartupLoadingView]
+class AppStartupLoadingRoute extends PageRouteInfo<void> {
+  const AppStartupLoadingRoute({List<PageRouteInfo>? children})
+      : super(AppStartupLoadingRoute.name, initialChildren: children);
+
+  static const String name = 'AppStartupLoadingRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const AppStartupLoadingView();
+    },
+  );
+}
+
+/// generated route for
 /// [LanguageView]
 class LanguageRoute extends PageRouteInfo<void> {
   const LanguageRoute({List<PageRouteInfo>? children})

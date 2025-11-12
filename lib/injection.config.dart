@@ -21,6 +21,8 @@ import 'package:vitalingu/language/language.dart' as _i473;
 import 'package:vitalingu/services/gemini_prompt_service.dart' as _i657;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
 import 'package:vitalingu/services/pixabay_service.dart' as _i626;
+import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart'
+    as _i256;
 import 'package:vitalingu/viewmodels/language_viewmodel.dart' as _i621;
 import 'package:vitalingu/viewmodels/select_language_view_models.dart' as _i459;
 import 'package:vitalingu/viewmodels/settings_viewmodel.dart' as _i543;
@@ -74,6 +76,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i185.AppSettingsDatabase>(),
           navigationService: gh<_i19.NavigationService>(),
         ));
+    gh.factory<_i256.AppStartupLoadingViewModel>(
+        () => _i256.AppStartupLoadingViewModel(
+              appSettingsDatabase: gh<_i185.AppSettingsDatabase>(),
+              navigationService: gh<_i19.NavigationService>(),
+            ));
     return this;
   }
 }
