@@ -273,7 +273,7 @@ class _CustomToolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final toolbarWidth = isSingleWord ? 100.0 : 220.0;
+    final toolbarWidth = isSingleWord ? 320.0 : 220.0;
     final leftPosition = _calculateLeftPosition(screenWidth, toolbarWidth);
     final topPosition = globalEditableRegion.top + selectionMidpoint.dy - 70;
     return Stack(
@@ -328,28 +328,41 @@ class _CustomToolbar extends StatelessWidget {
   }
 
   List<Widget> _buildButtons() {
+    final buttons = <Widget>[];
+    
+    // Si es una sola palabra, agregar el botón Info primero
     if (isSingleWord) {
-      return [
+      buttons.add(
         _ToolbarButton(
           icon: Icons.info_outline,
           label: 'Info',
           onPressed: onWordInfo,
         ),
-      ];
+      );
+      buttons.add(_buildDivider());
     }
-    return [
+    
+    // Siempre agregar Translate
+    buttons.add(
       _ToolbarButton(
         icon: Icons.translate,
         label: 'Translate',
         onPressed: onTranslate,
       ),
-      _buildDivider(),
+    );
+    
+    buttons.add(_buildDivider());
+    
+    // Siempre agregar Doubt
+    buttons.add(
       _ToolbarButton(
         icon: Icons.help_outline,
         label: 'Doubt',
         onPressed: onDoubt,
       ),
-    ];
+    );
+    
+    return buttons;
   }
 
   Widget _buildDivider() {
