@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/database/app_settings_database.dart';
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/models/app_settings.dart';
+import 'package:vitalingu/services/app_settings_service.dart';
 import 'package:vitalingu/viewmodels/view_model_base.dart';
 import 'package:vitalingu/register_languages.dart';
 
 @injectable
 class SettingsViewModel extends ViewModelBase {
-  final AppSettingsDatabase _database;
+  final AppSettingsService _appSettingsService;
 
   final geminiApiKeyController = TextEditingController();
   final pixabayApiKeyController = TextEditingController();
@@ -24,7 +24,7 @@ class SettingsViewModel extends ViewModelBase {
   final selectedNativeLanguage = signal<Language?>(null);
 
   SettingsViewModel(
-    this._database, {
+    this._appSettingsService, {
     required super.navigationService,
     required super.scopeManagerService,
   }) {
@@ -34,7 +34,7 @@ class SettingsViewModel extends ViewModelBase {
   Future<void> _loadSettings() async {
     isLoading.value = true;
     try {
-      final settings = await _database.getAppSettings();
+      final settings = await _appSettingsService.getSettings();
       if (settings != null) {
         geminiApiKeyController.text = settings.geminiApiKey;
         pixabayApiKeyController.text = settings.pixabayApiKey;
@@ -79,7 +79,7 @@ class SettingsViewModel extends ViewModelBase {
         nativeLanguage: selectedNativeLanguage.value!,
       );
 
-      await _database.saveAppSettings(settings);
+      await _appSettingsService.saveSettings(settings);
       saveSuccess.value = true;
     } catch (e) {
       saveSuccess.value = false;

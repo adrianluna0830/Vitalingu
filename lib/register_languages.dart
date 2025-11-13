@@ -1,28 +1,31 @@
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/word/english_word.dart';
 import 'package:vitalingu/word/german_word.dart';
+import 'package:vitalingu/word/word.dart';
 
 class LanguageRegistry {
-  static final List<Language> _languages = [
-    Language(
+  static final Map<Language, Word> _languageWordMap = {
+    const Language(
       bcp47Code: "en-US",
       nativeName: "English",
-      languageWord: EnglishWord()
-    ),
-    Language(
+    ): EnglishWord(),
+    const Language(
       bcp47Code: "de-DE",
       nativeName: "German",
-      languageWord: GermanWord()
-    ),
-  ];
+    ): GermanWord(),
+  };
 
-  static List<Language> get languages => List.unmodifiable(_languages);
+  static List<Language> get languages => List.unmodifiable(_languageWordMap.keys);
   
   static Language? getLanguageByCode(String bcp47Code) {
     try {
-      return _languages.firstWhere((lang) => lang.bcp47Code == bcp47Code);
+      return _languageWordMap.keys.firstWhere((lang) => lang.bcp47Code == bcp47Code);
     } catch (e) {
       return null;
     }
+  }
+
+  static Word? getWordForLanguage(Language language) {
+    return _languageWordMap[language];
   }
 }

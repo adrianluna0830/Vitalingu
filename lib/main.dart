@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:vitalingu/hive/hive_registrar.g.dart';
+import 'package:hive_ce/hive.dart';
+import 'package:vitalingu/hive/hive_registrar.g.dart'; // Generado automáticamente
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/services/navigation_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  Hive
+    ..init('.') 
+    ..registerAdapters();
+
+  await configureDependencies();
   
-  try {
-    await Hive.initFlutter();
-    Hive.registerAdapters();
-    await configureDependencies();
-    runApp(const MyApp());
-  } catch (e) {
-    rethrow;
-  }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
