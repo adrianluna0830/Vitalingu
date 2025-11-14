@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vitalingu/injection.dart';
+import 'package:vitalingu/models/language_session_settings_persistent.dart';
 import 'package:vitalingu/viewmodels/select_language_view_models.dart';
 
 @RoutePage()
@@ -87,38 +88,9 @@ class LanguageCard extends StatelessWidget {
   }
 }
 
-class LanguageSessionSettingsPersistent {
-  final bool imagesEnabled;
-  final bool examplesUntranslatedSpeechEnabled;
-  final bool examplesTranslatedSpeechEnabled;
-  final bool dynamicGenerativeFrontcards;
-  final int numberOfExamples;
-  final String maleVoiceCode;
-  final String femaleVoiceCode;
-
-  const LanguageSessionSettingsPersistent({
-    required this.examplesTranslatedSpeechEnabled,
-    required this.imagesEnabled,
-    required this.examplesUntranslatedSpeechEnabled,
-    required this.dynamicGenerativeFrontcards,
-    required this.numberOfExamples,
-    required this.maleVoiceCode,
-    required this.femaleVoiceCode,
-  });
-
-  @override
-  String toString() {
-    return 'LanguageSessionSettings(images: $imagesEnabled, '
-        'examplesUntranslatedSpeech: $examplesUntranslatedSpeechEnabled, '
-        'examplesTranslatedSpeech: $examplesTranslatedSpeechEnabled, '
-        'dynamicFrontcards: $dynamicGenerativeFrontcards, examples: $numberOfExamples, '
-        'maleVoice: $maleVoiceCode, femaleVoice: $femaleVoiceCode)';
-  }
-}
-
 class LanguageSettingsSheet extends StatefulWidget {
   final String languageName;
-  final Function(LanguageSessionSettingsPersistent) onSave;
+  final Function(LanguageSessionSettings) onSave;
 
   const LanguageSettingsSheet({
     super.key,
@@ -129,7 +101,7 @@ class LanguageSettingsSheet extends StatefulWidget {
   static void show(
     BuildContext context,
     String languageName, {
-    required Function(LanguageSessionSettingsPersistent) onSave,
+    required Function(LanguageSessionSettings) onSave,
   }) {
     showModalBottomSheet(
       context: context,
@@ -272,7 +244,7 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
             ),
             ElevatedButton(
               onPressed: () {
-                final settings = LanguageSessionSettingsPersistent(
+                final settings = LanguageSessionSettings(
                   imagesEnabled: imagesEnabled,
                   examplesUntranslatedSpeechEnabled: examplesUntranslatedSpeechEnabled,
                   examplesTranslatedSpeechEnabled: examplesTranslatedSpeechEnabled,
