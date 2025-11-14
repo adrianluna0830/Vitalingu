@@ -16,7 +16,7 @@ class NavigationService {
 
  
   Future<void> replaceWithSelectLanguageView() {
-    return _appRouter.replace(const SelectLanguageRoute());
+    return _appRouter.replaceAll([const SelectLanguageRoute()]);
   }
   
   Future<void> goToSettings() {

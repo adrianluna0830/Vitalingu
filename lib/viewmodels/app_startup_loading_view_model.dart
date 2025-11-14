@@ -20,7 +20,7 @@ class AppStartupLoadingViewModel extends ViewModelBase {
       return;
     }
 
-    await scopeManagerService.createUserConfigScope(appSettings);
+    await scopeManagerService.createUserConfigScope();
 
     await navigationService.replaceWithSelectLanguageView();
   }

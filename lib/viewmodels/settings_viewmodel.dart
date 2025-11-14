@@ -107,7 +107,7 @@ class SettingsViewModel extends ViewModelBase {
   }
 
   Future<void> saveAndNavigate() async {
-    await scopeManagerService.disposeUserConfigScope();
+    await scopeManagerService.createUserConfigScope();
     await navigationService.replaceWithSelectLanguageView();
   }
 }
