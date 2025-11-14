@@ -24,6 +24,7 @@ import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart'
     as _i256;
 import 'package:vitalingu/viewmodels/language_view_model.dart' as _i1052;
 import 'package:vitalingu/viewmodels/select_language_view_model.dart' as _i914;
+import 'package:vitalingu/viewmodels/select_language_view_models.dart' as _i459;
 import 'package:vitalingu/viewmodels/settings_view_model.dart' as _i587;
 import 'package:vitalingu/widgets/target_language_selectable_text.dart'
     as _i521;
@@ -80,6 +81,12 @@ extension GetItInjectableX on _i174.GetIt {
           navigationService: gh<_i19.NavigationService>(),
           scopeManagerService: gh<_i830.ScopeManagerService>(),
         ));
+    gh.factory<_i459.SelectLanguageViewModel>(
+        () => _i459.SelectLanguageViewModel(
+              languageSessionService: gh<_i1009.LanguageSettingsService>(),
+              navigationService: gh<_i19.NavigationService>(),
+              scopeManagerService: gh<_i830.ScopeManagerService>(),
+            ));
     return this;
   }
 }
