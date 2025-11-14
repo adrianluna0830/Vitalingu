@@ -58,6 +58,13 @@ extension GetItInjectableX on _i174.GetIt {
         _i1009.LanguageSettingsService(gh<_i490.LanguageSettingsDatabase>()));
     gh.singleton<_i19.NavigationService>(
         () => _i19.NavigationService(gh<_i5.AppRouter>()));
+    gh.factory<_i914.SelectLanguageViewModel>(
+        () => _i914.SelectLanguageViewModel(
+              languageSessionService: gh<_i1009.LanguageSettingsService>(),
+              appSettingsService: gh<_i621.AppSettingsService>(),
+              navigationService: gh<_i19.NavigationService>(),
+              scopeManagerService: gh<_i830.ScopeManagerService>(),
+            ));
     gh.factory<_i256.AppStartupLoadingViewModel>(
         () => _i256.AppStartupLoadingViewModel(
               appSettingsService: gh<_i621.AppSettingsService>(),
@@ -73,12 +80,6 @@ extension GetItInjectableX on _i174.GetIt {
           navigationService: gh<_i19.NavigationService>(),
           scopeManagerService: gh<_i830.ScopeManagerService>(),
         ));
-    gh.factory<_i914.SelectLanguageViewModel>(
-        () => _i914.SelectLanguageViewModel(
-              languageSessionService: gh<_i1009.LanguageSettingsService>(),
-              navigationService: gh<_i19.NavigationService>(),
-              scopeManagerService: gh<_i830.ScopeManagerService>(),
-            ));
     return this;
   }
 }

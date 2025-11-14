@@ -9,17 +9,19 @@ import 'package:vitalingu/register_languages.dart';
 @injectable
 class SelectLanguageViewModel extends ViewModelBase {
   final LanguageSettingsService _languageSessionService;
-
+  final AppSettingsService _appSettingsService;
   List<Language> get availableLanguages => LanguageRegistry.languages;
 
   SelectLanguageViewModel({
     required LanguageSettingsService languageSessionService,
+    required AppSettingsService appSettingsService,
     required super.navigationService,
     required super.scopeManagerService,
-  }) : _languageSessionService = languageSessionService;
+  }) : _languageSessionService = languageSessionService,
+       _appSettingsService = appSettingsService;
 
   Future<void> selectLanguage(Language targetLanguage) async {
-    var settings = await getIt<AppSettingsService>().getSettings();
+    final settings = await _appSettingsService.getSettings();
     if (settings == null) {
       throw Exception('App settings not found. Cannot proceed to language session.');
     }
@@ -28,8 +30,9 @@ class SelectLanguageViewModel extends ViewModelBase {
     final nativeLanguage = settings.nativeLanguage;
     await scopeManagerService.createLanguageScope(nativeLanguage, targetLanguage, languageSettings, LanguageRegistry.getWordForLanguage( targetLanguage)!);
 
-    await navigationService.goToLanguageView(targetLanguage);
+    await navigationService.goToLanguageView();
   }
+
 
   void goToSettings() {
     navigationService.goToSettings();
