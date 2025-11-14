@@ -1,15 +1,15 @@
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/models/language_settings.dart';
-import 'package:vitalingu/word/word.dart';
+import 'package:vitalingu/services/word_prompts_service.dart';
 
 class LanguageSessionScopeSettings {
   final Language targetLanguage;
   final LanguageSettings languageSettings;
-  final Word languageWord;
+  final WordPromptsService wordPromptsService;
 
   const LanguageSessionScopeSettings({
     required this.targetLanguage,
     required this.languageSettings,
-    required this.languageWord,
+    required this.wordPromptsService,
   });
 }

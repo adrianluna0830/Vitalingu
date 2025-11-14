@@ -16,8 +16,8 @@ abstract class DatabaseModule {
 
   @preResolve
   @singleton
-  Future<LanguageSessionSettingsDatabase> provideLanguageSessionSettingsDatabase() async {
+  Future<LanguageSettingsDatabase> provideLanguageSettingsDatabase() async {
     final hiveDatabase = await HiveDatabase.create<String, LanguageSettings>();
-    return LanguageSessionSettingsDatabase(database: hiveDatabase);
+    return LanguageSettingsDatabase(database: hiveDatabase);
   }
 }

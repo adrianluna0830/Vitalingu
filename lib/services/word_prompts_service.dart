@@ -2,6 +2,7 @@ import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/services/gemini_prompt_service.dart';
 import 'package:vitalingu/word/word.dart';
 
+
 class WordPromptsService {
   final Language nativeLanguage;
   final Language targetLanguage;

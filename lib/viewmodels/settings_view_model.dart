@@ -55,22 +55,11 @@ class SettingsViewModel extends ViewModelBase {
     }
   }
 
-  void setNativeLanguage(Language? language) {
-    if (language != null) {
-      selectedNativeLanguage.value = language;
-    }
-  }
-
-  Future<void> saveSettings() async {
+  Future<AppSettings?> _saveSettings() async {
     isLoading.value = true;
     saveSuccess.value = null;
 
     try {
-      if (selectedNativeLanguage.value == null) {
-        saveSuccess.value = false;
-        return;
-      }
-
       final settings = AppSettings(
         geminiApiKey: geminiApiKeyController.text.trim(),
         pixabayApiKey: pixabayApiKeyController.text.trim(),
@@ -80,18 +69,34 @@ class SettingsViewModel extends ViewModelBase {
       );
 
       await _appSettingsService.saveSettings(settings);
+      await scopeManagerService.createUserConfigScope( settings.geminiApiKey, settings.pixabayApiKey);
+
       saveSuccess.value = true;
+      return settings;
     } catch (e) {
       saveSuccess.value = false;
     } finally {
       isLoading.value = false;
+
+    }
+    return null;
+  }
+
+    Future<void> _goToSelectLanguageView() async {
+    await navigationService.replaceWithSelectLanguageView();
+  }
+
+  void setNativeLanguage(Language? language) {
+    if (language != null) {
+      selectedNativeLanguage.value = language;
     }
   }
 
+
   Future<void> onSavePressed() async {
-    await saveSettings();
-    if (saveSuccess.value == true) {
-      await saveAndNavigate();
+    AppSettings? settings = await _saveSettings();
+    if (settings != null) {
+      await _goToSelectLanguageView();
     }
   }
 
@@ -106,8 +111,4 @@ class SettingsViewModel extends ViewModelBase {
     navigationService.popBack();
   }
 
-  Future<void> saveAndNavigate() async {
-    await scopeManagerService.createUserConfigScope();
-    await navigationService.replaceWithSelectLanguageView();
-  }
 }

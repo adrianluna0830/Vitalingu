@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language_session_settings_persistent.dart';
-import 'package:vitalingu/viewmodels/select_language_view_models.dart';
+import 'package:vitalingu/models/language_settings.dart';
+import 'package:vitalingu/viewmodels/select_language_view_model.dart';
 
 @RoutePage()
 class SelectLanguageView extends StatefulWidget {

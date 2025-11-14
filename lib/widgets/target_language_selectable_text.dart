@@ -2,13 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/language/language.dart';
 
 @injectable
 class TargetLanguageSelectableTextController {
-  final Language language;
 
-  TargetLanguageSelectableTextController({required this.language});
+
+  TargetLanguageSelectableTextController();
 
   bool isEmptyOrPunctuation(String text) {
     if (text.trim().isEmpty) return true;

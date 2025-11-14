@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/viewmodels/settings_viewmodel.dart';
+import 'package:vitalingu/viewmodels/settings_view_model.dart';
 
 @RoutePage()
 class SettingsView extends StatefulWidget {

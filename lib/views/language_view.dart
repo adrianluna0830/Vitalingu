@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/language/language.dart';
-import 'package:vitalingu/viewmodels/language_viewmodel.dart';
+import 'package:vitalingu/viewmodels/language_view_model.dart';
 import 'package:vitalingu/widgets/target_language_selectable_text.dart';
 
 @RoutePage()
@@ -16,15 +16,8 @@ class LanguageView extends StatefulWidget {
 }
 
 class _LanguageViewState extends State<LanguageView> {
-  late final LanguageViewModel viewModel;
+   final LanguageViewModel viewModel = getIt<LanguageViewModel>();
 
-  @override
-  void initState() {
-    super.initState();
-    viewModel = getIt<LanguageViewModel>();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
