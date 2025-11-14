@@ -90,7 +90,7 @@ class LanguageCard extends StatelessWidget {
 
 class LanguageSettingsSheet extends StatefulWidget {
   final String languageName;
-  final Function(LanguageSessionSettings) onSave;
+  final Function(LanguageSettings) onSave;
 
   const LanguageSettingsSheet({
     super.key,
@@ -101,7 +101,7 @@ class LanguageSettingsSheet extends StatefulWidget {
   static void show(
     BuildContext context,
     String languageName, {
-    required Function(LanguageSessionSettings) onSave,
+    required Function(LanguageSettings) onSave,
   }) {
     showModalBottomSheet(
       context: context,
@@ -244,7 +244,7 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
             ),
             ElevatedButton(
               onPressed: () {
-                final settings = LanguageSessionSettings(
+                final settings = LanguageSettings(
                   imagesEnabled: imagesEnabled,
                   examplesUntranslatedSpeechEnabled: examplesUntranslatedSpeechEnabled,
                   examplesTranslatedSpeechEnabled: examplesTranslatedSpeechEnabled,

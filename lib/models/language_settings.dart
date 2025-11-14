@@ -1,4 +1,4 @@
-class LanguageSessionSettings {
+class LanguageSettings {
   final bool imagesEnabled;
   final bool examplesUntranslatedSpeechEnabled;
   final bool examplesTranslatedSpeechEnabled;
@@ -7,7 +7,7 @@ class LanguageSessionSettings {
   final String maleVoiceCode;
   final String femaleVoiceCode;
 
-  const LanguageSessionSettings({ required this.examplesTranslatedSpeechEnabled,
+  const LanguageSettings({ required this.examplesTranslatedSpeechEnabled,
     required this.imagesEnabled,
     required this.examplesUntranslatedSpeechEnabled,
     required this.dynamicGenerativeFrontcards,

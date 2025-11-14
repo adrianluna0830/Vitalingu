@@ -9,7 +9,7 @@ extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
     registerAdapter(AppSettingsAdapter());
     registerAdapter(LanguageAdapter());
-    registerAdapter(LanguageSessionSettingsAdapter());
+    registerAdapter(LanguageSettingsAdapter());
   }
 }
 
@@ -17,6 +17,6 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
     registerAdapter(AppSettingsAdapter());
     registerAdapter(LanguageAdapter());
-    registerAdapter(LanguageSessionSettingsAdapter());
+    registerAdapter(LanguageSettingsAdapter());
   }
 }

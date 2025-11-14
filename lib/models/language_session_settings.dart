@@ -1,10 +1,10 @@
 import 'package:vitalingu/language/language.dart';
-import 'package:vitalingu/models/language_session_settings_persistent.dart';
+import 'package:vitalingu/models/language_settings.dart';
 import 'package:vitalingu/word/word.dart';
 
 class LanguageSessionScopeSettings {
   final Language targetLanguage;
-  final LanguageSessionSettings languageSettings;
+  final LanguageSettings languageSettings;
   final Word languageWord;
 
   const LanguageSessionScopeSettings({

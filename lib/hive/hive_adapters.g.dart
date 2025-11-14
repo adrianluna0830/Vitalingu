@@ -43,59 +43,6 @@ class LanguageAdapter extends TypeAdapter<Language> {
           typeId == other.typeId;
 }
 
-class LanguageSessionSettingsAdapter
-    extends TypeAdapter<LanguageSessionSettings> {
-  @override
-  final typeId = 7;
-
-  @override
-  LanguageSessionSettings read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return LanguageSessionSettings(
-      examplesTranslatedSpeechEnabled: fields[2] as bool,
-      imagesEnabled: fields[0] as bool,
-      examplesUntranslatedSpeechEnabled: fields[1] as bool,
-      dynamicGenerativeFrontcards: fields[3] as bool,
-      numberOfExamples: (fields[4] as num).toInt(),
-      maleVoiceCode: fields[5] as String,
-      femaleVoiceCode: fields[6] as String,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, LanguageSessionSettings obj) {
-    writer
-      ..writeByte(7)
-      ..writeByte(0)
-      ..write(obj.imagesEnabled)
-      ..writeByte(1)
-      ..write(obj.examplesUntranslatedSpeechEnabled)
-      ..writeByte(2)
-      ..write(obj.examplesTranslatedSpeechEnabled)
-      ..writeByte(3)
-      ..write(obj.dynamicGenerativeFrontcards)
-      ..writeByte(4)
-      ..write(obj.numberOfExamples)
-      ..writeByte(5)
-      ..write(obj.maleVoiceCode)
-      ..writeByte(6)
-      ..write(obj.femaleVoiceCode);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is LanguageSessionSettingsAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
 class AppSettingsAdapter extends TypeAdapter<AppSettings> {
   @override
   final typeId = 8;
@@ -138,6 +85,58 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is AppSettingsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class LanguageSettingsAdapter extends TypeAdapter<LanguageSettings> {
+  @override
+  final typeId = 9;
+
+  @override
+  LanguageSettings read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return LanguageSettings(
+      examplesTranslatedSpeechEnabled: fields[2] as bool,
+      imagesEnabled: fields[0] as bool,
+      examplesUntranslatedSpeechEnabled: fields[1] as bool,
+      dynamicGenerativeFrontcards: fields[3] as bool,
+      numberOfExamples: (fields[4] as num).toInt(),
+      maleVoiceCode: fields[5] as String,
+      femaleVoiceCode: fields[6] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, LanguageSettings obj) {
+    writer
+      ..writeByte(7)
+      ..writeByte(0)
+      ..write(obj.imagesEnabled)
+      ..writeByte(1)
+      ..write(obj.examplesUntranslatedSpeechEnabled)
+      ..writeByte(2)
+      ..write(obj.examplesTranslatedSpeechEnabled)
+      ..writeByte(3)
+      ..write(obj.dynamicGenerativeFrontcards)
+      ..writeByte(4)
+      ..write(obj.numberOfExamples)
+      ..writeByte(5)
+      ..write(obj.maleVoiceCode)
+      ..writeByte(6)
+      ..write(obj.femaleVoiceCode);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LanguageSettingsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

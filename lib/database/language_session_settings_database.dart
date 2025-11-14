@@ -1,12 +1,12 @@
 import 'package:vitalingu/interfaces/database_interface.dart';
 import 'package:vitalingu/models/language_session_settings.dart';
-import 'package:vitalingu/models/language_session_settings_persistent.dart';
+import 'package:vitalingu/models/language_settings.dart';
 import 'package:vitalingu/register_languages.dart';
 
 class LanguageSessionSettingsDatabase {
-  final DatabaseInterface<String, LanguageSessionSettings> _database;
+  final DatabaseInterface<String, LanguageSettings> _database;
 
-  LanguageSessionSettingsDatabase({required DatabaseInterface<String, LanguageSessionSettings> database}) : _database = database;
+  LanguageSessionSettingsDatabase({required DatabaseInterface<String, LanguageSettings> database}) : _database = database;
 
   Future<LanguageSessionScopeSettings?> getSessionSettings(String bcp47Code) async {
     final persistent = await _database.getItem(bcp47Code);
@@ -20,7 +20,7 @@ class LanguageSessionSettingsDatabase {
 
     return LanguageSessionScopeSettings(
       targetLanguage: language,
-      languageSettings: LanguageSessionSettings(
+      languageSettings: LanguageSettings(
         imagesEnabled: persistent.imagesEnabled,
         dynamicGenerativeFrontcards: persistent.dynamicGenerativeFrontcards,
         numberOfExamples: persistent.numberOfExamples,
@@ -32,7 +32,7 @@ class LanguageSessionSettingsDatabase {
   }
 
   Future<void> saveSessionSettings(String bcp47Code, LanguageSessionScopeSettings settings) async {
-    final persistent = LanguageSessionSettings(
+    final persistent = LanguageSettings(
       examplesTranslatedSpeechEnabled: settings.languageSettings.examplesTranslatedSpeechEnabled,
       imagesEnabled: settings.languageSettings.imagesEnabled,
       examplesUntranslatedSpeechEnabled: settings.languageSettings.examplesUntranslatedSpeechEnabled,

@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:vitalingu/database/language_session_settings_database.dart';
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/models/language_session_settings.dart';
-import 'package:vitalingu/models/language_session_settings_persistent.dart';
+import 'package:vitalingu/models/language_settings.dart';
 import 'package:vitalingu/register_languages.dart';
 
 @singleton
@@ -40,7 +40,7 @@ class LanguageSessionService {
 
     return LanguageSessionScopeSettings(
       targetLanguage: language, 
-      languageSettings: LanguageSessionSettings(
+      languageSettings: LanguageSettings(
         examplesTranslatedSpeechEnabled: false,
         imagesEnabled: false,
         examplesUntranslatedSpeechEnabled: false,
