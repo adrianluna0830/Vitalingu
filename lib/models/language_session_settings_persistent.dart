@@ -1,16 +1,15 @@
-class LanguageSessionSettingsPersistent {
-  final String targetLanguageBcp47;
+class LanguageSessionSettings {
   final bool imagesEnabled;
-  final bool examplesSpeechEnabled;
+  final bool examplesUntranslatedSpeechEnabled;
+  final bool examplesTranslatedSpeechEnabled;
   final bool dynamicGenerativeFrontcards;
   final int numberOfExamples;
   final String maleVoiceCode;
   final String femaleVoiceCode;
 
-  const LanguageSessionSettingsPersistent({
-    required this.targetLanguageBcp47,
+  const LanguageSessionSettings({ required this.examplesTranslatedSpeechEnabled,
     required this.imagesEnabled,
-    required this.examplesSpeechEnabled,
+    required this.examplesUntranslatedSpeechEnabled,
     required this.dynamicGenerativeFrontcards,
     required this.numberOfExamples,
     required this.maleVoiceCode,

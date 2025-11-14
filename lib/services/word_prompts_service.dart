@@ -20,15 +20,15 @@ class WordPromptsService {
   }
 
   Future<String> _getWordLema(String word) async {
-    String prompt = "Return the word lema for the word '$word' in ${targetLanguage.nativeName} language.";
+    String prompt = "Return the word lema for the word '$word' in ${targetLanguage.nativeLanguageName} language.";
     return await geminiPromptService.generatePrompt(prompt);
   }
 
   String _getWordPrompt(String wordLema) {
     return languageWord.getWordPrompt(
       word: wordLema,
-      nativeLanguage: nativeLanguage.nativeName,
-      targetLanguage: targetLanguage.nativeName,
+      nativeLanguage: nativeLanguage.nativeLanguageName,
+      targetLanguage: targetLanguage.nativeLanguageName,
     );
   }
 

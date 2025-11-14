@@ -7,11 +7,11 @@ class LanguageRegistry {
   static final Map<Language, Word> _languageWordMap = {
     const Language(
       bcp47Code: "en-US",
-      nativeName: "English",
+      nativeLanguageName: "English",
     ): EnglishWord(),
     const Language(
       bcp47Code: "de-DE",
-      nativeName: "German",
+      nativeLanguageName: "Deutsch",
     ): GermanWord(),
   };
 

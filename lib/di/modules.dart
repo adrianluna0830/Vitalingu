@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/database/hive_database.dart';
-import 'package:vitalingu/models/app_settings_persistent.dart';
+import 'package:vitalingu/models/app_settings.dart';
 import 'package:vitalingu/models/language_session_settings_persistent.dart';
 import 'package:vitalingu/database/app_settings_database.dart';
 import 'package:vitalingu/database/language_session_settings_database.dart';
@@ -10,14 +10,14 @@ abstract class DatabaseModule {
   @preResolve
   @singleton
   Future<AppSettingsDatabase> provideAppSettingsDatabase() async {
-    final hiveDatabase = await HiveDatabase.create<String, AppSettingsPersistent>();
+    final hiveDatabase = await HiveDatabase.create<String, AppSettings>();
     return AppSettingsDatabase(database: hiveDatabase);
   }
 
   @preResolve
   @singleton
   Future<LanguageSessionSettingsDatabase> provideLanguageSessionSettingsDatabase() async {
-    final hiveDatabase = await HiveDatabase.create<String, LanguageSessionSettingsPersistent>();
+    final hiveDatabase = await HiveDatabase.create<String, LanguageSessionSettings>();
     return LanguageSessionSettingsDatabase(database: hiveDatabase);
   }
 }

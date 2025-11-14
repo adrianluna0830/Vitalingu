@@ -1,43 +1,41 @@
 import 'package:vitalingu/interfaces/database_interface.dart';
 import 'package:vitalingu/models/language_session_settings.dart';
 import 'package:vitalingu/models/language_session_settings_persistent.dart';
-import 'package:vitalingu/models/language_settings.dart';
 import 'package:vitalingu/register_languages.dart';
 
 class LanguageSessionSettingsDatabase {
-  final DatabaseInterface<String, LanguageSessionSettingsPersistent> _database;
+  final DatabaseInterface<String, LanguageSessionSettings> _database;
 
-  LanguageSessionSettingsDatabase({required DatabaseInterface<String, LanguageSessionSettingsPersistent> database}) : _database = database;
+  LanguageSessionSettingsDatabase({required DatabaseInterface<String, LanguageSessionSettings> database}) : _database = database;
 
-  Future<LanguageSessionSettings?> getSessionSettings(String bcp47Code) async {
+  Future<LanguageSessionScopeSettings?> getSessionSettings(String bcp47Code) async {
     final persistent = await _database.getItem(bcp47Code);
     if (persistent == null) return null;
 
-    final language = LanguageRegistry.getLanguageByCode(persistent.targetLanguageBcp47);
+    final language = LanguageRegistry.getLanguageByCode(bcp47Code);
     if (language == null) return null;
 
     final languageWord = LanguageRegistry.getWordForLanguage(language);
     if (languageWord == null) return null;
 
-    return LanguageSessionSettings(
+    return LanguageSessionScopeSettings(
       targetLanguage: language,
-      languageSettings: LanguageSettings(
+      languageSettings: LanguageSessionSettings(
         imagesEnabled: persistent.imagesEnabled,
-        examplesSpeechEnabled: persistent.examplesSpeechEnabled,
         dynamicGenerativeFrontcards: persistent.dynamicGenerativeFrontcards,
         numberOfExamples: persistent.numberOfExamples,
         maleVoiceCode: persistent.maleVoiceCode,
-        femaleVoiceCode: persistent.femaleVoiceCode,
+        femaleVoiceCode: persistent.femaleVoiceCode, examplesTranslatedSpeechEnabled: persistent.examplesTranslatedSpeechEnabled, examplesUntranslatedSpeechEnabled: persistent.examplesUntranslatedSpeechEnabled,
       ),
       languageWord: languageWord,
     );
   }
 
-  Future<void> saveSessionSettings(String bcp47Code, LanguageSessionSettings settings) async {
-    final persistent = LanguageSessionSettingsPersistent(
-      targetLanguageBcp47: settings.targetLanguage.bcp47Code,
+  Future<void> saveSessionSettings(String bcp47Code, LanguageSessionScopeSettings settings) async {
+    final persistent = LanguageSessionSettings(
+      examplesTranslatedSpeechEnabled: settings.languageSettings.examplesTranslatedSpeechEnabled,
       imagesEnabled: settings.languageSettings.imagesEnabled,
-      examplesSpeechEnabled: settings.languageSettings.examplesSpeechEnabled,
+      examplesUntranslatedSpeechEnabled: settings.languageSettings.examplesUntranslatedSpeechEnabled,
       dynamicGenerativeFrontcards: settings.languageSettings.dynamicGenerativeFrontcards,
       numberOfExamples: settings.languageSettings.numberOfExamples,
       maleVoiceCode: settings.languageSettings.maleVoiceCode,

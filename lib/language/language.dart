@@ -1,11 +1,11 @@
 class Language {
   final String bcp47Code;
-  final String nativeName;
+  final String nativeLanguageName;
 
 
   const Language({
     required this.bcp47Code,
-    required this.nativeName,
+    required this.nativeLanguageName,
   });
 
   @override

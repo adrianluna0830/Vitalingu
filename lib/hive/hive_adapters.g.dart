@@ -18,7 +18,7 @@ class LanguageAdapter extends TypeAdapter<Language> {
     };
     return Language(
       bcp47Code: fields[0] as String,
-      nativeName: fields[1] as String,
+      nativeLanguageName: fields[3] as String,
     );
   }
 
@@ -28,8 +28,8 @@ class LanguageAdapter extends TypeAdapter<Language> {
       ..writeByte(2)
       ..writeByte(0)
       ..write(obj.bcp47Code)
-      ..writeByte(1)
-      ..write(obj.nativeName);
+      ..writeByte(3)
+      ..write(obj.nativeLanguageName);
   }
 
   @override
@@ -43,67 +43,21 @@ class LanguageAdapter extends TypeAdapter<Language> {
           typeId == other.typeId;
 }
 
-class AppSettingsPersistentAdapter extends TypeAdapter<AppSettingsPersistent> {
+class LanguageSessionSettingsAdapter
+    extends TypeAdapter<LanguageSessionSettings> {
   @override
-  final typeId = 5;
+  final typeId = 7;
 
   @override
-  AppSettingsPersistent read(BinaryReader reader) {
+  LanguageSessionSettings read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return AppSettingsPersistent(
-      geminiApiKey: fields[0] as String,
-      pixabayApiKey: fields[1] as String,
-      microsoftSpeechApiKey: fields[2] as String,
-      microsoftSpeechRegion: fields[3] as String,
-      nativeLanguageBcp47: fields[4] as String,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, AppSettingsPersistent obj) {
-    writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.geminiApiKey)
-      ..writeByte(1)
-      ..write(obj.pixabayApiKey)
-      ..writeByte(2)
-      ..write(obj.microsoftSpeechApiKey)
-      ..writeByte(3)
-      ..write(obj.microsoftSpeechRegion)
-      ..writeByte(4)
-      ..write(obj.nativeLanguageBcp47);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AppSettingsPersistentAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class LanguageSessionSettingsPersistentAdapter
-    extends TypeAdapter<LanguageSessionSettingsPersistent> {
-  @override
-  final typeId = 6;
-
-  @override
-  LanguageSessionSettingsPersistent read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return LanguageSessionSettingsPersistent(
-      targetLanguageBcp47: fields[0] as String,
-      imagesEnabled: fields[1] as bool,
-      examplesSpeechEnabled: fields[2] as bool,
+    return LanguageSessionSettings(
+      examplesTranslatedSpeechEnabled: fields[2] as bool,
+      imagesEnabled: fields[0] as bool,
+      examplesUntranslatedSpeechEnabled: fields[1] as bool,
       dynamicGenerativeFrontcards: fields[3] as bool,
       numberOfExamples: (fields[4] as num).toInt(),
       maleVoiceCode: fields[5] as String,
@@ -112,15 +66,15 @@ class LanguageSessionSettingsPersistentAdapter
   }
 
   @override
-  void write(BinaryWriter writer, LanguageSessionSettingsPersistent obj) {
+  void write(BinaryWriter writer, LanguageSessionSettings obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.targetLanguageBcp47)
-      ..writeByte(1)
       ..write(obj.imagesEnabled)
+      ..writeByte(1)
+      ..write(obj.examplesUntranslatedSpeechEnabled)
       ..writeByte(2)
-      ..write(obj.examplesSpeechEnabled)
+      ..write(obj.examplesTranslatedSpeechEnabled)
       ..writeByte(3)
       ..write(obj.dynamicGenerativeFrontcards)
       ..writeByte(4)
@@ -137,7 +91,53 @@ class LanguageSessionSettingsPersistentAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is LanguageSessionSettingsPersistentAdapter &&
+      other is LanguageSessionSettingsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class AppSettingsAdapter extends TypeAdapter<AppSettings> {
+  @override
+  final typeId = 8;
+
+  @override
+  AppSettings read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return AppSettings(
+      geminiApiKey: fields[0] as String,
+      pixabayApiKey: fields[1] as String,
+      microsoftSpeechApiKey: fields[2] as String,
+      microsoftSpeechRegion: fields[3] as String,
+      nativeLanguage: fields[4] as Language,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, AppSettings obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.geminiApiKey)
+      ..writeByte(1)
+      ..write(obj.pixabayApiKey)
+      ..writeByte(2)
+      ..write(obj.microsoftSpeechApiKey)
+      ..writeByte(3)
+      ..write(obj.microsoftSpeechRegion)
+      ..writeByte(4)
+      ..write(obj.nativeLanguage);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AppSettingsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

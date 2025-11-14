@@ -48,7 +48,7 @@ class _SettingsViewState extends State<SettingsView> {
                   items: viewModel.availableLanguages.map((language) {
                     return DropdownMenuItem(
                       value: language,
-                      child: Text(language.nativeName),
+                      child: Text(language.nativeLanguageName),
                     );
                   }).toList(),
                   onChanged: loading ? null : viewModel.setNativeLanguage,

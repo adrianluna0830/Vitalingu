@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:vitalingu/database/language_session_settings_database.dart';
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/models/language_session_settings.dart';
-import 'package:vitalingu/models/language_settings.dart';
+import 'package:vitalingu/models/language_session_settings_persistent.dart';
 import 'package:vitalingu/register_languages.dart';
 
 @singleton
@@ -11,15 +11,15 @@ class LanguageSessionService {
 
   LanguageSessionService(this._database);
 
-  Future<LanguageSessionSettings?> getSessionSettings(String bcp47Code) async {
+  Future<LanguageSessionScopeSettings?> getSessionSettings(String bcp47Code) async {
     return await _database.getSessionSettings(bcp47Code);
   }
 
-  Future<void> saveSessionSettings(String bcp47Code, LanguageSessionSettings settings) async {
+  Future<void> saveSessionSettings(String bcp47Code, LanguageSessionScopeSettings settings) async {
     await _database.saveSessionSettings(bcp47Code, settings);
   }
 
-  Future<LanguageSessionSettings> getOrCreateSessionSettings(Language language) async {
+  Future<LanguageSessionScopeSettings> getOrCreateSessionSettings(Language language) async {
     final bcp47Code = language.bcp47Code;
     var sessionSettings = await getSessionSettings(bcp47Code);
 
@@ -31,20 +31,25 @@ class LanguageSessionService {
     return sessionSettings;
   }
 
-  LanguageSessionSettings _createDefaultSessionSettings(Language language) {
+  LanguageSessionScopeSettings _createDefaultSessionSettings(Language language) {
     final languageWord = LanguageRegistry.getWordForLanguage(language);
 
     if (languageWord == null) {
-      throw Exception('No Word implementation found for language: ${language.nativeName}');
+      throw Exception('No Word implementation found for language: ${language.nativeLanguageName}');
     }
 
-    return LanguageSessionSettings(
-      targetLanguage: language,
-      languageSettings: LanguageSettings(
-        maleVoiceCode: "defaultMaleVoiceCode",
-        femaleVoiceCode: "defaultFemaleVoiceCode",
-      ),
-      languageWord: languageWord,
+    return LanguageSessionScopeSettings(
+      targetLanguage: language, 
+      languageSettings: LanguageSessionSettings(
+        examplesTranslatedSpeechEnabled: false,
+        imagesEnabled: false,
+        examplesUntranslatedSpeechEnabled: false,
+        dynamicGenerativeFrontcards: false,
+        numberOfExamples: 0,
+        maleVoiceCode: '',
+        femaleVoiceCode: '',
+      ), 
+      languageWord: languageWord
     );
   }
 }

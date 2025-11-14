@@ -33,7 +33,7 @@ class ScopeManagerService {
     );
   }
 
-  Future<void> createLanguageScope(LanguageSessionSettings sessionSettings) async {
+  Future<void> createLanguageScope(LanguageSessionScopeSettings sessionSettings) async {
     if (getIt.hasScope(languageScopeName)) {
       await getIt.popScopesTill(languageScopeName);
     }
@@ -47,7 +47,7 @@ class ScopeManagerService {
         final language = sessionSettings.targetLanguage;
         final languageWord = sessionSettings.languageWord;
         
-        getIt.registerSingleton<LanguageSessionSettings>(sessionSettings);
+        getIt.registerSingleton<LanguageSessionScopeSettings>(sessionSettings);
         getIt.registerSingleton<Language>(language);
         
         WordPromptsService wordPromptsService = WordPromptsService(
