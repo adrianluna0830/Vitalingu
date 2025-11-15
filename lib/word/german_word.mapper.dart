@@ -1100,32 +1100,11 @@ class GermanWordMapper extends ClassMapperBase<GermanWord> {
   @override
   final String id = 'GermanWord';
 
-  static String _$wordLema(GermanWord v) => v.wordLema;
-  static const Field<GermanWord, String> _f$wordLema = Field(
-    'wordLema',
-    _$wordLema,
-    opt: true,
-    def: "Base form of the word",
-  );
-  static List<WordDefinition> _$definitions(GermanWord v) => v.definitions;
-  static const Field<GermanWord, List<WordDefinition>> _f$definitions = Field(
-    'definitions',
-    _$definitions,
-    opt: true,
-    def: const [GermanWordDefinition(), GermanWordDefinition()],
-  );
-
   @override
-  final MappableFields<GermanWord> fields = const {
-    #wordLema: _f$wordLema,
-    #definitions: _f$definitions,
-  };
+  final MappableFields<GermanWord> fields = const {};
 
   static GermanWord _instantiate(DecodingData data) {
-    return GermanWord(
-      wordLema: data.dec(_f$wordLema),
-      definitions: data.dec(_f$definitions),
-    );
+    throw MapperException.missingConstructor('GermanWord');
   }
 
   @override
@@ -1153,12 +1132,7 @@ mixin GermanWordMappable {
     );
   }
 
-  GermanWordCopyWith<GermanWord, GermanWord, GermanWord> get copyWith =>
-      _GermanWordCopyWithImpl<GermanWord, GermanWord>(
-        this as GermanWord,
-        $identity,
-        $identity,
-      );
+  GermanWordCopyWith<GermanWord, GermanWord, GermanWord> get copyWith;
   @override
   String toString() {
     return GermanWordMapper.ensureInitialized().stringifyValue(
@@ -1180,59 +1154,9 @@ mixin GermanWordMappable {
   }
 }
 
-extension GermanWordValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, GermanWord, $Out> {
-  GermanWordCopyWith<$R, GermanWord, $Out> get $asGermanWord =>
-      $base.as((v, t, t2) => _GermanWordCopyWithImpl<$R, $Out>(v, t, t2));
-}
-
 abstract class GermanWordCopyWith<$R, $In extends GermanWord, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<
-    $R,
-    WordDefinition,
-    ObjectCopyWith<$R, WordDefinition, WordDefinition>
-  >
-  get definitions;
-  $R call({String? wordLema, List<WordDefinition>? definitions});
+  $R call();
   GermanWordCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
-}
-
-class _GermanWordCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, GermanWord, $Out>
-    implements GermanWordCopyWith<$R, GermanWord, $Out> {
-  _GermanWordCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<GermanWord> $mapper =
-      GermanWordMapper.ensureInitialized();
-  @override
-  ListCopyWith<
-    $R,
-    WordDefinition,
-    ObjectCopyWith<$R, WordDefinition, WordDefinition>
-  >
-  get definitions => ListCopyWith(
-    $value.definitions,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(definitions: v),
-  );
-  @override
-  $R call({String? wordLema, List<WordDefinition>? definitions}) => $apply(
-    FieldCopyWithData({
-      if (wordLema != null) #wordLema: wordLema,
-      if (definitions != null) #definitions: definitions,
-    }),
-  );
-  @override
-  GermanWord $make(CopyWithData data) => GermanWord(
-    wordLema: data.get(#wordLema, or: $value.wordLema),
-    definitions: data.get(#definitions, or: $value.definitions),
-  );
-
-  @override
-  GermanWordCopyWith<$R2, GermanWord, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _GermanWordCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

@@ -25,7 +25,7 @@ class SelectLanguageViewModel extends ViewModelBase {
     this.targetLanguage.language = targetLanguage;
     this.targetLanguage.languageSettings = await getLanguageSettings(targetLanguage.bcp47Code);
     
-    sessionWord.word = LanguageRegistry.getWordForLanguage(targetLanguage);
+    sessionWord.wordJsonPrompt = LanguageRegistry.getJsonWordPromptForLanguage(targetLanguage) ?? '';
     sessionWord.fromJson = LanguageRegistry.getFromJsonForLanguage(targetLanguage);
     
     await navigationService.goToLanguageView();

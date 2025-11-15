@@ -804,32 +804,11 @@ class EnglishWordMapper extends ClassMapperBase<EnglishWord> {
   @override
   final String id = 'EnglishWord';
 
-  static String _$wordLema(EnglishWord v) => v.wordLema;
-  static const Field<EnglishWord, String> _f$wordLema = Field(
-    'wordLema',
-    _$wordLema,
-    opt: true,
-    def: "Base form of the word",
-  );
-  static List<WordDefinition> _$definitions(EnglishWord v) => v.definitions;
-  static const Field<EnglishWord, List<WordDefinition>> _f$definitions = Field(
-    'definitions',
-    _$definitions,
-    opt: true,
-    def: const [EnglishWordDefinition()],
-  );
-
   @override
-  final MappableFields<EnglishWord> fields = const {
-    #wordLema: _f$wordLema,
-    #definitions: _f$definitions,
-  };
+  final MappableFields<EnglishWord> fields = const {};
 
   static EnglishWord _instantiate(DecodingData data) {
-    return EnglishWord(
-      wordLema: data.dec(_f$wordLema),
-      definitions: data.dec(_f$definitions),
-    );
+    throw MapperException.missingConstructor('EnglishWord');
   }
 
   @override
@@ -857,12 +836,7 @@ mixin EnglishWordMappable {
     );
   }
 
-  EnglishWordCopyWith<EnglishWord, EnglishWord, EnglishWord> get copyWith =>
-      _EnglishWordCopyWithImpl<EnglishWord, EnglishWord>(
-        this as EnglishWord,
-        $identity,
-        $identity,
-      );
+  EnglishWordCopyWith<EnglishWord, EnglishWord, EnglishWord> get copyWith;
   @override
   String toString() {
     return EnglishWordMapper.ensureInitialized().stringifyValue(
@@ -884,59 +858,9 @@ mixin EnglishWordMappable {
   }
 }
 
-extension EnglishWordValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, EnglishWord, $Out> {
-  EnglishWordCopyWith<$R, EnglishWord, $Out> get $asEnglishWord =>
-      $base.as((v, t, t2) => _EnglishWordCopyWithImpl<$R, $Out>(v, t, t2));
-}
-
 abstract class EnglishWordCopyWith<$R, $In extends EnglishWord, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<
-    $R,
-    WordDefinition,
-    ObjectCopyWith<$R, WordDefinition, WordDefinition>
-  >
-  get definitions;
-  $R call({String? wordLema, List<WordDefinition>? definitions});
+  $R call();
   EnglishWordCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
-}
-
-class _EnglishWordCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, EnglishWord, $Out>
-    implements EnglishWordCopyWith<$R, EnglishWord, $Out> {
-  _EnglishWordCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<EnglishWord> $mapper =
-      EnglishWordMapper.ensureInitialized();
-  @override
-  ListCopyWith<
-    $R,
-    WordDefinition,
-    ObjectCopyWith<$R, WordDefinition, WordDefinition>
-  >
-  get definitions => ListCopyWith(
-    $value.definitions,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(definitions: v),
-  );
-  @override
-  $R call({String? wordLema, List<WordDefinition>? definitions}) => $apply(
-    FieldCopyWithData({
-      if (wordLema != null) #wordLema: wordLema,
-      if (definitions != null) #definitions: definitions,
-    }),
-  );
-  @override
-  EnglishWord $make(CopyWithData data) => EnglishWord(
-    wordLema: data.get(#wordLema, or: $value.wordLema),
-    definitions: data.get(#definitions, or: $value.definitions),
-  );
-
-  @override
-  EnglishWordCopyWith<$R2, EnglishWord, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _EnglishWordCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

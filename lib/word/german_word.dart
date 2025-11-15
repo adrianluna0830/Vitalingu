@@ -100,18 +100,18 @@ class GermanWordDefinition extends WordDefinition with GermanWordDefinitionMappa
 @MappableClass()
 class GermanWord extends Word with GermanWordMappable {
 
-  GermanWord({
+  GermanWord._({
     super.wordLema,
     super.definitions = const [GermanWordDefinition(),GermanWordDefinition()],
   });
 
-  @override
-  String defaultToJson() {
-    return const JsonEncoder.withIndent('  ').convert(toJson());
-  }
-
+  static String jsonWordPrompt() => GermanWord._().toJson();
   static Word fromJsonStatic(String json) {
     return GermanWordMapper.fromJson(json);
   }
-
+  
+  @override
+  // TODO: implement copyWith
+  GermanWordCopyWith<GermanWord, GermanWord, GermanWord> get copyWith => throw UnimplementedError();
+  
 }

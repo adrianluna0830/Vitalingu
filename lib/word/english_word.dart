@@ -74,17 +74,17 @@ class EnglishWordDefinition extends WordDefinition with EnglishWordDefinitionMap
 @MappableClass()
 class EnglishWord extends Word with EnglishWordMappable {
 
-  EnglishWord({
+  EnglishWord._({
     super.wordLema,
     super.definitions = const [EnglishWordDefinition()],
   });
-
-  @override
-  String defaultToJson() {
-    return const JsonEncoder.withIndent('  ').convert(toJson());
-  }
+  static String jsonWordPrompt() => EnglishWord._().toJson();
 
   static Word fromJsonStatic(String json) {
     return EnglishWordMapper.fromJson(json);
   }
+  
+  @override
+  // TODO: implement copyWith
+  EnglishWordCopyWith<EnglishWord, EnglishWord, EnglishWord> get copyWith => throw UnimplementedError();
 }

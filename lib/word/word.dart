@@ -45,5 +45,4 @@ abstract class Word {
         .toList();
   }
 
-  String defaultToJson();
 }

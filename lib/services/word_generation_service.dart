@@ -38,7 +38,7 @@ class WordGenerationService {
         "All fields, except the `untranslatedExample` within `examples`, should be in **${nativeLanguage.language!.nativeLanguageName}**. "
         "The `untranslatedExample` must be in **${targetLanguage.language!.nativeLanguageName}**.";
 
-    return "$initialPrompt$definitionInstruction$languageInstructions\n${languageWord.word!.defaultToJson()}";
+    return "$initialPrompt$definitionInstruction$languageInstructions\n${languageWord.wordJsonPrompt}";
   }
 
   Future<Word> getWord(String word) async {
