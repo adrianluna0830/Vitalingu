@@ -5,25 +5,25 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class WordGenerationService {
-  final NativeLanguage nativeLanguage;
-  final SessionTargetLanguage targetLanguage;
-  final SessionWord languageWord;
-  final GeminiPromptService geminiPromptService;
+  final NativeLanguage _nativeLanguage;
+  final SessionTargetLanguage _targetLanguage;
+  final SessionWord _languageWord;
+  final GeminiPromptService _geminiPromptService;
 
   WordGenerationService({
-    required this.nativeLanguage,
-    required this.targetLanguage,
-    required this.languageWord,
-    required this.geminiPromptService,
-  });
+    required NativeLanguage nativeLanguage,
+    required SessionTargetLanguage targetLanguage,
+    required SessionWord languageWord,
+    required GeminiPromptService geminiPromptService,
+  }) : _geminiPromptService = geminiPromptService, _languageWord = languageWord, _targetLanguage = targetLanguage, _nativeLanguage = nativeLanguage;
 
   Future<Word?> _getWordInDatabase(String word) async {
     return null;
   }
 
   Future<String> _getWordLema(String word) async {
-    String prompt = "Return the word lema for the word '$word' in ${targetLanguage.language!.nativeLanguageName} language.";
-    return await geminiPromptService.generatePrompt(prompt);
+    String prompt = "Return the word lema for the word '$word' in ${_targetLanguage.language!.nativeLanguageName} language.";
+    return await _geminiPromptService.generatePrompt(prompt);
   }
 
   String _getWordPrompt(String wordLema) {
@@ -35,10 +35,10 @@ class WordGenerationService {
 
     String languageInstructions =
         "\n\nThe following JSON is the expected format for the word **$wordLema**. "
-        "All fields, except the `untranslatedExample` within `examples`, should be in **${nativeLanguage.language!.nativeLanguageName}**. "
-        "The `untranslatedExample` must be in **${targetLanguage.language!.nativeLanguageName}**.";
+        "All fields, except the `untranslatedExample` within `examples`, should be in **${_nativeLanguage.language!.nativeLanguageName}**. "
+        "The `untranslatedExample` must be in **${_targetLanguage.language!.nativeLanguageName}**.";
 
-    return "$initialPrompt$definitionInstruction$languageInstructions\n${languageWord.wordJsonPrompt}";
+    return "$initialPrompt$definitionInstruction$languageInstructions\n${_languageWord.wordJsonPrompt}";
   }
 
   Future<Word> getWord(String word) async {
@@ -50,7 +50,12 @@ class WordGenerationService {
     String wordLema = await _getWordLema(word);
     String wordPrompt = _getWordPrompt(wordLema);
 
-    String geminiPrompt = await geminiPromptService.generatePrompt(wordPrompt);
-    return languageWord.fromJson!(geminiPrompt);
+    String geminiPrompt = await _geminiPromptService.generatePrompt(wordPrompt);
+    return _languageWord.fromJson!(geminiPrompt);
+  }
+
+  void test()
+  {
+    print(_languageWord.wordJsonPrompt);
   }
 }

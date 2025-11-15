@@ -1,116 +1,136 @@
-import 'package:dart_mappable/dart_mappable.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:vitalingu/word/word.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'german_word.mapper.dart';
+part 'german_word.g.dart';
 
-@MappableClass()
-class GermanPreposition with GermanPrepositionMappable {
-  final String prepositionCase;
-  final List<String> commonContractions;
+@JsonSerializable()
+class GermanPreposition {
+  String prepositionCase = "ACCUSATIVE, DATIVE, GENITIVE, TWO-WAY";
+  List<String> commonContractions = [
+    "List of common contractions with articles. Examples: ins, im, zum, am, beim, vom, ans, aufs. Use empty list if not applicable."
+  ];
 
-  const GermanPreposition({
-    this.prepositionCase = "ACCUSATIVE, DATIVE, GENITIVE, TWO-WAY",
-    this.commonContractions = const ["List of common contractions with articles. Examples: ins, im, zum, am, beim, vom, ans, aufs. Use empty list if not applicable."]
-  });
+  GermanPreposition();
+
+  factory GermanPreposition.fromJson(Map<String, dynamic> json) =>
+      _$GermanPrepositionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GermanPrepositionToJson(this);
 }
 
-@MappableClass()
-class GermanVerb with GermanVerbMappable {
-  final String simplePast;
-  final String pastParticiple;
-  final String thirdPersonPresent;
-  final bool isSeparable;
-  final bool isReflexive;
-  final String fixedPreposition;
-  final String prepositionCase;
-  final String governedCase;
+@JsonSerializable()
+class GermanVerb {
+  String simplePast =
+      "The simple past form (Präteritum). Example: ging, hatte, war. Use the infinitive form if not applicable.";
+  String pastParticiple =
+      "The past participle form (Partizip II). Must include ge- prefix if applicable. Example: gegangen, gehabt, gewesen. Use the infinitive form if not applicable.";
+  String thirdPersonPresent =
+      "The third person singular present form. Example: geht, hat, ist, gibt, fährt. Use the infinitive form if there's no vowel change.";
+  bool isSeparable = false;
+  bool isReflexive = false;
+  String fixedPreposition =
+      "The exact preposition that must be used with this verb. Example: an, auf, über, mit, für, von. Use empty string if no fixed preposition.";
+  String prepositionCase =
+      "ACCUSATIVE, DATIVE. Use empty string if not applicable.";
+  String governedCase =
+      "ACCUSATIVE, DATIVE, GENITIVE. Use empty string if not applicable.";
 
-  const GermanVerb({
-    this.simplePast = "The simple past form (Präteritum). Example: ging, hatte, war. Use the infinitive form if not applicable.",
-    this.pastParticiple = "The past participle form (Partizip II). Must include ge- prefix if applicable. Example: gegangen, gehabt, gewesen. Use the infinitive form if not applicable.",
-    this.thirdPersonPresent = "The third person singular present form. Example: geht, hat, ist, gibt, fährt. Use the infinitive form if there's no vowel change.",
-    this.isSeparable = false,
-    this.isReflexive = false,
-    this.fixedPreposition = "The exact preposition that must be used with this verb. Example: an, auf, über, mit, für, von. Use empty string if no fixed preposition.",
-    this.prepositionCase = "ACCUSATIVE, DATIVE. Use empty string if not applicable.",
-    this.governedCase = "ACCUSATIVE, DATIVE, GENITIVE. Use empty string if not applicable."
-  });
+  GermanVerb();
+
+  factory GermanVerb.fromJson(Map<String, dynamic> json) =>
+      _$GermanVerbFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GermanVerbToJson(this);
 }
 
-@MappableClass()
-class GermanNoun with GermanNounMappable {
-  final String gender;
-  final String pluralForm;
+@JsonSerializable()
+class GermanNoun {
+  String gender = "Choose only one: der, die, das";
+  String pluralForm =
+      "The exact plural form of the noun. Example: Kinder, Häuser, Frauen. If the noun has no plural form, use the same word as singular.";
 
-  const GermanNoun({
-    this.gender = "Choose only one: der, die, das",
-    this.pluralForm = "The exact plural form of the noun. Example: Kinder, Häuser, Frauen. If the noun has no plural form, use the same word as singular."
-  });
+  GermanNoun();
+
+  factory GermanNoun.fromJson(Map<String, dynamic> json) =>
+      _$GermanNounFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GermanNounToJson(this);
 }
 
-@MappableClass()
-class GermanAdjective with GermanAdjectiveMappable {
-  final String comparative;
-  final String superlative;
+@JsonSerializable()
+class GermanAdjective {
+  String comparative =
+      "The comparative form. Example: besser, schöner, größer. Use base+er for regular forms. Use the base form if not applicable.";
+  String superlative =
+      "The superlative form WITHOUT 'am'. Example: best, schönst, größt. Use base+st for regular forms. Use the base form if not applicable.";
 
-  const GermanAdjective({
-    this.comparative = "The comparative form. Example: besser, schöner, größer. Use base+er for regular forms. Use the base form if not applicable.",
-    this.superlative = "The superlative form WITHOUT 'am'. Example: best, schönst, größt. Use base+st for regular forms. Use the base form if not applicable."
-  });
+  GermanAdjective();
+
+  factory GermanAdjective.fromJson(Map<String, dynamic> json) =>
+      _$GermanAdjectiveFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GermanAdjectiveToJson(this);
 }
 
-@MappableClass()
-class GermanAdverb with GermanAdverbMappable {
-  final String comparativeForm;
-  final String superlativeForm;
+@JsonSerializable()
+class GermanAdverb {
+  String comparativeForm =
+      "The comparative form. Example: lieber, eher, mehr. Use the base form if not applicable.";
+  String superlativeForm =
+      "The superlative form with 'am'. Example: am liebsten, am ehesten, am meisten. Use the base form if not applicable.";
 
-  const GermanAdverb({
-    this.comparativeForm = "The comparative form. Example: lieber, eher, mehr. Use the base form if not applicable.",
-    this.superlativeForm = "The superlative form with 'am'. Example: am liebsten, am ehesten, am meisten. Use the base form if not applicable."
-  });
+  GermanAdverb();
+
+  factory GermanAdverb.fromJson(Map<String, dynamic> json) =>
+      _$GermanAdverbFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GermanAdverbToJson(this);
 }
 
-@MappableClass()
-class GermanWordDefinition extends WordDefinition with GermanWordDefinitionMappable {
-  final GermanNoun? nounInfo;
-  final GermanVerb? verbInfo;
-  final GermanPreposition? prepositionInfo;
-  final GermanAdjective? adjectiveInfo;
-  final GermanAdverb? adverbInfo;
+@JsonSerializable(explicitToJson: true)
+class GermanWordDefinition extends WordDefinition {
+  GermanNoun? nounInfo = GermanNoun();
+  GermanVerb? verbInfo = GermanVerb();
+  GermanPreposition? prepositionInfo = GermanPreposition();
+  GermanAdjective? adjectiveInfo = GermanAdjective();
+  GermanAdverb? adverbInfo = GermanAdverb();
 
-  const GermanWordDefinition({
-    super.examples,
-    super.meaning,
-    super.partOfSpeech,
-    this.nounInfo = const GermanNoun(),
-    this.verbInfo = const GermanVerb(),
-    this.prepositionInfo = const GermanPreposition(),
-    this.adjectiveInfo = const GermanAdjective(),
-    this.adverbInfo = const GermanAdverb()
-  });
-  
+  GermanWordDefinition();
+
   @override
   Widget getDefinitionWidget(String word) {
     throw UnimplementedError();
   }
+
+  factory GermanWordDefinition.fromJson(Map<String, dynamic> json) =>
+      _$GermanWordDefinitionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GermanWordDefinitionToJson(this);
 }
 
-@MappableClass()
-class GermanWord extends Word with GermanWordMappable {
-
-  GermanWord._({
-    super.wordLema,
-    super.definitions = const [GermanWordDefinition(),GermanWordDefinition()],
-  });
-
-  static String jsonWordPrompt() => GermanWord._().toJson();
-  static Word fromJsonStatic(String json) {
-    return GermanWordMapper.fromJson(json);
+@JsonSerializable(explicitToJson: true)
+class GermanWord extends Word<GermanWordDefinition> {
+  GermanWord();
+  static String jsonWordPrompt() {
+    GermanWord sampleWord = GermanWord();
+    sampleWord.definitions = [GermanWordDefinition()];
+    return sampleWord.toJson().toString();
   }
-  
+
+  static Word fromJsonStatic(String json) {
+    return GermanWord.fromJson(
+        Map<String, dynamic>.from(jsonDecode(json)));
+  }
   @override
-  // TODO: implement copyWith
-  GermanWordCopyWith<GermanWord, GermanWord, GermanWord> get copyWith => throw UnimplementedError();
-  
+  List<Widget> getWordWidgets() {
+    return super.getWordWidgets();
+  }
+
+  factory GermanWord.fromJson(Map<String, dynamic> json) =>
+      _$GermanWordFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GermanWordToJson(this);
 }

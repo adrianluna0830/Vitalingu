@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:vitalingu/injection.dart';
+import 'package:vitalingu/services/word_generation_service.dart';
 
 @RoutePage()
 class LanguageView extends StatelessWidget {
@@ -10,12 +12,8 @@ class LanguageView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Language Learning')),
       body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          width: 400,
-          height: 300,
-          color: Colors.red, // El color es solo para demostrar el contenedor
-          ),
+        child: ElevatedButton(onPressed: 
+        () {getIt<WordGenerationService>().test();}, child: const Text('Press me')),
         ),
     );
   }

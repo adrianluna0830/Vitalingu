@@ -1,88 +1,111 @@
-import 'package:dart_mappable/dart_mappable.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:vitalingu/word/word.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'english_word.mapper.dart';
+part 'english_word.g.dart';
 
-@MappableClass()
-class EnglishVerb with EnglishVerbMappable {
-  final String simplePast;
-  final String pastParticiple;
+@JsonSerializable()
+class EnglishVerb {
+  String simplePast =
+      "Simple past form. Example: went, had, was, took, made. Use base form if regular (-ed rule applies).";
+  String pastParticiple =
+      "Past participle form. Example: gone, had, been, taken, made. Use base form if regular (-ed rule applies).";
 
-  const EnglishVerb({
-    this.simplePast = "Simple past form. Example: went, had, was, took, made. Use base form if regular (-ed rule applies).",
-    this.pastParticiple = "Past participle form. Example: gone, had, been, taken, made. Use base form if regular (-ed rule applies).",
-  });
+  EnglishVerb();
 
+  factory EnglishVerb.fromJson(Map<String, dynamic> json) =>
+      _$EnglishVerbFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EnglishVerbToJson(this);
 }
 
-@MappableClass()
-class EnglishNoun with EnglishNounMappable {
-  final String pluralForm;
+@JsonSerializable()
+class EnglishNoun {
+  String pluralForm =
+      "Exact plural form. Example: children, geese, mice, sheep, data. Use base form+s if regular. Use same word if uncountable.";
 
-  const EnglishNoun({
-    this.pluralForm = "Exact plural form. Example: children, geese, mice, sheep, data. Use base form+s if regular. Use same word if uncountable.",
-  });
+  EnglishNoun();
+
+  factory EnglishNoun.fromJson(Map<String, dynamic> json) =>
+      _$EnglishNounFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EnglishNounToJson(this);
 }
 
-@MappableClass()
-class EnglishAdjective with EnglishAdjectiveMappable {
-  final String comparative;
-  final String superlative;
+@JsonSerializable()
+class EnglishAdjective {
+  String comparative =
+      "Comparative form. Example: better, worse, more beautiful. Use base form if regular (-er or more+base).";
+  String superlative =
+      "Superlative form. Example: best, worst, most beautiful. Use base form if regular (-est or most+base).";
 
-  const EnglishAdjective({
-    this.comparative = "Comparative form. Example: better, worse, more beautiful. Use base form if regular (-er or more+base).",
-    this.superlative = "Superlative form. Example: best, worst, most beautiful. Use base form if regular (-est or most+base).",
-  });
+  EnglishAdjective();
+
+  factory EnglishAdjective.fromJson(Map<String, dynamic> json) =>
+      _$EnglishAdjectiveFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EnglishAdjectiveToJson(this);
 }
 
-@MappableClass()
-class EnglishAdverb with EnglishAdverbMappable {
-  final String comparative;
-  final String superlative;
+@JsonSerializable()
+class EnglishAdverb {
+  String comparative =
+      "Comparative form. Example: better, more quickly, faster. Use base form if regular (more+base).";
+  String superlative =
+      "Superlative form. Example: best, most quickly, fastest. Use base form if regular (most+base).";
 
-  const EnglishAdverb({
-    this.comparative = "Comparative form. Example: better, more quickly, faster. Use base form if regular (more+base).",
-    this.superlative = "Superlative form. Example: best, most quickly, fastest. Use base form if regular (most+base).",
-  });
+  EnglishAdverb();
+
+  factory EnglishAdverb.fromJson(Map<String, dynamic> json) =>
+      _$EnglishAdverbFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EnglishAdverbToJson(this);
 }
 
-@MappableClass()
-class EnglishWordDefinition extends WordDefinition with EnglishWordDefinitionMappable {
-  final EnglishNoun? nounInfo;
-  final EnglishVerb? verbInfo;
-  final EnglishAdjective? adjectiveInfo;
-  final EnglishAdverb? adverbInfo;
+@JsonSerializable(explicitToJson: true)
+class EnglishWordDefinition extends WordDefinition {
+  EnglishNoun? nounInfo = EnglishNoun();
+  EnglishVerb? verbInfo = EnglishVerb();
+  EnglishAdjective? adjectiveInfo = EnglishAdjective();
+  EnglishAdverb? adverbInfo = EnglishAdverb();
 
-  const EnglishWordDefinition({
-    super.examples,
-    super.meaning,
-    super.partOfSpeech,
-    this.nounInfo = const EnglishNoun(),
-    this.verbInfo = const EnglishVerb(),
-    this.adjectiveInfo = const EnglishAdjective(),
-    this.adverbInfo = const EnglishAdverb(),
-  });
-  
+  EnglishWordDefinition();
+
   @override
   Widget getDefinitionWidget(String word) {
     throw UnimplementedError();
   }
+
+  factory EnglishWordDefinition.fromJson(Map<String, dynamic> json) =>
+      _$EnglishWordDefinitionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EnglishWordDefinitionToJson(this);
 }
 
-@MappableClass()
-class EnglishWord extends Word with EnglishWordMappable {
+@JsonSerializable(explicitToJson: true)
+class EnglishWord extends Word<EnglishWordDefinition> {
+  EnglishWord();
 
-  EnglishWord._({
-    super.wordLema,
-    super.definitions = const [EnglishWordDefinition()],
-  });
-  static String jsonWordPrompt() => EnglishWord._().toJson();
+  static String jsonWordPrompt() {
+    EnglishWord sampleWord = EnglishWord();
+    sampleWord.definitions = [EnglishWordDefinition()];
+    return sampleWord.toJson().toString();
+  }
 
   static Word fromJsonStatic(String json) {
-    return EnglishWordMapper.fromJson(json);
+    return EnglishWord.fromJson(
+        Map<String, dynamic>.from(jsonDecode(json)));
   }
-  
+
   @override
-  EnglishWordCopyWith<EnglishWord, EnglishWord, EnglishWord> get copyWith => throw UnimplementedError();
+  List<Widget> getWordWidgets() {
+    return super.getWordWidgets();
+  }
+
+  factory EnglishWord.fromJson(Map<String, dynamic> json) =>
+      _$EnglishWordFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EnglishWordToJson(this);
 }
