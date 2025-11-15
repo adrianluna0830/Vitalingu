@@ -25,7 +25,7 @@ class _SelectLanguageViewState extends State<SelectLanguageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Seleccionar Idioma'),
+        title: const Text('Select Language'),
         actions: [
           IconButton(
             onPressed: viewModel.goToSettings,
@@ -42,12 +42,14 @@ class _SelectLanguageViewState extends State<SelectLanguageView> {
             bcp47Code: language.bcp47Code,
             nativeName: language.nativeLanguageName,
             onTap: () => viewModel.selectLanguage(language),
-            onSettingsTap: () {
+            onSettingsTap: () async {
+              final languageSettings = await viewModel.getLanguageSettings(language.bcp47Code);
               LanguageSettingsSheet.show(
                 context,
                 language.nativeLanguageName,
-                onSave: (settings) {
-                  print('Settings saved: $settings');
+                languageSettings: languageSettings,
+                onSave: (settings) async {
+                  await viewModel.saveLanguageSettings(settings, language.bcp47Code);
                 },
               );
             },
@@ -90,17 +92,20 @@ class LanguageCard extends StatelessWidget {
 
 class LanguageSettingsSheet extends StatefulWidget {
   final String languageName;
+  final LanguageSettings languageSettings;
   final Function(LanguageSettings) onSave;
 
   const LanguageSettingsSheet({
     super.key,
     required this.languageName,
+    required this.languageSettings,
     required this.onSave,
   });
 
   static void show(
     BuildContext context,
     String languageName, {
+    required LanguageSettings languageSettings,
     required Function(LanguageSettings) onSave,
   }) {
     showModalBottomSheet(
@@ -108,6 +113,7 @@ class LanguageSettingsSheet extends StatefulWidget {
       isScrollControlled: true,
       builder: (context) => LanguageSettingsSheet(
         languageName: languageName,
+        languageSettings: languageSettings,
         onSave: onSave,
       ),
     );
@@ -118,13 +124,45 @@ class LanguageSettingsSheet extends StatefulWidget {
 }
 
 class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
-  bool imagesEnabled = true;
-  bool examplesUntranslatedSpeechEnabled = true;
-  bool examplesTranslatedSpeechEnabled = true;
-  bool dynamicGenerativeFrontcards = false;
-  int numberOfExamples = 3;
-  String maleVoiceCode = 'en-US-Male-1';
-  String femaleVoiceCode = 'en-US-Female-1';
+  late bool imagesEnabled;
+  late bool examplesUntranslatedSpeechEnabled;
+  late bool examplesTranslatedSpeechEnabled;
+  late bool dynamicGenerativeFrontcards;
+  late int numberOfExamples;
+  late String maleVoiceCode;
+  late String femaleVoiceCode;
+
+  final List<String> maleVoiceOptions = [
+    'en-US-Male-1',
+    'en-US-Male-2',
+    'es-ES-Male-1',
+    'es-MX-Male-1',
+  ];
+
+  final List<String> femaleVoiceOptions = [
+    'en-US-Female-1',
+    'en-US-Female-2',
+    'es-ES-Female-1',
+    'es-MX-Female-1',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    imagesEnabled = widget.languageSettings.imagesEnabled;
+    examplesUntranslatedSpeechEnabled = widget.languageSettings.examplesUntranslatedSpeechEnabled;
+    examplesTranslatedSpeechEnabled = widget.languageSettings.examplesTranslatedSpeechEnabled;
+    dynamicGenerativeFrontcards = widget.languageSettings.dynamicGenerativeFrontcards;
+    numberOfExamples = widget.languageSettings.numberOfExamples.clamp(1, 10);
+
+    maleVoiceCode = maleVoiceOptions.contains(widget.languageSettings.maleVoiceCode)
+        ? widget.languageSettings.maleVoiceCode
+        : maleVoiceOptions.first;
+
+    femaleVoiceCode = femaleVoiceOptions.contains(widget.languageSettings.femaleVoiceCode)
+        ? widget.languageSettings.femaleVoiceCode
+        : femaleVoiceOptions.first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +179,7 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
           children: [
             Row(
               children: [
-                Text('Ajustes de ${widget.languageName}'),
+                Text('Settings for ${widget.languageName}'),
                 const Spacer(),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
@@ -150,31 +188,31 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
               ],
             ),
             SwitchListTile(
-              title: const Text('Imágenes habilitadas'),
-              subtitle: const Text('Mostrar imágenes en las tarjetas'),
+              title: const Text('Images Enabled'),
+              subtitle: const Text('Show images on cards'),
               value: imagesEnabled,
               onChanged: (value) => setState(() => imagesEnabled = value),
             ),
             SwitchListTile(
-              title: const Text('Audio en ejemplos sin traducir'),
-              subtitle: const Text('Reproducir audio de ejemplos en idioma original'),
+              title: const Text('Audio for Untranslated Examples'),
+              subtitle: const Text('Play audio for examples in the original language'),
               value: examplesUntranslatedSpeechEnabled,
               onChanged: (value) => setState(() => examplesUntranslatedSpeechEnabled = value),
             ),
             SwitchListTile(
-              title: const Text('Audio en ejemplos traducidos'),
-              subtitle: const Text('Reproducir audio de ejemplos traducidos'),
+              title: const Text('Audio for Translated Examples'),
+              subtitle: const Text('Play audio for translated examples'),
               value: examplesTranslatedSpeechEnabled,
               onChanged: (value) => setState(() => examplesTranslatedSpeechEnabled = value),
             ),
             SwitchListTile(
-              title: const Text('Tarjetas dinámicas'),
-              subtitle: const Text('Generar contenido dinámico'),
+              title: const Text('Dynamic Cards'),
+              subtitle: const Text('Generate dynamic content'),
               value: dynamicGenerativeFrontcards,
               onChanged: (value) => setState(() => dynamicGenerativeFrontcards = value),
             ),
             ListTile(
-              title: const Text('Número de ejemplos'),
+              title: const Text('Number of Examples'),
               subtitle: Slider(
                 value: numberOfExamples.toDouble(),
                 min: 1,
@@ -185,28 +223,23 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
               ),
             ),
             ListTile(
-              title: const Text('Voz masculina'),
+              title: const Text('Male Voice'),
               subtitle: Row(
                 children: [
                   Expanded(
-                    child: DropdownButton<String>(
-                      value: maleVoiceCode,
-                      isExpanded: true,
-                      items: const [
-                        DropdownMenuItem(value: 'en-US-Male-1', child: Text('en-US-Male-1')),
-                        DropdownMenuItem(value: 'en-US-Male-2', child: Text('en-US-Male-2')),
-                        DropdownMenuItem(value: 'es-ES-Male-1', child: Text('es-ES-Male-1')),
-                        DropdownMenuItem(value: 'es-MX-Male-1', child: Text('es-MX-Male-1')),
-                      ],
+                    child: TextField(
+                      controller: TextEditingController(text: maleVoiceCode),
+                      decoration: const InputDecoration(
+                        labelText: 'Enter male voice code',
+                      ),
                       onChanged: (value) {
-                        if (value != null) setState(() => maleVoiceCode = value);
+                        setState(() => maleVoiceCode = value);
                       },
                     ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.volume_up),
                     onPressed: () {
-                      // TODO: Reproducir audio de preview
                       print('Preview male voice: $maleVoiceCode');
                     },
                   ),
@@ -214,28 +247,23 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
               ),
             ),
             ListTile(
-              title: const Text('Voz femenina'),
+              title: const Text('Female Voice'),
               subtitle: Row(
                 children: [
                   Expanded(
-                    child: DropdownButton<String>(
-                      value: femaleVoiceCode,
-                      isExpanded: true,
-                      items: const [
-                        DropdownMenuItem(value: 'en-US-Female-1', child: Text('en-US-Female-1')),
-                        DropdownMenuItem(value: 'en-US-Female-2', child: Text('en-US-Female-2')),
-                        DropdownMenuItem(value: 'es-ES-Female-1', child: Text('es-ES-Female-1')),
-                        DropdownMenuItem(value: 'es-MX-Female-1', child: Text('es-MX-Female-1')),
-                      ],
+                    child: TextField(
+                      controller: TextEditingController(text: femaleVoiceCode),
+                      decoration: const InputDecoration(
+                        labelText: 'Enter female voice code',
+                      ),
                       onChanged: (value) {
-                        if (value != null) setState(() => femaleVoiceCode = value);
+                        setState(() => femaleVoiceCode = value);
                       },
                     ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.volume_up),
                     onPressed: () {
-                      // TODO: Reproducir audio de preview
                       print('Preview female voice: $femaleVoiceCode');
                     },
                   ),
@@ -256,7 +284,7 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
                 widget.onSave(settings);
                 Navigator.pop(context);
               },
-              child: const Text('Guardar configuración'),
+              child: const Text('Save Settings'),
             ),
           ],
         ),

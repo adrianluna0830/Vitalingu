@@ -15,4 +15,9 @@ class LanguageSettings {
     required this.maleVoiceCode,
     required this.femaleVoiceCode,
   });
+
+  @override
+  String toString() {
+    return 'LanguageSettings(imagesEnabled: $imagesEnabled, examplesUntranslatedSpeechEnabled: $examplesUntranslatedSpeechEnabled, examplesTranslatedSpeechEnabled: $examplesTranslatedSpeechEnabled, dynamicGenerativeFrontcards: $dynamicGenerativeFrontcards, numberOfExamples: $numberOfExamples, maleVoiceCode: $maleVoiceCode, femaleVoiceCode: $femaleVoiceCode)';
+  }
 }

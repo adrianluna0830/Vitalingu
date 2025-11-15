@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/language/language.dart';
+import 'package:vitalingu/models/language_settings.dart';
 import 'package:vitalingu/services/app_settings_service.dart';
 import 'package:vitalingu/services/language_settings_service.dart';
 import 'package:vitalingu/viewmodels/view_model_base.dart';
@@ -32,6 +33,14 @@ class SelectLanguageViewModel extends ViewModelBase {
     await navigationService.goToLanguageView();
   }
 
+  Future<LanguageSettings> getLanguageSettings(String bcp47Code)  async{
+    return await _languageSessionService.getOrCreateLanguageSettings(bcp47Code);
+  }
+
+  Future<void> saveLanguageSettings(LanguageSettings settings, String bcp47Code) async
+  {
+    await _languageSessionService.saveSettings(bcp47Code, settings);
+  }
 
   void goToSettings() {
     navigationService.goToSettings();
