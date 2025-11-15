@@ -11,17 +11,18 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:vitalingu/database/app_settings_database.dart' as _i185;
-import 'package:vitalingu/database/language_session_settings_database.dart'
-    as _i490;
+import 'package:vitalingu/database/database_interface.dart' as _i855;
 import 'package:vitalingu/di/modules.dart' as _i938;
+import 'package:vitalingu/models/language_settings.dart' as _i973;
+import 'package:vitalingu/models/settings.dart' as _i688;
 import 'package:vitalingu/router/app_router.dart' as _i5;
-import 'package:vitalingu/services/app_settings_service.dart' as _i621;
 import 'package:vitalingu/services/gemini_prompt_service.dart' as _i657;
 import 'package:vitalingu/services/language_settings_service.dart' as _i1009;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
-import 'package:vitalingu/services/prompt_service.dart' as _i557;
-import 'package:vitalingu/services/scope_manager_service.dart' as _i830;
+import 'package:vitalingu/services/pixabay_service.dart' as _i626;
+import 'package:vitalingu/services/selectable_text_service.dart' as _i593;
+import 'package:vitalingu/services/settings_service.dart' as _i763;
+import 'package:vitalingu/services/word_prompts_service.dart' as _i703;
 import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart'
     as _i256;
 import 'package:vitalingu/viewmodels/language_view_model.dart' as _i1052;
@@ -41,51 +42,69 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    final databaseModule = _$DatabaseModule();
+    final registerModule = _$RegisterModule();
+    await gh.factoryAsync<_i855.DatabaseInterface<_i973.LanguageSettings>>(
+      () => registerModule.languageSettingsDatabase,
+      preResolve: true,
+    );
     gh.factory<_i521.TargetLanguageSelectableTextController>(
         () => _i521.TargetLanguageSelectableTextController());
-    await gh.singletonAsync<_i185.AppSettingsDatabase>(
-      () => databaseModule.provideAppSettingsDatabase(),
-      preResolve: true,
-    );
-    await gh.singletonAsync<_i490.LanguageSettingsDatabase>(
-      () => databaseModule.provideLanguageSettingsDatabase(),
-      preResolve: true,
-    );
     gh.singleton<_i5.AppRouter>(() => _i5.AppRouter());
-    gh.singleton<_i830.ScopeManagerService>(() => _i830.ScopeManagerService());
-    gh.singleton<_i621.AppSettingsService>(
-        () => _i621.AppSettingsService(gh<_i185.AppSettingsDatabase>()));
-    gh.factory<_i557.PromptService>(() => _i557.PromptService(
-        geminiPromptService: gh<_i657.GeminiPromptService>()));
+    gh.lazySingleton<_i688.GeminiSettings>(() => _i688.GeminiSettings());
+    gh.lazySingleton<_i688.PixabaySettings>(() => _i688.PixabaySettings());
+    gh.lazySingleton<_i688.MicrosoftSpeechSettings>(
+        () => _i688.MicrosoftSpeechSettings());
+    gh.lazySingleton<_i688.NativeLanguage>(() => _i688.NativeLanguage());
+    gh.lazySingleton<_i688.SessionTargetLanguage>(
+        () => _i688.SessionTargetLanguage());
+    gh.lazySingleton<_i688.SessionWord>(() => _i688.SessionWord());
     gh.singleton<_i1009.LanguageSettingsService>(() =>
-        _i1009.LanguageSettingsService(gh<_i490.LanguageSettingsDatabase>()));
+        _i1009.LanguageSettingsService(
+            gh<_i855.DatabaseInterface<_i973.LanguageSettings>>()));
+    gh.factory<_i657.GeminiPromptService>(() =>
+        _i657.GeminiPromptService(geminiSettings: gh<_i688.GeminiSettings>()));
+    gh.factory<_i626.PixabayService>(() =>
+        _i626.PixabayService(pixabaySettings: gh<_i688.PixabaySettings>()));
+    gh.singleton<_i763.SettingsService>(() => _i763.SettingsService(
+          gh<_i688.GeminiSettings>(),
+          gh<_i688.PixabaySettings>(),
+          gh<_i688.MicrosoftSpeechSettings>(),
+          gh<_i688.NativeLanguage>(),
+        ));
     gh.singleton<_i19.NavigationService>(
         () => _i19.NavigationService(gh<_i5.AppRouter>()));
+    gh.factory<_i703.WordGenerationService>(() => _i703.WordGenerationService(
+          nativeLanguage: gh<_i688.NativeLanguage>(),
+          targetLanguage: gh<_i688.SessionTargetLanguage>(),
+          languageWord: gh<_i688.SessionWord>(),
+          geminiPromptService: gh<_i657.GeminiPromptService>(),
+        ));
     gh.factory<_i914.SelectLanguageViewModel>(
         () => _i914.SelectLanguageViewModel(
-              languageSessionService: gh<_i1009.LanguageSettingsService>(),
-              appSettingsService: gh<_i621.AppSettingsService>(),
+              gh<_i688.SessionTargetLanguage>(),
+              gh<_i688.SessionWord>(),
+              languageSettingsService: gh<_i1009.LanguageSettingsService>(),
               navigationService: gh<_i19.NavigationService>(),
-              scopeManagerService: gh<_i830.ScopeManagerService>(),
             ));
+    gh.factory<_i587.SettingsViewModel>(() => _i587.SettingsViewModel(
+          gh<_i688.GeminiSettings>(),
+          gh<_i688.PixabaySettings>(),
+          gh<_i688.MicrosoftSpeechSettings>(),
+          gh<_i688.NativeLanguage>(),
+          gh<_i763.SettingsService>(),
+          navigationService: gh<_i19.NavigationService>(),
+        ));
     gh.factory<_i256.AppStartupLoadingViewModel>(
         () => _i256.AppStartupLoadingViewModel(
-              appSettingsService: gh<_i621.AppSettingsService>(),
+              settingsService: gh<_i763.SettingsService>(),
               navigationService: gh<_i19.NavigationService>(),
-              scopeManagerService: gh<_i830.ScopeManagerService>(),
             ));
+    gh.factory<_i593.SelectableTextService>(() => _i593.SelectableTextService(
+        geminiPromptService: gh<_i657.GeminiPromptService>()));
     gh.factory<_i1052.LanguageViewModel>(() => _i1052.LanguageViewModel(
-          navigationService: gh<_i19.NavigationService>(),
-          scopeManagerService: gh<_i830.ScopeManagerService>(),
-        ));
-    gh.factory<_i587.SettingsViewModel>(() => _i587.SettingsViewModel(
-          gh<_i621.AppSettingsService>(),
-          navigationService: gh<_i19.NavigationService>(),
-          scopeManagerService: gh<_i830.ScopeManagerService>(),
-        ));
+        navigationService: gh<_i19.NavigationService>()));
     return this;
   }
 }
 
-class _$DatabaseModule extends _i938.DatabaseModule {}
+class _$RegisterModule extends _i938.RegisterModule {}

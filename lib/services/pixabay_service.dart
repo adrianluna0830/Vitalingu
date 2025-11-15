@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'package:injectable/injectable.dart';
+import 'package:vitalingu/models/settings.dart';
+@injectable
 class PixabayService {
   final String _baseUrl = 'https://pixabay.com/api/';
-   final String apiKey;
+  final PixabaySettings _pixabaySettings;
 
-  PixabayService(this.apiKey);
+  PixabayService({required PixabaySettings pixabaySettings}) : _pixabaySettings = pixabaySettings;
+  
 
   Future<Map<String, dynamic>> searchImages({
     String? q,
@@ -16,7 +19,7 @@ class PixabayService {
     final uri = _buildUri(
       baseUrl: _baseUrl,
       queryParameters: {
-        'key': apiKey,
+        'key': _pixabaySettings.apiKey,
         if (q != null) 'q': q,
         if (imageType != null) 'image_type': imageType,
         if (orientation != null) 'orientation': orientation,

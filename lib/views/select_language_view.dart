@@ -240,7 +240,6 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
                   IconButton(
                     icon: const Icon(Icons.volume_up),
                     onPressed: () {
-                      print('Preview male voice: $maleVoiceCode');
                     },
                   ),
                 ],
@@ -264,7 +263,6 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
                   IconButton(
                     icon: const Icon(Icons.volume_up),
                     onPressed: () {
-                      print('Preview female voice: $femaleVoiceCode');
                     },
                   ),
                 ],

@@ -110,8 +110,7 @@ class GermanWord extends Word with GermanWordMappable {
     return const JsonEncoder.withIndent('  ').convert(toJson());
   }
 
-  @override
-  Word fromJson(String json) {
+  static Word fromJsonStatic(String json) {
     return GermanWordMapper.fromJson(json);
   }
 

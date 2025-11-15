@@ -4,6 +4,5 @@ import 'package:vitalingu/viewmodels/view_model_base.dart';
 class LanguageViewModel extends ViewModelBase {
   LanguageViewModel({
     required super.navigationService,
-    required super.scopeManagerService,
   });
 }

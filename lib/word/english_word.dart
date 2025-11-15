@@ -84,10 +84,7 @@ class EnglishWord extends Word with EnglishWordMappable {
     return const JsonEncoder.withIndent('  ').convert(toJson());
   }
 
-  @override
-  Word fromJson(String json) {
+  static Word fromJsonStatic(String json) {
     return EnglishWordMapper.fromJson(json);
   }
-
- 
 }

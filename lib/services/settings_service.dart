@@ -1,0 +1,112 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:injectable/injectable.dart';
+import 'package:vitalingu/language/language.dart';
+import 'package:vitalingu/models/settings.dart';
+import 'dart:convert' as convert;
+
+@singleton
+class SettingsService {
+  final storage = const FlutterSecureStorage();
+  final GeminiSettings geminiSettings;
+  final PixabaySettings pixabaySettings;
+  final MicrosoftSpeechSettings microsoftSpeechSettings;
+  final NativeLanguage nativeLanguage;
+  SettingsService(
+    this.geminiSettings,
+    this.pixabaySettings,
+    this.microsoftSpeechSettings,
+    this.nativeLanguage,
+  );
+
+  static const String _geminiApiKeyKey = 'gemini_api_key';
+  static const String _pixabayApiKeyKey = 'pixabay_api_key';
+  static const String _microsoftApiKeyKey = 'microsoft_speech_api_key';
+  static const String _microsoftRegionKey = 'microsoft_speech_region';
+  static const String _nativeLanguageKey = 'native_language';
+
+  Future<void> _loadGeminiSettings() async {
+    final apiKey = await storage.read(key: _geminiApiKeyKey);
+    if (apiKey != null) {
+      geminiSettings.apiKey = apiKey;
+    }
+  }
+
+  Future<void> _loadPixabaySettings() async {
+    final apiKey = await storage.read(key: _pixabayApiKeyKey);
+    if (apiKey != null) {
+      pixabaySettings.apiKey = apiKey;
+    }
+  }
+
+  Future<void> _loadMicrosoftSpeechSettings() async {
+    final apiKey = await storage.read(key: _microsoftApiKeyKey);
+    final region = await storage.read(key: _microsoftRegionKey);
+    
+    if (apiKey != null) {
+      microsoftSpeechSettings.apiKey = apiKey;
+    }
+    if (region != null) {
+      microsoftSpeechSettings.region = region;
+    }
+  }
+
+  Future<void> _loadNativeLanguage() async {
+    final languageJson = await storage.read(key: _nativeLanguageKey);
+    if (languageJson != null) {
+      nativeLanguage.language = Language.fromJson(
+        Map<String, dynamic>.from(convert.jsonDecode(languageJson)),
+      );
+    }
+  }
+
+  Future<void> saveAndLoadGeminiSettings(String apiKey) async {
+    await storage.write(key: _geminiApiKeyKey, value: apiKey);
+    await _loadGeminiSettings();
+  }
+
+  Future<void> saveAndLoadPixabaySettings(String apiKey) async {
+    await storage.write(key: _pixabayApiKeyKey, value: apiKey);
+    await _loadPixabaySettings();
+  }
+
+  Future<void> saveAndLoadMicrosoftSpeechSettings(String apiKey, String region) async {
+    await storage.write(key: _microsoftApiKeyKey, value: apiKey);
+    await storage.write(key: _microsoftRegionKey, value: region);
+    await _loadMicrosoftSpeechSettings();
+  }
+
+  Future<void> saveAndLoadNativeLanguage(Language language) async {
+    await storage.write(key: _nativeLanguageKey, value: convert.jsonEncode(language.toJson()));
+    await _loadNativeLanguage();
+  }
+
+  Future<void> clearNativeLanguage() async {
+    await storage.delete(key: _nativeLanguageKey);
+  }
+
+  Future<void> loadAllSettings() async {
+    await Future.wait([
+      _loadGeminiSettings(),
+      _loadPixabaySettings(),
+      _loadMicrosoftSpeechSettings(),
+      _loadNativeLanguage(),
+    ]);
+  }
+
+  Future<void> clearAllSettings() async {
+    await storage.deleteAll();
+    geminiSettings.apiKey = '';
+    pixabaySettings.apiKey = '';
+    microsoftSpeechSettings.apiKey = '';
+    microsoftSpeechSettings.region = '';
+    nativeLanguage.language = Language(bcp47Code: "", nativeLanguageName: "");
+  }
+
+  bool areSettingsComplete() {
+    return geminiSettings.apiKey.isNotEmpty &&
+        pixabaySettings.apiKey.isNotEmpty &&
+        microsoftSpeechSettings.apiKey.isNotEmpty &&
+        microsoftSpeechSettings.region.isNotEmpty &&
+        nativeLanguage.language != null;
+  }
+}

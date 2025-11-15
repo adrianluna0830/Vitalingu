@@ -4,15 +4,15 @@ import 'package:vitalingu/word/german_word.dart';
 import 'package:vitalingu/word/word.dart';
 
 class LanguageRegistry {
-  static final Map<Language, Word> _languageWordMap = {
+  static final Map<Language, (Word, Word Function(String))> _languageWordMap = {
     const Language(
       bcp47Code: "en-US",
       nativeLanguageName: "English",
-    ): EnglishWord(),
+    ): (EnglishWord(), EnglishWord.fromJsonStatic),
     const Language(
       bcp47Code: "de-DE",
       nativeLanguageName: "Deutsch",
-    ): GermanWord(),
+    ): (GermanWord(), GermanWord.fromJsonStatic),
   };
 
   static List<Language> get languages => List.unmodifiable(_languageWordMap.keys);
@@ -26,6 +26,10 @@ class LanguageRegistry {
   }
 
   static Word? getWordForLanguage(Language language) {
-    return _languageWordMap[language];
+    return _languageWordMap[language]?.$1;
+  }
+
+  static Word Function(String)? getFromJsonForLanguage(Language language) {
+    return _languageWordMap[language]?.$2;
   }
 }

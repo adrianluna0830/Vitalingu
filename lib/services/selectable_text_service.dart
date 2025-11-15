@@ -2,10 +2,10 @@ import 'package:vitalingu/services/gemini_prompt_service.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class PromptService {
+class SelectableTextService {
   final GeminiPromptService geminiPromptService;
   
-  PromptService({required this.geminiPromptService});
+  SelectableTextService({required this.geminiPromptService});
   
   Future<String> getTranslation(String textToTranslate, String nativeLanguage) async {
     String prompt = """

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
+import 'package:vitalingu/models/settings.dart';
 
 class ChatMessage {
   final String role; 
@@ -39,12 +41,13 @@ class ChatHistory {
   }
 }
 
+@injectable
 class GeminiPromptService {
   static const String _baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
   static const String _model = 'gemini-2.5-flash-lite';
-  final String _apiKey;
+  final GeminiSettings _geminiSettings;
 
-  GeminiPromptService(this._apiKey);
+  GeminiPromptService({required GeminiSettings geminiSettings}) : _geminiSettings = geminiSettings;
 
 
 
@@ -105,7 +108,7 @@ class GeminiPromptService {
     final response = await http.post(
       url,
       headers: {
-        'x-goog-api-key': _apiKey,
+        'x-goog-api-key': _geminiSettings.apiKey,
         'Content-Type': 'application/json',
       },
       body: jsonEncode(body),

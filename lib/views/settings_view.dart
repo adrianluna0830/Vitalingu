@@ -13,13 +13,8 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  late final SettingsViewModel viewModel;
+   final SettingsViewModel viewModel = getIt<SettingsViewModel>();
 
-  @override
-  void initState() {
-    super.initState();
-    viewModel = getIt<SettingsViewModel>();
-  }
 
   @override
   Widget build(BuildContext context) {

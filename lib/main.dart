@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive.dart';
-import 'package:vitalingu/hive/hive_registrar.g.dart'; // Generado automáticamente
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/services/navigation_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Hive
-    ..init('.') 
-    ..registerAdapters();
+  await configureDependencies(); // Ensure dependencies are configured
 
-  await configureDependencies();
-  
   runApp(const MyApp());
 }
 

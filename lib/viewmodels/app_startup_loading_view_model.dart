@@ -1,26 +1,21 @@
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/services/app_settings_service.dart';
+import 'package:vitalingu/services/settings_service.dart';
 import 'package:vitalingu/viewmodels/view_model_base.dart';
 
 @injectable
 class AppStartupLoadingViewModel extends ViewModelBase {
-  final AppSettingsService _appSettingsService;
-
+  final SettingsService _settingsService;
   AppStartupLoadingViewModel({
-    required AppSettingsService appSettingsService,
+    required SettingsService settingsService,
     required super.navigationService,
-    required super.scopeManagerService,
-  }) : _appSettingsService = appSettingsService;
+  }) : _settingsService = settingsService;
 
   Future<void> initializeApp() async {
-    final appSettings = await _appSettingsService.getSettings();
-
-    if (appSettings == null) {
+    await _settingsService.loadAllSettings();
+    if (!_settingsService.areSettingsComplete()) {
       await navigationService.goToSettings();
       return;
     }
-
-    await scopeManagerService.createMainScope( appSettings.geminiApiKey, appSettings.pixabayApiKey);
 
     await navigationService.replaceWithSelectLanguageView();
   }

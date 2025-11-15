@@ -1,19 +1,19 @@
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/database/language_session_settings_database.dart';
+import 'package:vitalingu/database/database_interface.dart';
 import 'package:vitalingu/models/language_settings.dart';
 
 @singleton
 class LanguageSettingsService {
-  final LanguageSettingsDatabase _database;
+  final DatabaseInterface<LanguageSettings> _database;
 
   LanguageSettingsService(this._database);
 
   Future<LanguageSettings?> getSettings(String bcp47Code) async {
-    return await _database.getSettings(bcp47Code);
+    return await _database.get(bcp47Code);
   }
 
   Future<void> saveSettings(String bcp47Code, LanguageSettings settings) async {
-    await _database.saveSettings(bcp47Code, settings);
+    await _database.save(bcp47Code, settings);
   }
 
   Future<LanguageSettings> getOrCreateLanguageSettings(String bcp47Code) async {
