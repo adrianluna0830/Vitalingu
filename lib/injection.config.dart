@@ -20,16 +20,12 @@ import 'package:vitalingu/services/gemini_prompt_service.dart' as _i657;
 import 'package:vitalingu/services/language_settings_service.dart' as _i1009;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
 import 'package:vitalingu/services/pixabay_service.dart' as _i626;
-import 'package:vitalingu/services/selectable_text_service.dart' as _i593;
 import 'package:vitalingu/services/settings_service.dart' as _i763;
 import 'package:vitalingu/services/word_generation_service.dart' as _i196;
 import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart'
     as _i256;
-import 'package:vitalingu/viewmodels/language_view_model.dart' as _i1052;
 import 'package:vitalingu/viewmodels/select_language_view_model.dart' as _i914;
 import 'package:vitalingu/viewmodels/settings_view_model.dart' as _i587;
-import 'package:vitalingu/widgets/ai_selectable_text.dart' as _i516;
-import 'package:vitalingu/widgets/custom_selectable_text.dart' as _i717;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -47,8 +43,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.languageSettingsDatabase,
       preResolve: true,
     );
-    gh.factory<_i717.CustomSelectableTextController>(
-        () => _i717.CustomSelectableTextController());
     gh.singleton<_i5.AppRouter>(() => _i5.AppRouter());
     gh.lazySingleton<_i688.GeminiSettings>(() => _i688.GeminiSettings());
     gh.lazySingleton<_i688.PixabaySettings>(() => _i688.PixabaySettings());
@@ -98,17 +92,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i256.AppStartupLoadingViewModel(
               settingsService: gh<_i763.SettingsService>(),
               navigationService: gh<_i19.NavigationService>(),
-            ));
-    gh.factory<_i1052.LanguageViewModel>(() => _i1052.LanguageViewModel(
-        navigationService: gh<_i19.NavigationService>()));
-    gh.factory<_i593.SelectableTextService>(() => _i593.SelectableTextService(
-          gh<_i688.NativeLanguage>(),
-          geminiPromptService: gh<_i657.GeminiPromptService>(),
-        ));
-    gh.factory<_i516.AISelectableTextController>(
-        () => _i516.AISelectableTextController(
-              gh<_i593.SelectableTextService>(),
-              gh<_i196.WordGenerationService>(),
             ));
     return this;
   }
