@@ -69,7 +69,7 @@ class SettingsViewModel extends ViewModelBase {
       );
 
       await _appSettingsService.saveSettings(settings);
-      await scopeManagerService.createUserConfigScope( settings.geminiApiKey, settings.pixabayApiKey);
+      await scopeManagerService.createMainScope( settings.geminiApiKey, settings.pixabayApiKey);
 
       saveSuccess.value = true;
       return settings;

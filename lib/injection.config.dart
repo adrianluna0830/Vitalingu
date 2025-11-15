@@ -17,8 +17,10 @@ import 'package:vitalingu/database/language_session_settings_database.dart'
 import 'package:vitalingu/di/modules.dart' as _i938;
 import 'package:vitalingu/router/app_router.dart' as _i5;
 import 'package:vitalingu/services/app_settings_service.dart' as _i621;
+import 'package:vitalingu/services/gemini_prompt_service.dart' as _i657;
 import 'package:vitalingu/services/language_settings_service.dart' as _i1009;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
+import 'package:vitalingu/services/prompt_service.dart' as _i557;
 import 'package:vitalingu/services/scope_manager_service.dart' as _i830;
 import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart'
     as _i256;
@@ -54,6 +56,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i830.ScopeManagerService>(() => _i830.ScopeManagerService());
     gh.singleton<_i621.AppSettingsService>(
         () => _i621.AppSettingsService(gh<_i185.AppSettingsDatabase>()));
+    gh.factory<_i557.PromptService>(() => _i557.PromptService(
+        geminiPromptService: gh<_i657.GeminiPromptService>()));
     gh.singleton<_i1009.LanguageSettingsService>(() =>
         _i1009.LanguageSettingsService(gh<_i490.LanguageSettingsDatabase>()));
     gh.singleton<_i19.NavigationService>(

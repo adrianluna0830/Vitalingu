@@ -5,7 +5,7 @@ import 'package:vitalingu/services/word_prompts_service.dart';
 class LanguageSessionScopeSettings {
   final Language targetLanguage;
   final LanguageSettings languageSettings;
-  final WordPromptsService wordPromptsService;
+  final SelectableTextService wordPromptsService;
 
   const LanguageSessionScopeSettings({
     required this.targetLanguage,

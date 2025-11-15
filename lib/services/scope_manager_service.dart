@@ -13,7 +13,7 @@ class ScopeManagerService {
   static const String userConfigScopeName = 'user-config-session';
   static const String languageScopeName = 'language-session';
 
-  Future<void> createUserConfigScope(
+  Future<void> createMainScope(
       String geminiApiKey, String pixabayApiKey) async {
     if (getIt.hasScope(userConfigScopeName)) {
       await getIt.popScopesTill(userConfigScopeName);
@@ -38,7 +38,7 @@ class ScopeManagerService {
       await getIt.popScopesTill(languageScopeName);
     }
 
-    WordPromptsService wordPromptsService = WordPromptsService(
+    SelectableTextService wordPromptsService = SelectableTextService(
       nativeLanguage: nativeLanguage,
       targetLanguage: targetLanguage,
       languageWord: languageWord,
@@ -57,7 +57,7 @@ class ScopeManagerService {
       init: (getIt) async {
         getIt.registerSingleton<LanguageSessionScopeSettings>(
             languageSessionScopeSettings);
-        getIt.registerSingleton<WordPromptsService>(wordPromptsService);
+        getIt.registerSingleton<SelectableTextService>(wordPromptsService);
       },
     );
   }

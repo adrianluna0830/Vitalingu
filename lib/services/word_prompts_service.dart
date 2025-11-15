@@ -3,13 +3,13 @@ import 'package:vitalingu/services/gemini_prompt_service.dart';
 import 'package:vitalingu/word/word.dart';
 
 
-class WordPromptsService {
+class SelectableTextService {
   final Language nativeLanguage;
   final Language targetLanguage;
   final Word languageWord;
   final GeminiPromptService geminiPromptService;
 
-  WordPromptsService({
+  SelectableTextService({
     required this.nativeLanguage,
     required this.targetLanguage,
     required this.languageWord,

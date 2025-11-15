@@ -20,7 +20,7 @@ class AppStartupLoadingViewModel extends ViewModelBase {
       return;
     }
 
-    await scopeManagerService.createUserConfigScope( appSettings.geminiApiKey, appSettings.pixabayApiKey);
+    await scopeManagerService.createMainScope( appSettings.geminiApiKey, appSettings.pixabayApiKey);
 
     await navigationService.replaceWithSelectLanguageView();
   }
