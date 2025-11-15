@@ -3,7 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/services/selectable_text_service.dart';
 import 'package:vitalingu/viewmodels/language_view_model.dart';
-import 'package:vitalingu/widgets/target_language_selectable_text.dart';
+import 'package:vitalingu/widgets/custom_selectable_text.dart';
 
 @RoutePage()
 class LanguageView extends StatefulWidget {
@@ -24,14 +24,7 @@ class _LanguageViewState extends State<LanguageView> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: TargetLanguageSelectableText(
-              fullText: text ,
-              onTranslate: (String expandedSelection, String textContext) {getIt<SelectableTextService>().getTranslation(textContext, "Ge"); },
-              onExplainDoubt: (String expandedSelection, String textContext) {},
-              onWordInfo: (String expandedSelection, String textContext) { },
-            ),
-          ),
+
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {

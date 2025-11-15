@@ -4,10 +4,10 @@ import 'package:injectable/injectable.dart';
 import 'package:vitalingu/injection.dart';
 
 @injectable
-class TargetLanguageSelectableTextController {
+class CustomSelectableTextController {
 
 
-  TargetLanguageSelectableTextController();
+  CustomSelectableTextController();
 
   bool isEmptyOrPunctuation(String text) {
     if (text.trim().isEmpty) return true;
@@ -166,13 +166,13 @@ class TargetLanguageSelectableTextController {
   }
 }
 
-class TargetLanguageSelectableText extends StatefulWidget {
+class CustomSelectableText extends StatefulWidget {
   final String fullText;
-  final void Function(String selection, String selectionContext) onTranslate;
-  final void Function(String selection, String selectionContext) onExplainDoubt;
-  final void Function(String selection, String selectionContext) onWordInfo;
+  final Future<void> Function(String selection, String selectionContext) onTranslate;
+  final Future<void> Function(String selection, String selectionContext) onExplainDoubt;
+  final Future<void> Function(String selection, String selectionContext) onWordInfo;
 
-  const TargetLanguageSelectableText({
+  const CustomSelectableText({
     super.key,
     required this.onTranslate,
     required this.onExplainDoubt,
@@ -181,11 +181,11 @@ class TargetLanguageSelectableText extends StatefulWidget {
   });
 
   @override
-  State<TargetLanguageSelectableText> createState() => _TargetLanguageSelectableTextState();
+  State<CustomSelectableText> createState() => _CustomSelectableTextState();
 }
 
-class _TargetLanguageSelectableTextState extends State<TargetLanguageSelectableText> {
-  final _controller = getIt<TargetLanguageSelectableTextController>();
+class _CustomSelectableTextState extends State<CustomSelectableText> {
+  final _controller = getIt<CustomSelectableTextController>();
   final _focusNode = FocusNode();
 
   @override
@@ -236,11 +236,11 @@ class _TargetLanguageSelectableTextState extends State<TargetLanguageSelectableT
 }
 
 class _CustomTextSelectionControls extends TextSelectionControls {
-  final TargetLanguageSelectableTextController controller;
+  final CustomSelectableTextController controller;
   final String fullText;
-  final void Function(String, String) onTranslate;
-  final void Function(String, String) onExplainDoubt;
-  final void Function(String, String) onWordInfo;
+  final Future<void> Function(String, String) onTranslate;
+  final Future<void> Function(String, String) onExplainDoubt;
+  final Future<void> Function(String, String) onWordInfo;
   final FocusNode focusNode;
 
   _CustomTextSelectionControls({
@@ -310,7 +310,7 @@ class _CustomTextSelectionControls extends TextSelectionControls {
     WidgetsBinding.instance.addPostFrameCallback((_) => focusNode.unfocus());
   }
 
-  void _handleAction(VoidCallback action) {
+  void _handleAction(Future<void> Function() action) {
     action();
     focusNode.unfocus();
   }

@@ -1,18 +1,19 @@
+import 'package:vitalingu/models/settings.dart';
 import 'package:vitalingu/services/gemini_prompt_service.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class SelectableTextService {
   final GeminiPromptService geminiPromptService;
+  final NativeLanguage _nativeLanguage;
+  SelectableTextService(this._nativeLanguage, {required this.geminiPromptService});
   
-  SelectableTextService({required this.geminiPromptService});
-  
-  Future<String> getTranslation(String textToTranslate, String nativeLanguage) async {
+  Future<String> getTranslation(String textToTranslate) async {
     String prompt = """
 You are a language translation assistant. Your task is to translate and explain ONLY the text enclosed within angle brackets <>.
 
 CRITICAL RULES:
-- Respond EXCLUSIVELY in $nativeLanguage
+- Respond EXCLUSIVELY in ${_nativeLanguage.language!.nativeLanguageName}
 - The text inside <> may be a single word or multiple words
 - Provide ONLY: [Translation] + brief contextual explanation
 - NO introductory phrases like "This means", "The translation is", etc.
@@ -39,12 +40,12 @@ Now provide your response for the INPUT TEXT above:
     return response;
   }
   
-  Future<String> explainDoubt(String textToExplain, String doubt, String nativeLanguage) async {
+  Future<String> explainDoubt(String textToExplain, String doubt) async {
     String prompt = """
 You are a language learning tutor helping students understand specific concepts in context.
 
 CRITICAL RULES:
-- Respond EXCLUSIVELY in $nativeLanguage
+- Respond EXCLUSIVELY in ${_nativeLanguage.language!.nativeLanguageName}
 - Focus ONLY on explaining the text inside <>
 - Address the specific doubt raised by the student
 - Be clear, pedagogical, and encouraging
