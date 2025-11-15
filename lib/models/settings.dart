@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/models/language_settings.dart';
-import 'package:vitalingu/word/english_word.dart';
 import 'package:vitalingu/word/word.dart';
 
 @lazySingleton

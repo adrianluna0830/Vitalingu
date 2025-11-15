@@ -1,5 +1,4 @@
 import 'package:injectable/injectable.dart';
-import 'package:sembast/sembast.dart';
 import 'package:vitalingu/database/database_interface.dart';
 import 'package:vitalingu/database/sembast_database.dart';
 import 'package:vitalingu/models/language_settings.dart';

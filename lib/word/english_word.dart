@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:vitalingu/word/word.dart';
-import 'dart:convert';
 
 part 'english_word.mapper.dart';
 
@@ -85,6 +84,5 @@ class EnglishWord extends Word with EnglishWordMappable {
   }
   
   @override
-  // TODO: implement copyWith
   EnglishWordCopyWith<EnglishWord, EnglishWord, EnglishWord> get copyWith => throw UnimplementedError();
 }
