@@ -1,5 +1,4 @@
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/services/app_settings_service.dart';
 import 'package:vitalingu/services/language_settings_service.dart';
