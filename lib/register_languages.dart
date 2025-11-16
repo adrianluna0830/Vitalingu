@@ -1,6 +1,7 @@
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/word/english_word.dart';
 import 'package:vitalingu/word/german_word.dart';
+import 'package:vitalingu/word/spanish_word.dart';
 import 'package:vitalingu/word/word.dart';
 
 class LanguageRegistry {
@@ -13,6 +14,10 @@ class LanguageRegistry {
       bcp47Code: "de-DE",
       nativeLanguageName: "Deutsch",
     ): (GermanWord.jsonWordPrompt(), GermanWord.fromJsonStatic),
+    const Language(
+      bcp47Code: "es-MX",
+      nativeLanguageName: "Español",
+    ): (SpanishWord.jsonWordPrompt(), SpanishWord.fromJsonStatic),
   };
 
   static List<Language> get languages => List.unmodifiable(_languageWordMap.keys);

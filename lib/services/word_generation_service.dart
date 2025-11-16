@@ -21,10 +21,45 @@ class WordGenerationService {
     return null;
   }
 
-  Future<String> _getWordLema(String word) async {
-    String prompt = "Return the word lema for the word '$word' in ${_targetLanguage.language!.nativeLanguageName} language.";
-    return await _geminiPromptService.generatePrompt(prompt);
+Future<String> _getWordLema(String word) async {
+  final String prompt = """
+Return only the base form (lemma) of the given word in the language: ${_targetLanguage.language!.nativeLanguageName}.
+Expected output: only the base form of the word, no explanations or additional text.
+
+Example:
+Input: "conjugated form"
+Output: "word lemma (only one word)"
+
+Now transform:
+Input: "$word"
+Do not add anything before or after the word lemma.
+""";
+
+  final String raw = await _geminiPromptService.generatePrompt(prompt);
+  return raw.trim();
+}
+
+/// Cleans the raw output from the GeminiPromptService to ensure valid JSON.
+String _cleanOutput(String rawOutput) {
+  // Trim whitespace and remove unexpected characters
+  String cleanedOutput = rawOutput.trim();
+
+  // Ensure the output starts and ends with valid JSON brackets
+  if (!cleanedOutput.startsWith('{')) {
+    int startIndex = cleanedOutput.indexOf('{');
+    if (startIndex != -1) {
+      cleanedOutput = cleanedOutput.substring(startIndex);
+    }
   }
+  if (!cleanedOutput.endsWith('}')) {
+    int endIndex = cleanedOutput.lastIndexOf('}');
+    if (endIndex != -1) {
+      cleanedOutput = cleanedOutput.substring(0, endIndex + 1);
+    }
+  }
+
+  return cleanedOutput;
+}
 
   String _getWordPrompt(String wordLema) {
     String initialPrompt =
@@ -42,20 +77,20 @@ class WordGenerationService {
   }
 
   Future<Word> getWord(String word) async {
-    Word? wordInDatabase = await _getWordInDatabase(word);
-    if (wordInDatabase != null) {
-      return wordInDatabase;
-    }
+    // Word? wordInDatabase = await _getWordInDatabase(word);
+    // if (wordInDatabase != null) {
+    //   return wordInDatabase;
+    // }
 
     String wordLema = await _getWordLema(word);
     String wordPrompt = _getWordPrompt(wordLema);
 
     String geminiPrompt = await _geminiPromptService.generatePrompt(wordPrompt);
-    return _languageWord.fromJson!(geminiPrompt);
-  }
+    print(geminiPrompt);
 
-  void test()
-  {
-    print(_languageWord.wordJsonPrompt);
+    // Clean the output before parsing
+    String cleanedOutput = _cleanOutput(geminiPrompt);
+
+    return _languageWord.fromJson!(cleanedOutput);
   }
 }
