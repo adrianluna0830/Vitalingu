@@ -51,6 +51,7 @@ dependencies:
   json_annotation: ^4.9.0
   df_safer_dart: ^0.17.8
   string_extensions: ^0.1.4
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
