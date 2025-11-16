@@ -52,6 +52,7 @@ dependencies:
   df_safer_dart: ^0.17.8
   string_extensions: ^0.1.4
   shimmer: ^3.0.0
+  fpdart: ^1.2.0
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,11 @@
-import 'package:df_safer_dart/df_safer_dart.dart';
+import 'package:fpdart/fpdart.dart'; 
 import 'package:vitalingu/models/settings.dart';
 import 'package:vitalingu/services/gemini_prompt_service.dart';
 import 'package:vitalingu/word/word.dart';
 import 'package:injectable/injectable.dart';
 import 'dart:convert';
 import 'package:string_extensions/string_extensions.dart';
+
 @injectable
 class WordGenerationService {
   final NativeLanguage _nativeLanguage;
@@ -19,8 +20,8 @@ class WordGenerationService {
         _targetLanguage = targetLanguage,
         _nativeLanguage = nativeLanguage;
 
-  Future<Word?> _getWordInDatabase(String word) async {
-    return null;
+  TaskOption<Word> _getWordInDatabase(String word) {
+    return TaskOption.fromNullable(null);
   }
 
   Future<String> _getWordLema(WordGenerationInput word) async {
@@ -76,22 +77,49 @@ ${Word.wordJsonPrompt()}
 """;
   }
 
-  Future<Word> getWord(WordGenerationInput word) async {
-    String wordLema = await _getWordLema(word);
-    String wordPrompt = _getWordPrompt(wordLema);
+  TaskEither<String, Word> getWord(WordGenerationInput word) {
+    return TaskEither.Do(
+      ($) async {
+        final String wordLema = await $(
+          TaskEither.tryCatch(
+            () => _getWordLema(word),
+            (error, stackTrace) => 'Error getting lemma: $error',
+          ),
+        );
 
-    String geminiPrompt = await _geminiPromptService.generatePrompt(wordPrompt);
-    print(geminiPrompt);
+        final String wordPrompt = _getWordPrompt(wordLema);
 
-    String cleanedOutput = _cleanOutput(geminiPrompt);
+        final String geminiPrompt = await $(
+          TaskEither.tryCatch(
+            () => _geminiPromptService.generatePrompt(wordPrompt),
+            (error, stackTrace) => 'Error calling Gemini: $error',
+          ),
+        );
 
-    final Map<String, dynamic> jsonMap = jsonDecode(cleanedOutput);
-    return Word.fromJson(jsonMap);
+        final String cleanedOutput = _cleanOutput(geminiPrompt);
+
+        final Map<String, dynamic> jsonMap = await $(
+          Either.tryCatch(
+            () => jsonDecode(cleanedOutput) as Map<String, dynamic>,
+            (error, stackTrace) =>
+                'Error decoding JSON: $error. Raw output: $cleanedOutput',
+          ).toTaskEither(),
+        );
+
+        final Word finalWord = await $(
+          Either.tryCatch(
+            () => Word.fromJson(jsonMap),
+            (error, stackTrace) => 'Error parsing Word: $error. JSON: $jsonMap',
+          ).toTaskEither(),
+        );
+
+        return finalWord;
+      },
+    );
   }
 }
 
-class WordGenerationInput
-{
+class WordGenerationInput {
   final String word;
   final String wordBracketedInfullText;
   WordGenerationInput._({
@@ -99,28 +127,25 @@ class WordGenerationInput
     required this.wordBracketedInfullText,
   });
 
-  static Result<WordGenerationInput> create({
+  static Either<String, WordGenerationInput> create({
     required String word,
     required String fullContext,
   }) {
-    if(word.isEmpty)
-    {
-      return Err("WordGenerationInput word cannot be empty.");
+    if (word.isEmpty) {
+      return Left("WordGenerationInput word cannot be empty.");
     }
-    if(word.countWords() > 1)
-    {
-      return Err("WordGenerationInput can only accept a single word.");
+    if (word.countWords() > 1) {
+      return Left("WordGenerationInput can only accept a single word.");
     }
-    if(fullContext.isEmpty)
-    {
-      return Err("WordGenerationInput fullContext cannot be empty.");
+    if (fullContext.isEmpty) {
+      return Left("WordGenerationInput fullContext cannot be empty.");
     }
     final regex = RegExp(r'<.*?>');
     if (!regex.hasMatch(fullContext)) {
-      return Err("WordGenerationInput fullContext must contain '<' and '>' characters in the correct order.");
+      return Left("WordGenerationInput fullContext must contain '<' and '>' characters in the correct order.");
     }
 
-    return Ok(WordGenerationInput._(
+    return Right(WordGenerationInput._(
       word: word,
       wordBracketedInfullText: fullContext,
     ));
