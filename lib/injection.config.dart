@@ -20,6 +20,7 @@ import 'package:vitalingu/services/gemini_prompt_service.dart' as _i657;
 import 'package:vitalingu/services/language_settings_service.dart' as _i1009;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
 import 'package:vitalingu/services/pixabay_service.dart' as _i626;
+import 'package:vitalingu/services/selectable_text_service.dart' as _i593;
 import 'package:vitalingu/services/settings_service.dart' as _i763;
 import 'package:vitalingu/services/word_generation_service.dart' as _i196;
 import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart'
@@ -79,6 +80,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i763.SettingsService>(),
           navigationService: gh<_i19.NavigationService>(),
         ));
+    gh.factory<_i593.SelectableTextService>(
+        () => _i593.SelectableTextService(gh<_i657.GeminiPromptService>()));
     gh.factory<_i256.AppStartupLoadingViewModel>(
         () => _i256.AppStartupLoadingViewModel(
               settingsService: gh<_i763.SettingsService>(),
