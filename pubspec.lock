@@ -201,6 +201,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  df_safer_dart:
+    dependency: "direct main"
+    description:
+      name: df_safer_dart
+      sha256: b2458b88cbe340cfb6e11f8eabc965c78cfc39852039286c057fc27570d803e9
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.17.8"
+  df_safer_dart_annotations:
+    dependency: transitive
+    description:
+      name: df_safer_dart_annotations
+      sha256: "154f0f7f579190a9ab8f89b0de0235e6500f46fcc3b1f2feacf8599f58fe66b2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
+  df_type:
+    dependency: transitive
+    description:
+      name: df_type
+      sha256: ab3da91736d106264df283a91e8f0cc56372f55ff96f871062327971488ebb18
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.14.2"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: "567c64b3cb4cf82397aac55f4f0cbd3ca20d77c6c03bedbc4ceaddc08904aef7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   fake_async:
     dependency: transitive
     description:
@@ -749,6 +781,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  string_extensions:
+    dependency: "direct main"
+    description:
+      name: string_extensions
+      sha256: f528763cbd60ebcd37c500624300cbde27995a60060809785d85d60b4e2dbb0a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   string_scanner:
     dependency: transitive
     description:
