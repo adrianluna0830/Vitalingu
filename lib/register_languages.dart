@@ -1,40 +1,30 @@
 import 'package:vitalingu/language/language.dart';
-import 'package:vitalingu/word/english_word.dart';
-import 'package:vitalingu/word/german_word.dart';
-import 'package:vitalingu/word/spanish_word.dart';
-import 'package:vitalingu/word/word.dart';
 
 class LanguageRegistry {
-  static final Map<Language, (String, Word Function(String))> _languageWordMap = {
+  static final List<Language>_languagePromptMap = [
     const Language(
       bcp47Code: "en-US",
       nativeLanguageName: "English",
-    ): (EnglishWord.jsonWordPrompt(), EnglishWord.fromJsonStatic),
+    ),
     const Language(
       bcp47Code: "de-DE",
       nativeLanguageName: "Deutsch",
-    ): (GermanWord.jsonWordPrompt(), GermanWord.fromJsonStatic),
+    ),
     const Language(
       bcp47Code: "es-MX",
       nativeLanguageName: "Español",
-    ): (SpanishWord.jsonWordPrompt(), SpanishWord.fromJsonStatic),
-  };
+    ),
+  ];
 
-  static List<Language> get languages => List.unmodifiable(_languageWordMap.keys);
+  static List<Language> get languages => List.unmodifiable(_languagePromptMap);
   
   static Language? getLanguageByCode(String bcp47Code) {
     try {
-      return _languageWordMap.keys.firstWhere((lang) => lang.bcp47Code == bcp47Code);
+      return _languagePromptMap.firstWhere((lang) => lang.bcp47Code == bcp47Code);
     } catch (e) {
       return null;
     }
   }
 
-  static String? getJsonWordPromptForLanguage(Language language) {
-    return _languageWordMap[language]?.$1;
-  }
 
-  static Word Function(String)? getFromJsonForLanguage(Language language) {
-    return _languageWordMap[language]?.$2;
-  }
 }

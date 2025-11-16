@@ -51,7 +51,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i688.NativeLanguage>(() => _i688.NativeLanguage());
     gh.lazySingleton<_i688.SessionTargetLanguage>(
         () => _i688.SessionTargetLanguage());
-    gh.lazySingleton<_i688.SessionWord>(() => _i688.SessionWord());
     gh.singleton<_i1009.LanguageSettingsService>(() =>
         _i1009.LanguageSettingsService(
             gh<_i855.DatabaseInterface<_i973.LanguageSettings>>()));
@@ -70,16 +69,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i196.WordGenerationService>(() => _i196.WordGenerationService(
           nativeLanguage: gh<_i688.NativeLanguage>(),
           targetLanguage: gh<_i688.SessionTargetLanguage>(),
-          languageWord: gh<_i688.SessionWord>(),
           geminiPromptService: gh<_i657.GeminiPromptService>(),
         ));
-    gh.factory<_i914.SelectLanguageViewModel>(
-        () => _i914.SelectLanguageViewModel(
-              gh<_i688.SessionTargetLanguage>(),
-              gh<_i688.SessionWord>(),
-              languageSettingsService: gh<_i1009.LanguageSettingsService>(),
-              navigationService: gh<_i19.NavigationService>(),
-            ));
     gh.factory<_i587.SettingsViewModel>(() => _i587.SettingsViewModel(
           gh<_i688.GeminiSettings>(),
           gh<_i688.PixabaySettings>(),
@@ -91,6 +82,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i256.AppStartupLoadingViewModel>(
         () => _i256.AppStartupLoadingViewModel(
               settingsService: gh<_i763.SettingsService>(),
+              navigationService: gh<_i19.NavigationService>(),
+            ));
+    gh.factory<_i914.SelectLanguageViewModel>(
+        () => _i914.SelectLanguageViewModel(
+              gh<_i688.SessionTargetLanguage>(),
+              languageSettingsService: gh<_i1009.LanguageSettingsService>(),
               navigationService: gh<_i19.NavigationService>(),
             ));
     return this;

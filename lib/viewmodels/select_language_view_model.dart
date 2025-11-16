@@ -12,11 +12,9 @@ class SelectLanguageViewModel extends ViewModelBase {
   List<Language> get availableLanguages => LanguageRegistry.languages;
 
   final SessionTargetLanguage targetLanguage;
-  final SessionWord sessionWord;
 
   SelectLanguageViewModel(
-    this.targetLanguage,
-    this.sessionWord, {
+    this.targetLanguage, {
     required LanguageSettingsService languageSettingsService,
     required super.navigationService
   }) : _languageSettingsService = languageSettingsService;
@@ -24,10 +22,7 @@ class SelectLanguageViewModel extends ViewModelBase {
   Future<void> selectLanguage(Language targetLanguage) async {
     this.targetLanguage.language = targetLanguage;
     this.targetLanguage.languageSettings = await getLanguageSettings(targetLanguage.bcp47Code);
-    
-    sessionWord.wordJsonPrompt = LanguageRegistry.getJsonWordPromptForLanguage(targetLanguage) ?? '';
-    sessionWord.fromJson = LanguageRegistry.getFromJsonForLanguage(targetLanguage);
-    
+
     await navigationService.goToLanguageView();
   }
 

@@ -32,8 +32,3 @@ class SessionTargetLanguage {
 
 }
 
-@lazySingleton
-class SessionWord {
-  String wordJsonPrompt = '';
-  Word Function(String)? fromJson;
-}
