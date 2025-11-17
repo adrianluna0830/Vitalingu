@@ -8,6 +8,7 @@ class CustomOverlay {
 
   void showOverlay(BuildContext context) {
     final overlay = Overlay.of(context);
+    final size = MediaQuery.of(context).size;
 
     _overlayEntry = OverlayEntry(
       builder: (context) => Stack(
@@ -20,11 +21,19 @@ class CustomOverlay {
               ),
             ),
           ),
-          Material(
-            color: Colors.transparent,
+          Positioned.fill(
             child: Padding(
               padding: const EdgeInsets.all(30.0),
-              child: myWidget,
+              child: Material(
+                color: Colors.transparent,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: size.width - 60,
+                    maxHeight: size.height - 60,
+                  ),
+                  child: myWidget,
+                ),
+              ),
             ),
           ),
         ],

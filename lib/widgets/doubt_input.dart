@@ -16,6 +16,7 @@ class DoubtInput extends StatefulWidget {
 
 class _DoubtInputState extends State<DoubtInput> {
   final TextEditingController _controller = TextEditingController();
+  
   @override
   void dispose() {
     _controller.dispose();
@@ -24,51 +25,54 @@ class _DoubtInputState extends State<DoubtInput> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: constraints.maxHeight * 0.3, // 30% of the parent
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 8.0,
-                  offset: Offset(0, 2),
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        constraints: BoxConstraints(maxHeight: 300),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  onPressed: widget.onClose,
+                  icon: const Icon(Icons.close),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
                 ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end, // Align close button to the right
-                children: [
-                  IconButton(
-                    onPressed: widget.onClose,
-                    icon: const Icon(Icons.close),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      labelText: 'Enter your doubt',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  ElevatedButton(
-                    onPressed: () => widget.onSubmit(_controller.text),
-                    child: const Text('Submit'),
-                  ),
-                ],
               ),
-            ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _controller,
+                decoration: const InputDecoration(
+                  labelText: 'Enter your doubt',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 3,
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () => widget.onSubmit(_controller.text),
+                child: const Text('Submit'),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
