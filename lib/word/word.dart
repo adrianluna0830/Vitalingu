@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/widgets.dart';
 
 class WordExample {
   final String untranslatedExample;
@@ -21,49 +20,6 @@ class WordDefinition {
     required this.partOfSpeech,
     required this.examples,
   });
-
-  Widget getDefinitionWidget(String word) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Word: $word',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 8),
-        Text(
-          'Meaning: $meaning',
-          style: TextStyle(fontSize: 16),
-        ),
-        SizedBox(height: 8),
-        Text(
-          'Part of Speech: $partOfSpeech',
-          style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-        ),
-        SizedBox(height: 8),
-        Text(
-          'Examples:',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        ...examples.map((example) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Untranslated: ${example.untranslatedExample}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Translated: ${example.translatedExample}',
-                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-                  ),
-                ],
-              ),
-            )),
-      ],
-    );
-  }
 }
 
 class Word {
@@ -128,11 +84,5 @@ class Word {
         };
       }).toList(),
     };
-  }
-
-  List<Widget> getWordWidgets() {
-    return definitions
-        .map((definition) => definition.getDefinitionWidget(wordLema))
-        .toList();
   }
 }
