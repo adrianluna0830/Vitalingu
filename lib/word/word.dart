@@ -12,19 +12,25 @@ class WordExample {
 
 class WordDefinition {
   final String meaning;
-  final String imagePromptDescription; // Descripción utilizada para representar visualmente el significado de la palabra
+  final String imagePromptDescription; 
   final String partOfSpeech;
   final List<WordExample> examples;
+  String? imageUrl;
 
   WordDefinition({
     required this.imagePromptDescription, 
-    // Este campo contiene una descripción que puede ser utilizada para generar una representación visual del significado de la palabra.
-    // No necesariamente es la palabra en sí, sino una descripción que captura el concepto o la esencia del significado.
-    // Por ejemplo, puede ser útil para APIs que generan imágenes basadas en descripciones textuales.
+  
     required this.meaning,
     required this.partOfSpeech,
     required this.examples,
   });
+
+   @override
+  int get imageHashCode => Object.hash(
+        meaning,
+        imagePromptDescription,
+        partOfSpeech,
+      );
 }
 
 class Word {
@@ -62,8 +68,6 @@ static String wordJsonPrompt() {
           .map((e) => WordDefinition(
                 meaning: e['meaning'] as String,
                 imagePromptDescription: e['imagePromptDescription'] as String, 
-                // Este campo contiene una descripción textual que puede ser utilizada para representar visualmente el significado de la palabra.
-                // Es útil en contextos donde se necesita una interpretación gráfica o conceptual del significado.
                 partOfSpeech: e['partOfSpeech'] as String,
                 examples: (e['examples'] as List<dynamic>)
                     .map((ex) => WordExample(
@@ -83,8 +87,6 @@ static String wordJsonPrompt() {
         return {
           'meaning': definition.meaning,
           'imagePromptDescription': definition.imagePromptDescription, 
-          // Este campo se utiliza para proporcionar una descripción textual que puede ser interpretada visualmente.
-          // Es útil para generar representaciones gráficas o conceptuales del significado de la palabra.
           'partOfSpeech': definition.partOfSpeech,
           'examples': definition.examples.map((example) {
             return {
