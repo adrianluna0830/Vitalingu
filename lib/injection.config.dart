@@ -80,8 +80,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i763.SettingsService>(),
           navigationService: gh<_i19.NavigationService>(),
         ));
-    gh.factory<_i593.SelectableTextService>(
-        () => _i593.SelectableTextService(gh<_i657.GeminiPromptService>()));
+    gh.factory<_i593.SelectableTextService>(() => _i593.SelectableTextService(
+          gh<_i688.NativeLanguage>(),
+          gh<_i688.SessionTargetLanguage>(),
+          gh<_i657.GeminiPromptService>(),
+        ));
     gh.factory<_i256.AppStartupLoadingViewModel>(
         () => _i256.AppStartupLoadingViewModel(
               settingsService: gh<_i763.SettingsService>(),

@@ -19,11 +19,6 @@ class CustomSelectableText extends StatelessWidget {
     required this.wordInfoCallback,
   });
 
-  String _getSelectedText(EditableTextState editableTextState) {
-    final selection = editableTextState.textEditingValue.selection;
-    final fullText = editableTextState.textEditingValue.text;
-    return selection.textInside(fullText);
-  }
 
   String _getExpandedSelection(EditableTextState editableTextState) {
     final selection = editableTextState.textEditingValue.selection;
