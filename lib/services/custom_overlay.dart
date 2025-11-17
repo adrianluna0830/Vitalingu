@@ -3,13 +3,13 @@ import 'package:injectable/injectable.dart';
 
 @singleton
 class CustomOverlay {
-  final List<OverlayEntry> _overlays = []; // List to store OverlayEntry objects
+  final List<OverlayEntry> _overlays = [];
 
   OverlayEntry showOverlay(BuildContext context, Widget myWidget, {bool alwaysFill = false}) {
     final overlay = Overlay.of(context);
     final size = MediaQuery.of(context).size;
 
-    final bool isFirstOverlay = alwaysFill || _overlays.isEmpty; // Check if the list is empty
+    final bool isFirstOverlay = alwaysFill || _overlays.isEmpty;
 
     OverlayEntry _overlayEntry = OverlayEntry(
       builder: (context) => Stack(
@@ -19,7 +19,7 @@ class CustomOverlay {
               child: GestureDetector(
                 onTap: () {},
                 child: Container(
-                  color: Colors.black.withAlpha(76), // Fixed typo in alpha
+                  color: Colors.black.withAlpha(76),
                 ),
               ),
             ),
@@ -43,19 +43,19 @@ class CustomOverlay {
     );
 
     overlay.insert(_overlayEntry);
-    _overlays.add(_overlayEntry); // Add the OverlayEntry to the list
+    _overlays.add(_overlayEntry);
     return _overlayEntry;
   }
 
   void removeOverlay(OverlayEntry _overlayEntry) {
     _overlayEntry.remove();
-    _overlays.remove(_overlayEntry); // Remove the OverlayEntry from the list
+    _overlays.remove(_overlayEntry);
   }
 
   void removeAllOverlays() {
     for (final overlay in _overlays) {
-      overlay.remove(); // Remove each OverlayEntry
+      overlay.remove();
     }
-    _overlays.clear(); // Clear the list
+    _overlays.clear();
   }
 }

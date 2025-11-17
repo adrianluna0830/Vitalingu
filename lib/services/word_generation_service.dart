@@ -70,7 +70,8 @@ Do not add anything before or after the word lemma.
 Generate a JSON object for the word "$wordLema" in the following format:
 ${Word.wordJsonPrompt()}
 
-- The `wordLema` must be the base form of the word.
+- The `wordLema` must be the base form of the word in ${_targetLanguage.language!.nativeLanguageName}.
+- The `translatedWord` must be the literal translation of the word in ${_nativeLanguage.language!.nativeLanguageName}.
 - Include exactly $examplesCount examples for each definition.
 - All fields except `untranslatedExample` must be in ${_nativeLanguage.language!.nativeLanguageName}.
 - The `untranslatedExample` must be in ${_targetLanguage.language!.nativeLanguageName}.
@@ -79,7 +80,7 @@ ${Word.wordJsonPrompt()}
 
   Future<Either<Exception, Word>> getWord(WordGenerationInput word) async {
     return TaskEither<Exception, Word>(() async {
-      // Get word lemma
+      // Get word lemma in target language
       final wordLemaEither = await _getWordLema(word);
       final wordLema = wordLemaEither.getOrElse((error) => throw error);
 

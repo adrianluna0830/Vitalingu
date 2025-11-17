@@ -14,22 +14,24 @@ class WordDefinition {
   final String meaning;
   final String imagePromptDescription; 
   final String partOfSpeech;
+  final String translatedWord; // New field
   final List<WordExample> examples;
   String? imageUrl;
 
   WordDefinition({
     required this.imagePromptDescription, 
-  
     required this.meaning,
     required this.partOfSpeech,
+    required this.translatedWord, // Initialize new field
     required this.examples,
   });
 
-   @override
+  @override
   int get imageHashCode => Object.hash(
         meaning,
         imagePromptDescription,
         partOfSpeech,
+        translatedWord, // Include new field in hash
       );
 }
 
@@ -50,6 +52,7 @@ static String wordJsonPrompt() {
           imagePromptDescription: '''SIMPLE visual description in English (maximum 5-8 words) representing the meaning. Use BASIC and COMMON objects or scenes. Keep it MINIMALIST. Example: for "happiness" -> "children smiling", for "book" -> "open book", for "speed" -> "fast car moving"''',
           meaning: "Meaning of this word in this specific context",
           partOfSpeech: "Part of speech of the word in this specific context",
+          translatedWord: "Literal translation of the word in the native language", // Example for new field
           examples: [
             WordExample(
               untranslatedExample: "A untranslated sentence example of the word in the target language",
@@ -69,6 +72,7 @@ static String wordJsonPrompt() {
                 meaning: e['meaning'] as String,
                 imagePromptDescription: e['imagePromptDescription'] as String, 
                 partOfSpeech: e['partOfSpeech'] as String,
+                translatedWord: e['translatedWord'] as String, // Deserialize new field
                 examples: (e['examples'] as List<dynamic>)
                     .map((ex) => WordExample(
                           untranslatedExample: ex['untranslatedExample'] as String,
@@ -88,6 +92,7 @@ static String wordJsonPrompt() {
           'meaning': definition.meaning,
           'imagePromptDescription': definition.imagePromptDescription, 
           'partOfSpeech': definition.partOfSpeech,
+          'translatedWord': definition.translatedWord, // Serialize new field
           'examples': definition.examples.map((example) {
             return {
               'untranslatedExample': example.untranslatedExample,

@@ -7,7 +7,7 @@ import 'package:vitalingu/services/word_generation_service.dart';
 import 'package:vitalingu/widgets/custom_selectable_text.dart';
 import 'package:vitalingu/widgets/doubt_input.dart';
 import 'package:vitalingu/widgets/text_response_output_widget.dart';
-import 'package:vitalingu/widgets/word_response_output.dart';
+import 'package:vitalingu/widgets/word_definition_display_container.dart'; 
 import 'package:vitalingu/widgets/word_widget.dart';
 
 class AiSelectableText extends StatefulWidget {
@@ -15,9 +15,13 @@ class AiSelectableText extends StatefulWidget {
     super.key,
     required this.text,
     this.onError,
+    this.textStyle,
   });
+  
   final String text;
   final void Function(Exception)? onError;
+  final TextStyle? textStyle;
+  
   @override
   State<AiSelectableText> createState() => _AiSelectableTextState();
 }
@@ -123,11 +127,13 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
   void _showWordInfo(
       String selection, String selectionBracketedInSentence) async {
     responseWidgetSignal.value = null;
-    _showOverlay(WordResponseOutput(
-      responseSignal: responseWidgetSignal,
-      onClose: _hideOverlay,
-      onCloseAll: _hideAllOverlays,
-    ));
+    _showOverlay(
+      WordDefinitionDisplayContainer(
+        wordContentSignal: responseWidgetSignal,
+        onNavigateBack: _hideOverlay,
+        onCloseAllWindows: _hideAllOverlays,
+      ),
+    );
 
     final val = WordGenerationInput.create(
         word: selection, fullContext: selectionBracketedInSentence);
@@ -145,7 +151,7 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
       (wordOutput) {
         final wordWidget = WordWidget(
           key: ValueKey(wordOutput.wordLema),
-          word: wordOutput,
+          wordData: wordOutput,
         );
         responseWidgetSignal.value = wordWidget;
       },
@@ -155,12 +161,13 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
   @override
   Widget build(BuildContext context) {
     return CustomSelectableText(
-        text: widget.text,
-        leftBracket: "<",
-        rightBracket: ">",
-        doubtCallback: _showDoubtInput,
-        translationCallback: _showTranslation,
-        wordInfoCallback: _showWordInfo);
+      text: widget.text,
+      leftBracket: "<",
+      rightBracket: ">",
+      doubtCallback: _showDoubtInput,
+      translationCallback: _showTranslation,
+      wordInfoCallback: _showWordInfo,
+      textStyle: widget.textStyle,
+    );
   }
 }
-

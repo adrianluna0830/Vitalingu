@@ -17,7 +17,10 @@ class CustomSelectableText extends StatelessWidget {
     required this.doubtCallback,
     required this.translationCallback,
     required this.wordInfoCallback,
+    this.textStyle, // Added textStyle parameter
   });
+
+  final TextStyle? textStyle; // Added textStyle field
 
 
   String _getExpandedSelection(EditableTextState editableTextState) {
@@ -129,7 +132,7 @@ class CustomSelectableText extends StatelessWidget {
   Widget build(BuildContext context) {
     return SelectableText(
       text,
-      style: const TextStyle(fontSize: 16, fontFamily: "Arial"),
+      style: textStyle ?? const TextStyle(fontSize: 16, fontFamily: "Arial"), // Use textStyle if provided
       contextMenuBuilder: (context, editableTextState) {
         final selection = editableTextState.textEditingValue.selection;
         final fullText = editableTextState.textEditingValue.text;
