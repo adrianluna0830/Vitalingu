@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:vitalingu/widgets/ai_selectable_text.dart';
+import 'package:vitalingu/managers/word_definition_manager.dart';
 
 @RoutePage()
 class LanguageView extends StatefulWidget {
@@ -12,11 +12,13 @@ class LanguageView extends StatefulWidget {
 
 class _LanguageViewState extends State<LanguageView> {
   final TextEditingController _wordController = TextEditingController();
+  final WordDefinitionManager _wordDefinitionManager = WordDefinitionManager();
 
-  @override
-  void dispose() {
-    _wordController.dispose();
-    super.dispose();
+  void _sendText() {
+    final text = _wordController.text;
+    if (text.isNotEmpty) {
+      _wordDefinitionManager.showWordDefinitionByUserPrompt(context, text);
+    }
   }
 
   @override
@@ -26,8 +28,22 @@ class _LanguageViewState extends State<LanguageView> {
         title: const Text('Language View'),
       ),
       body: Center(
-        child: AiSelectableText(
-          text: 'Hallo!\nIch heiße Lukas und ich komme aus Deutschland.\nIch wohne in Berlin und ich arbeite in einem Café.\nMeine Hobbys sind Musik hören und Fußball spielen.\nIch habe eine Schwester. Sie heißt Anna.\nAm Wochenende treffe ich meine Freunde. Wir gehen oft im Park spazieren.',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _wordController,
+              decoration: const InputDecoration(
+                labelText: 'Ingrese una palabra',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _sendText,
+              child: const Text('Enviar'),
+            ),
+          ],
         ),
       ),
     );

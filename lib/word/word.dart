@@ -14,7 +14,7 @@ class WordDefinition {
   final String meaning;
   final String imagePromptDescription; 
   final String partOfSpeech;
-  final String translatedWord; // New field
+  final String translatedWord; 
   final List<WordExample> examples;
   String? imageUrl;
 
@@ -22,7 +22,7 @@ class WordDefinition {
     required this.imagePromptDescription, 
     required this.meaning,
     required this.partOfSpeech,
-    required this.translatedWord, // Initialize new field
+    required this.translatedWord,
     required this.examples,
   });
 
@@ -31,7 +31,7 @@ class WordDefinition {
         meaning,
         imagePromptDescription,
         partOfSpeech,
-        translatedWord, // Include new field in hash
+        translatedWord, 
       );
 }
 
@@ -52,7 +52,7 @@ static String wordJsonPrompt() {
           imagePromptDescription: '''SIMPLE visual description in English (maximum 5-8 words) representing the meaning. Use BASIC and COMMON objects or scenes. Keep it MINIMALIST. Example: for "happiness" -> "children smiling", for "book" -> "open book", for "speed" -> "fast car moving"''',
           meaning: "Meaning of this word in this specific context",
           partOfSpeech: "Part of speech of the word in this specific context",
-          translatedWord: "Literal translation of the word in the native language", // Example for new field
+          translatedWord: "Literal translation of the word in the native language, preferrable one word but can be a short phrase if necessary",
           examples: [
             WordExample(
               untranslatedExample: "A untranslated sentence example of the word in the target language",

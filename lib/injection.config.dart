@@ -28,6 +28,7 @@ import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart'
     as _i256;
 import 'package:vitalingu/viewmodels/select_language_view_model.dart' as _i914;
 import 'package:vitalingu/viewmodels/settings_view_model.dart' as _i587;
+import 'package:vitalingu/widgets/custom_overlay_manager.dart' as _i290;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -45,6 +46,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.languageSettingsDatabase,
       preResolve: true,
     );
+    gh.factory<_i290.CustomOverlayManager>(() => _i290.CustomOverlayManager());
     gh.singleton<_i5.AppRouter>(() => _i5.AppRouter());
     gh.singleton<_i1047.CustomOverlay>(() => _i1047.CustomOverlay());
     gh.lazySingleton<_i688.GeminiSettings>(() => _i688.GeminiSettings());

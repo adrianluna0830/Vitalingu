@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/services/custom_overlay.dart';
 import 'package:vitalingu/services/selectable_text_service.dart';
-import 'package:vitalingu/services/word_generation_service.dart';
 import 'package:vitalingu/widgets/custom_selectable_text.dart';
 import 'package:vitalingu/widgets/doubt_input.dart';
 import 'package:vitalingu/widgets/text_response_output_widget.dart';
-import 'package:vitalingu/widgets/word_definition_display_container.dart'; 
-import 'package:vitalingu/widgets/word_widget.dart';
+import 'package:vitalingu/widgets/custom_overlay_manager.dart';
+import 'package:vitalingu/managers/word_definition_manager.dart';
 
 class AiSelectableText extends StatefulWidget {
   const AiSelectableText({
@@ -27,31 +25,14 @@ class AiSelectableText extends StatefulWidget {
 }
 
 class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
-  CustomOverlay overlaySingleton = getIt<CustomOverlay>();
-  OverlayEntry? overlayEntry;
+  final CustomOverlayManager _overlayManager = getIt<CustomOverlayManager>();
+  final WordDefinitionManager _wordDefinitionManager = WordDefinitionManager();
   late final responseSignal = createSignal<String?>(null);
   late final responseWidgetSignal = createSignal<Widget?>(null);
 
   final SelectableTextService _selectableTextService =
       getIt<SelectableTextService>();
-  final WordGenerationService _wordGenerationService =
-      getIt<WordGenerationService>();
 
-  void _showOverlay(Widget myWidget, {bool alwaysFill = false}) {
-    overlayEntry = overlaySingleton.showOverlay(context, myWidget, alwaysFill: alwaysFill);
-  }
-
-  void _hideOverlay() {
-    if (overlayEntry != null) {
-      overlaySingleton.removeOverlay(overlayEntry!);
-      overlayEntry = null;
-    }
-  }
-
-  void _hideAllOverlays() {
-    overlaySingleton.removeAllOverlays();
-    overlayEntry = null;
-  }
 
   void _handleError(Exception exception) {
     if (widget.onError != null) {
@@ -71,19 +52,20 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
   void _showTranslation(
       String selection, String selectionBracketedInSentence) async {
     responseSignal.value = null;
-    _showOverlay(
+    _overlayManager.showOverlay(
+      context,
       TextResponseOutputWidget(
-        onClose: _hideOverlay,
+        onClose: _overlayManager.hideOverlay,
         responseSignal: responseSignal,
       ),
       alwaysFill: true,
     );
     final responseEither = await _selectableTextService.getTranslationResponse(
         selection, selectionBracketedInSentence);
-    
+
     responseEither.fold(
       (exception) {
-        _hideOverlay();
+        _overlayManager.hideOverlay();
         _handleError(exception);
       },
       (response) {
@@ -94,24 +76,26 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
 
   void _showDoubtInput(
       String selection, String selectionBracketedInSentence) async {
-    _showOverlay(
+    _overlayManager.showOverlay(
+      context,
       DoubtInput(
         onSubmit: (doubt) async {
           responseSignal.value = null;
-          _hideOverlay();
-          _showOverlay(
+          _overlayManager.hideOverlay();
+          _overlayManager.showOverlay(
+            context,
             TextResponseOutputWidget(
-              onClose: _hideOverlay,
+              onClose: _overlayManager.hideOverlay,
               responseSignal: responseSignal,
             ),
             alwaysFill: true,
           );
           final responseEither = await _selectableTextService.getDoubtResponse(
               doubt, selection, selectionBracketedInSentence);
-          
+
           responseEither.fold(
             (exception) {
-              _hideOverlay();
+              _overlayManager.hideOverlay();
               _handleError(exception);
             },
             (response) {
@@ -119,43 +103,13 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
             },
           );
         },
-        onClose: _hideOverlay,
+        onClose: _overlayManager.hideOverlay,
       ),
     );
   }
 
-  void _showWordInfo(
-      String selection, String selectionBracketedInSentence) async {
-    responseWidgetSignal.value = null;
-    _showOverlay(
-      WordDefinitionDisplayContainer(
-        wordContentSignal: responseWidgetSignal,
-        onNavigateBack: _hideOverlay,
-        onCloseAllWindows: _hideAllOverlays,
-      ),
-    );
-
-    final val = WordGenerationInput.create(
-        word: selection, fullContext: selectionBracketedInSentence);
-
-    final input = val.getOrElse(
-        (error) => throw StateError('Invalid WordGenerationInput: $error'));
-
-    final generatedWordEither = await _wordGenerationService.getWord(input);
-    
-    generatedWordEither.fold(
-      (exception) {
-        _hideOverlay();
-        _handleError(exception);
-      },
-      (wordOutput) {
-        final wordWidget = WordWidget(
-          key: ValueKey(wordOutput.wordLema),
-          wordData: wordOutput,
-        );
-        responseWidgetSignal.value = wordWidget;
-      },
-    );
+  void _showWordInfo(String selection, String selectionBracketedInSentence) {
+    _wordDefinitionManager.showWordDefinition(context, selection, selectionBracketedInSentence);
   }
 
   @override
