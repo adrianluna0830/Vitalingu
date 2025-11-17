@@ -20,8 +20,8 @@ class WordGenerationService {
         _targetLanguage = targetLanguage,
         _nativeLanguage = nativeLanguage;
 
-  TaskOption<Word> _getWordInDatabase(String word) {
-    return TaskOption.fromNullable(null);
+  Future<Option<Word>> _getWordInDatabase(String word) async {
+    return none();
   }
 
   Future<String> _getWordLema(WordGenerationInput word) async {
@@ -77,51 +77,51 @@ ${Word.wordJsonPrompt()}
 """;
   }
 
-  TaskEither<String, Word> getWord(WordGenerationInput word) {
-    return TaskEither.Do(
-      ($) async {
-        final String wordLema = await $(
-          TaskEither.tryCatch(
-            () => _getWordLema(word),
-            (error, stackTrace) => 'Error getting lemma: $error',
-          ),
-        );
+  Future<Either<Exception, Word>> getWord(WordGenerationInput word) async {
+    try {
+      final String wordLema;
+      try {
+        wordLema = await _getWordLema(word);
+      } catch (error, stackTrace) {
+        return left(Exception('Error getting lemma: $error'));
+      }
 
-        final String wordPrompt = _getWordPrompt(wordLema);
+      final String wordPrompt = _getWordPrompt(wordLema);
 
-        final String geminiPrompt = await $(
-          TaskEither.tryCatch(
-            () => _geminiPromptService.generatePrompt(wordPrompt),
-            (error, stackTrace) => 'Error calling Gemini: $error',
-          ),
-        );
+      final String geminiPrompt;
+      try {
+        geminiPrompt = await _geminiPromptService.generatePrompt(wordPrompt);
+      } catch (error, stackTrace) {
+        return left(Exception('Error calling Gemini: $error'));
+      }
 
-        final String cleanedOutput = _cleanOutput(geminiPrompt);
+      final String cleanedOutput = _cleanOutput(geminiPrompt);
 
-        final Map<String, dynamic> jsonMap = await $(
-          Either.tryCatch(
-            () => jsonDecode(cleanedOutput) as Map<String, dynamic>,
-            (error, stackTrace) =>
-                'Error decoding JSON: $error. Raw output: $cleanedOutput',
-          ).toTaskEither(),
-        );
+      final Map<String, dynamic> jsonMap;
+      try {
+        jsonMap = jsonDecode(cleanedOutput) as Map<String, dynamic>;
+      } catch (error, stackTrace) {
+        return left(Exception('Error decoding JSON: $error. Raw output: $cleanedOutput'));
+      }
 
-        final Word finalWord = await $(
-          Either.tryCatch(
-            () => Word.fromJson(jsonMap),
-            (error, stackTrace) => 'Error parsing Word: $error. JSON: $jsonMap',
-          ).toTaskEither(),
-        );
+      final Word finalWord;
+      try {
+        finalWord = Word.fromJson(jsonMap);
+      } catch (error, stackTrace) {
+        return left(Exception('Error parsing Word: $error. JSON: $jsonMap'));
+      }
 
-        return finalWord;
-      },
-    );
+      return right(finalWord);
+    } catch (error, stackTrace) {
+      return left(Exception('Unexpected error during word generation: $error'));
+    }
   }
 }
 
 class WordGenerationInput {
   final String word;
   final String wordBracketedInfullText;
+  
   WordGenerationInput._({
     required this.word,
     required this.wordBracketedInfullText,

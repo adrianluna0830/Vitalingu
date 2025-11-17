@@ -48,6 +48,7 @@ class _WordWidgetState extends State<WordWidget> {
     return Container(
       padding: EdgeInsets.all(16),
       child: Column(
+        mainAxisSize: MainAxisSize.min, // Cambiado para evitar conflictos con restricciones infinitas
         children: [
           Text(
             widget.word.wordLema,
@@ -55,7 +56,8 @@ class _WordWidgetState extends State<WordWidget> {
           ),
           SizedBox(height: 20),
           
-          Expanded(
+          SizedBox( // Proporciona restricciones explícitas al PageView
+            height: 300, // Ajusta la altura según sea necesario
             child: Row(
               children: [
                 IconButton(
@@ -63,7 +65,7 @@ class _WordWidgetState extends State<WordWidget> {
                   icon: Icon(Icons.arrow_back),
                 ),
                 
-                Expanded(
+                Expanded( // Mantiene el PageView expandido dentro de un espacio finito
                   child: PageView.builder(
                     controller: _pageController,
                     onPageChanged: (index) {
@@ -74,38 +76,39 @@ class _WordWidgetState extends State<WordWidget> {
                     itemCount: widget.word.definitions.length,
                     itemBuilder: (context, index) {
                       final definition = widget.word.definitions[index];
-                      return Container(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Part of Speech: ${definition.partOfSpeech}'),
-                            SizedBox(height: 10),
-                            Text('Meaning: ${definition.meaning}'),
-                            SizedBox(height: 20),
-                            Text('Examples:', style: TextStyle(fontWeight: FontWeight.bold)),
-                            SizedBox(height: 10),
-                            ...definition.examples.map((example) {
-                              return Padding(
-                                padding: EdgeInsets.only(bottom: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('- ${example.untranslatedExample}'),
-                                    Text('  ${example.translatedExample}', 
-                                      style: TextStyle(fontStyle: FontStyle.italic)),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          ],
+                      return SingleChildScrollView( // Permite desplazarse si el contenido es muy grande
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Part of Speech: ${definition.partOfSpeech}'),
+                              SizedBox(height: 10),
+                              Text('Meaning: ${definition.meaning}'),
+                              SizedBox(height: 20),
+                              Text('Examples:', style: TextStyle(fontWeight: FontWeight.bold)),
+                              SizedBox(height: 10),
+                              ...definition.examples.map((example) {
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('- ${example.untranslatedExample}'),
+                                      Text('  ${example.translatedExample}', 
+                                        style: TextStyle(fontStyle: FontStyle.italic)),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ],
+                          ),
                         ),
                       );
                     },
                   ),
                 ),
                 
-                // Botón derecha
                 IconButton(
                   onPressed: _goToNextPage,
                   icon: Icon(Icons.arrow_forward),

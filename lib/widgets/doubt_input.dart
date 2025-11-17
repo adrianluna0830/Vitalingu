@@ -24,45 +24,51 @@ class _DoubtInputState extends State<DoubtInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          IconButton(
-            onPressed: widget.onClose,
-            icon: const Icon(Icons.close),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              labelText: 'Enter your doubt',
-              border: OutlineInputBorder(),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: constraints.maxHeight * 0.3, // 30% of the parent
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 8.0,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end, // Align close button to the right
+                children: [
+                  IconButton(
+                    onPressed: widget.onClose,
+                    icon: const Icon(Icons.close),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      labelText: 'Enter your doubt',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  ElevatedButton(
+                    onPressed: () => widget.onSubmit(_controller.text),
+                    child: const Text('Submit'),
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 15),
-          ElevatedButton(
-            onPressed: () => widget.onSubmit(_controller.text),
-            child: const Text('Submit'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

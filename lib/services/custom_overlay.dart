@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomOverlay {
-  final GlobalKey bodyKey;
   final Widget myWidget;
   OverlayEntry? _overlayEntry;
 
-  CustomOverlay({required this.bodyKey, required this.myWidget});
+  CustomOverlay({required this.myWidget});
 
   void showOverlay(BuildContext context) {
     final overlay = Overlay.of(context);
-
 
     _overlayEntry = OverlayEntry(
       builder: (context) => Stack(
@@ -22,12 +20,10 @@ class CustomOverlay {
               ),
             ),
           ),
-          Positioned(
-            left: 20,
-            right: 20,
-            bottom: 40,
-            child: Material(
-              color: Colors.transparent,
+          Material(
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
               child: myWidget,
             ),
           ),
