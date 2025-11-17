@@ -5,11 +5,13 @@ import 'package:signals/signals_flutter.dart';
 class WordResponseOutput extends StatelessWidget {
   final Signal<Widget?> responseSignal;
   final VoidCallback onClose;
+  final VoidCallback onCloseAll;
 
   const WordResponseOutput({
     super.key,
     required this.responseSignal,
     required this.onClose,
+    required this.onCloseAll,
   });
 
   @override
@@ -37,14 +39,22 @@ class WordResponseOutput extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: onClose,
-                  icon: const Icon(Icons.close),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: onClose,
+                    icon: const Icon(Icons.arrow_back),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                  IconButton(
+                    onPressed: onCloseAll,
+                    icon: const Icon(Icons.close),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
               Expanded(

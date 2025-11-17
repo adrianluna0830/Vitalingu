@@ -16,6 +16,7 @@ import 'package:vitalingu/di/modules.dart' as _i938;
 import 'package:vitalingu/models/language_settings.dart' as _i973;
 import 'package:vitalingu/models/settings.dart' as _i688;
 import 'package:vitalingu/router/app_router.dart' as _i5;
+import 'package:vitalingu/services/custom_overlay.dart' as _i1047;
 import 'package:vitalingu/services/gemini_prompt_service.dart' as _i657;
 import 'package:vitalingu/services/language_settings_service.dart' as _i1009;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
@@ -45,6 +46,7 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i5.AppRouter>(() => _i5.AppRouter());
+    gh.singleton<_i1047.CustomOverlay>(() => _i1047.CustomOverlay());
     gh.lazySingleton<_i688.GeminiSettings>(() => _i688.GeminiSettings());
     gh.lazySingleton<_i688.PixabaySettings>(() => _i688.PixabaySettings());
     gh.lazySingleton<_i688.MicrosoftSpeechSettings>(

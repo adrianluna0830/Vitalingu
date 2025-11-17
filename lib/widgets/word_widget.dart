@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vitalingu/widgets/ai_selectable_text.dart';
 import 'package:vitalingu/word/word.dart';
 
 class WordWidget extends StatefulWidget {
@@ -52,14 +53,12 @@ class _WordWidgetState extends State<WordWidget> {
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 20),
-        
         Row(
           children: [
             IconButton(
               onPressed: _goToPreviousPage,
               icon: Icon(Icons.arrow_back),
             ),
-            
             Expanded(
               child: SizedBox(
                 height: 300,
@@ -91,7 +90,7 @@ class _WordWidgetState extends State<WordWidget> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('- ${example.untranslatedExample}'),
+                                    AiSelectableText(text: example.untranslatedExample),
                                     Text('  ${example.translatedExample}', 
                                       style: TextStyle(fontStyle: FontStyle.italic)),
                                   ],
@@ -106,16 +105,13 @@ class _WordWidgetState extends State<WordWidget> {
                 ),
               ),
             ),
-            
             IconButton(
               onPressed: _goToNextPage,
               icon: Icon(Icons.arrow_forward),
             ),
           ],
         ),
-        
         SizedBox(height: 10),
-        
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(

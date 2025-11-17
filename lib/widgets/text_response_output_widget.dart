@@ -6,8 +6,11 @@ class TextResponseOutputWidget extends StatelessWidget {
   final VoidCallback onClose;
   final Signal<String?> responseSignal;
 
-  const TextResponseOutputWidget(
-      {super.key, required this.onClose, required this.responseSignal});
+  const TextResponseOutputWidget({
+    super.key,
+    required this.onClose,
+    required this.responseSignal,
+  });
 
   @override
   Widget build(BuildContext context) {

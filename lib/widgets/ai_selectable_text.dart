@@ -19,7 +19,8 @@ class AiSelectableText extends StatefulWidget {
 }
 
 class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
-  late final customOverlay = createSignal<CustomOverlay?>(null);
+  CustomOverlay overlaySingleton = getIt<CustomOverlay>();
+  OverlayEntry? overlayEntry;
   late final responseSignal = createSignal<String?>(null);
   late final responseWidgetSignal = createSignal<Widget?>(null);
 
@@ -28,30 +29,32 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
   final WordGenerationService _wordGenerationService =
       getIt<WordGenerationService>();
 
-  void _showOverlay(Widget myWidget) {
-    final current = customOverlay.peek();
-    if (current != null) {
-      current.removeOverlay();
-    }
-
-    final overlay = CustomOverlay(myWidget: myWidget);
-    overlay.showOverlay(context);
-    customOverlay.value = overlay;
+  void _showOverlay(Widget myWidget, {bool alwaysFill = false}) {
+    overlayEntry = overlaySingleton.showOverlay(context, myWidget, alwaysFill: alwaysFill);
   }
 
   void _hideOverlay() {
-    final current = customOverlay.peek();
-    if (current != null) {
-      current.removeOverlay();
-      customOverlay.value = null;
+    if (overlayEntry != null) {
+      overlaySingleton.removeOverlay(overlayEntry!);
+      overlayEntry = null;
     }
+  }
+
+  void _hideAllOverlays() {
+    overlaySingleton.removeAllOverlays();
+    overlayEntry = null;
   }
 
   void _showTranslation(
       String selection, String selectionBracketedInSentence) async {
     responseSignal.value = null;
-    _showOverlay(TextResponseOutputWidget(
-        onClose: _hideOverlay, responseSignal: responseSignal));
+    _showOverlay(
+      TextResponseOutputWidget(
+        onClose: _hideOverlay,
+        responseSignal: responseSignal,
+      ),
+      alwaysFill: true, // Pass true to always fill the background
+    );
     final response = await _selectableTextService.getTranslationResponse(
         selection, selectionBracketedInSentence);
     responseSignal.value = response;
@@ -63,8 +66,13 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
       DoubtInput(
         onSubmit: (doubt) async {
           responseSignal.value = null;
-          _showOverlay(TextResponseOutputWidget(
-              onClose: _hideOverlay, responseSignal: responseSignal));
+          _showOverlay(
+            TextResponseOutputWidget(
+              onClose: _hideOverlay,
+              responseSignal: responseSignal,
+            ),
+            alwaysFill: true, // Pass true to always fill the background
+          );
           final response = await _selectableTextService.getDoubtResponse(
               doubt, selection, selectionBracketedInSentence);
           responseSignal.value = response;
@@ -78,7 +86,10 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
       String selection, String selectionBracketedInSentence) async {
     responseWidgetSignal.value = null;
     _showOverlay(WordResponseOutput(
-        responseSignal: responseWidgetSignal, onClose: _hideOverlay));
+      responseSignal: responseWidgetSignal,
+      onClose: _hideOverlay,
+      onCloseAll: _hideAllOverlays, // Pass close all callback
+    ));
 
     final val = WordGenerationInput.create(
         word: selection, fullContext: selectionBracketedInSentence);
@@ -87,11 +98,8 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
         (error) => throw StateError('Invalid WordGenerationInput: $error'));
 
     final generatedWordEither = await _wordGenerationService.getWord(input);
-    print("Generated word Either: $generatedWordEither");
     final wordOutput = generatedWordEither.getOrElse(
         (exception) => throw StateError('Error generating word: $exception'));
-
-    print("Generated word: ${wordOutput.toJson()}");
 
     final wordWidget = WordWidget(
       key: ValueKey(wordOutput.wordLema),

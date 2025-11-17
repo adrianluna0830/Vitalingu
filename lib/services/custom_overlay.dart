@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
+@singleton
 class CustomOverlay {
-  final Widget myWidget;
-  OverlayEntry? _overlayEntry;
+  final List<OverlayEntry> _overlays = []; // List to store OverlayEntry objects
 
-  CustomOverlay({required this.myWidget});
-
-  void showOverlay(BuildContext context) {
+  OverlayEntry showOverlay(BuildContext context, Widget myWidget, {bool alwaysFill = false}) {
     final overlay = Overlay.of(context);
     final size = MediaQuery.of(context).size;
 
-    _overlayEntry = OverlayEntry(
+    final bool isFirstOverlay = alwaysFill || _overlays.isEmpty; // Check if the list is empty
+
+    OverlayEntry _overlayEntry = OverlayEntry(
       builder: (context) => Stack(
         children: [
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: () {},
-              child: Container(
-                color: Colors.black.withValues(alpha: 0.3),
+          if (isFirstOverlay)
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: () {},
+                child: Container(
+                  color: Colors.black.withAlpha(76), // Fixed typo in alpha
+                ),
               ),
             ),
-          ),
           Positioned.fill(
             child: Padding(
               padding: const EdgeInsets.all(30.0),
@@ -40,11 +42,20 @@ class CustomOverlay {
       ),
     );
 
-    overlay.insert(_overlayEntry!);
+    overlay.insert(_overlayEntry);
+    _overlays.add(_overlayEntry); // Add the OverlayEntry to the list
+    return _overlayEntry;
   }
 
-  void removeOverlay() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
+  void removeOverlay(OverlayEntry _overlayEntry) {
+    _overlayEntry.remove();
+    _overlays.remove(_overlayEntry); // Remove the OverlayEntry from the list
+  }
+
+  void removeAllOverlays() {
+    for (final overlay in _overlays) {
+      overlay.remove(); // Remove each OverlayEntry
+    }
+    _overlays.clear(); // Clear the list
   }
 }
