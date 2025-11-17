@@ -82,7 +82,7 @@ ${Word.wordJsonPrompt()}
       final String wordLema;
       try {
         wordLema = await _getWordLema(word);
-      } catch (error, stackTrace) {
+      } catch (error) {
         return left(Exception('Error getting lemma: $error'));
       }
 
@@ -91,7 +91,7 @@ ${Word.wordJsonPrompt()}
       final String geminiPrompt;
       try {
         geminiPrompt = await _geminiPromptService.generatePrompt(wordPrompt);
-      } catch (error, stackTrace) {
+      } catch (error) {
         return left(Exception('Error calling Gemini: $error'));
       }
 
@@ -100,19 +100,18 @@ ${Word.wordJsonPrompt()}
       final Map<String, dynamic> jsonMap;
       try {
         jsonMap = jsonDecode(cleanedOutput) as Map<String, dynamic>;
-      } catch (error, stackTrace) {
+      } catch (error) {
         return left(Exception('Error decoding JSON: $error. Raw output: $cleanedOutput'));
       }
 
       final Word finalWord;
       try {
         finalWord = Word.fromJson(jsonMap);
-      } catch (error, stackTrace) {
+      } catch (error) {
         return left(Exception('Error parsing Word: $error. JSON: $jsonMap'));
       }
-
       return right(finalWord);
-    } catch (error, stackTrace) {
+    } catch (error) {
       return left(Exception('Unexpected error during word generation: $error'));
     }
   }

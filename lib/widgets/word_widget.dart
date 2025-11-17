@@ -82,6 +82,8 @@ class _WordWidgetState extends State<WordWidget> {
                             SizedBox(height: 10),
                             Text('Meaning: ${definition.meaning}'),
                             SizedBox(height: 20),
+                            Text('Image Prompt Description: ${definition.imagePromptDescription}'),
+                            SizedBox(height: 20),
                             Text('Examples:', style: TextStyle(fontWeight: FontWeight.bold)),
                             SizedBox(height: 10),
                             ...definition.examples.map((example) {
