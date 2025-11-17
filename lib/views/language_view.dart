@@ -27,7 +27,7 @@ class _LanguageViewState extends State<LanguageView> {
       ),
       body: Center(
         child: AiSelectableText(
-          text: 'This is a sample text. Also another sample text.',
+          text: 'Hallo!\nIch heiße Lukas und ich komme aus Deutschland.\nIch wohne in Berlin und ich arbeite in einem Café.\nMeine Hobbys sind Musik hören und Fußball spielen.\nIch habe eine Schwester. Sie heißt Anna.\nAm Wochenende treffe ich meine Freunde. Wir gehen oft im Park spazieren.',
         ),
       ),
     );

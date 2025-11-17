@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/models/settings.dart';
+import 'package:fpdart/fpdart.dart';
 
 class ChatMessage {
   final String role; 
@@ -41,6 +42,30 @@ class ChatHistory {
   }
 }
 
+class GeminiApiException implements Exception {
+  final String message;
+  final int statusCode;
+  final String responseBody;
+
+  GeminiApiException({
+    required this.message,
+    required this.statusCode,
+    required this.responseBody,
+  });
+
+  @override
+  String toString() => 'GeminiApiException: $message (Status: $statusCode)';
+}
+
+class GeminiParseException implements Exception {
+  final String message;
+
+  GeminiParseException(this.message);
+
+  @override
+  String toString() => 'GeminiParseException: $message';
+}
+
 @injectable
 class GeminiPromptService {
   static const String _baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
@@ -51,7 +76,7 @@ class GeminiPromptService {
 
 
 
-  Future<String> generatePrompt(
+  Future<Either<Exception, String>> generatePrompt(
     String prompt, {
     String? systemInstruction,
   }) async {
@@ -66,7 +91,7 @@ class GeminiPromptService {
     return _callApi(contents, systemInstruction);
   }
 
-  Future<ChatHistory> generatePromptWithChat(
+  Future<Either<Exception, ChatHistory>> generatePromptWithChat(
     String prompt,
     ChatHistory chatHistory, {
     String? systemInstruction,
@@ -81,45 +106,66 @@ class GeminiPromptService {
       }
     ];
 
-    final generatedText = await _callApi(contents, systemInstruction);
-    
-    chatHistory.addUserMessage(prompt);
-    chatHistory.addModelMessage(generatedText);
-    
-    return chatHistory; 
+    return (await _callApi(contents, systemInstruction)).fold(
+      (exception) => Left(exception),
+      (generatedText) {
+        chatHistory.addUserMessage(prompt);
+        chatHistory.addModelMessage(generatedText);
+        return Right(chatHistory);
+      },
+    );
   }
 
-  Future<String> _callApi(
+  Future<Either<Exception, String>> _callApi(
     List<Map<String, dynamic>> contents,
     String? systemInstruction,
   ) async {
-    final url = Uri.parse('$_baseUrl/models/$_model:generateContent');
-    
-    final Map<String, dynamic> body = {'contents': contents};
+    return TaskEither<Exception, String>.tryCatch(
+      () async {
+        final url = Uri.parse('$_baseUrl/models/$_model:generateContent');
+        
+        final Map<String, dynamic> body = {'contents': contents};
 
-    if (systemInstruction != null) {
-      body['system_instruction'] = {
-        'parts': [
-          {'text': systemInstruction}
-        ]
-      };
-    }
+        if (systemInstruction != null) {
+          body['system_instruction'] = {
+            'parts': [
+              {'text': systemInstruction}
+            ]
+          };
+        }
 
-    final response = await http.post(
-      url,
-      headers: {
-        'x-goog-api-key': _geminiSettings.apiKey,
-        'Content-Type': 'application/json',
+        final response = await http.post(
+          url,
+          headers: {
+            'x-goog-api-key': _geminiSettings.apiKey,
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(body),
+        );
+
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          final text = data['candidates']?[0]?['content']?['parts']?[0]?['text'];
+          
+          if (text == null) {
+            throw GeminiParseException('Unable to parse response: missing text field');
+          }
+          
+          return text as String;
+        } else {
+          throw GeminiApiException(
+            message: 'Error generating content',
+            statusCode: response.statusCode,
+            responseBody: response.body,
+          );
+        }
       },
-      body: jsonEncode(body),
-    );
-
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return data['candidates'][0]['content']['parts'][0]['text'];
-    } else {
-      throw Exception('Error generating content: ${response.body}');
-    }
+      (error, stackTrace) {
+        if (error is GeminiApiException || error is GeminiParseException) {
+          return error as Exception;
+        }
+        return Exception('Unexpected error: $error');
+      },
+    ).run();
   }
 }

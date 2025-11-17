@@ -11,9 +11,13 @@ import 'package:vitalingu/widgets/word_response_output.dart';
 import 'package:vitalingu/widgets/word_widget.dart';
 
 class AiSelectableText extends StatefulWidget {
-  const AiSelectableText(
-      {super.key, required this.text});
+  const AiSelectableText({
+    super.key,
+    required this.text,
+    this.onError,
+  });
   final String text;
+  final void Function(Exception)? onError;
   @override
   State<AiSelectableText> createState() => _AiSelectableTextState();
 }
@@ -45,6 +49,21 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
     overlayEntry = null;
   }
 
+  void _handleError(Exception exception) {
+    if (widget.onError != null) {
+      widget.onError!(exception);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${exception.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   void _showTranslation(
       String selection, String selectionBracketedInSentence) async {
     responseSignal.value = null;
@@ -55,9 +74,18 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
       ),
       alwaysFill: true,
     );
-    final response = await _selectableTextService.getTranslationResponse(
+    final responseEither = await _selectableTextService.getTranslationResponse(
         selection, selectionBracketedInSentence);
-    responseSignal.value = response;
+    
+    responseEither.fold(
+      (exception) {
+        _hideOverlay();
+        _handleError(exception);
+      },
+      (response) {
+        responseSignal.value = response;
+      },
+    );
   }
 
   void _showDoubtInput(
@@ -74,9 +102,18 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
             ),
             alwaysFill: true,
           );
-          final response = await _selectableTextService.getDoubtResponse(
+          final responseEither = await _selectableTextService.getDoubtResponse(
               doubt, selection, selectionBracketedInSentence);
-          responseSignal.value = response;
+          
+          responseEither.fold(
+            (exception) {
+              _hideOverlay();
+              _handleError(exception);
+            },
+            (response) {
+              responseSignal.value = response;
+            },
+          );
         },
         onClose: _hideOverlay,
       ),
@@ -99,16 +136,20 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
         (error) => throw StateError('Invalid WordGenerationInput: $error'));
 
     final generatedWordEither = await _wordGenerationService.getWord(input);
-    final wordOutput = generatedWordEither.getOrElse(
-        (exception) => throw StateError('Error generating word: $exception'));
-
-    final wordWidget = WordWidget(
-      key: ValueKey(wordOutput.wordLema),
-      word: wordOutput,
+    
+    generatedWordEither.fold(
+      (exception) {
+        _hideOverlay();
+        _handleError(exception);
+      },
+      (wordOutput) {
+        final wordWidget = WordWidget(
+          key: ValueKey(wordOutput.wordLema),
+          word: wordOutput,
+        );
+        responseWidgetSignal.value = wordWidget;
+      },
     );
-            responseWidgetSignal.value = wordWidget;
-
-
   }
 
   @override
