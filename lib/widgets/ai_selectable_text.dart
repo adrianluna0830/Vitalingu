@@ -53,7 +53,7 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
         onClose: _hideOverlay,
         responseSignal: responseSignal,
       ),
-      alwaysFill: true, // Pass true to always fill the background
+      alwaysFill: true,
     );
     final response = await _selectableTextService.getTranslationResponse(
         selection, selectionBracketedInSentence);
@@ -66,12 +66,13 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
       DoubtInput(
         onSubmit: (doubt) async {
           responseSignal.value = null;
+          _hideOverlay();
           _showOverlay(
             TextResponseOutputWidget(
               onClose: _hideOverlay,
               responseSignal: responseSignal,
             ),
-            alwaysFill: true, // Pass true to always fill the background
+            alwaysFill: true,
           );
           final response = await _selectableTextService.getDoubtResponse(
               doubt, selection, selectionBracketedInSentence);
@@ -88,7 +89,7 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
     _showOverlay(WordResponseOutput(
       responseSignal: responseWidgetSignal,
       onClose: _hideOverlay,
-      onCloseAll: _hideAllOverlays, // Pass close all callback
+      onCloseAll: _hideAllOverlays,
     ));
 
     final val = WordGenerationInput.create(
@@ -105,19 +106,9 @@ class _AiSelectableTextState extends State<AiSelectableText> with SignalsMixin {
       key: ValueKey(wordOutput.wordLema),
       word: wordOutput,
     );
-
-    if (mounted) {
-      try {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
             responseWidgetSignal.value = wordWidget;
-          }
-        });
-      } catch (e, stackTrace) {
-        print("Error updating responseWidgetSignal: $e");
-        print(stackTrace);
-      }
-    }
+
+
   }
 
   @override
