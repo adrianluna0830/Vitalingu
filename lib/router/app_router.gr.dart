@@ -28,18 +28,46 @@ class AppStartupLoadingRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [LanguageView]
-class LanguageRoute extends PageRouteInfo<void> {
-  const LanguageRoute({List<PageRouteInfo>? children})
-      : super(LanguageRoute.name, initialChildren: children);
+class LanguageRoute extends PageRouteInfo<LanguageRouteArgs> {
+  LanguageRoute({Key? key, List<PageRouteInfo>? children})
+      : super(
+          LanguageRoute.name,
+          args: LanguageRouteArgs(key: key),
+          initialChildren: children,
+        );
 
   static const String name = 'LanguageRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LanguageView();
+      final args = data.argsAs<LanguageRouteArgs>(
+        orElse: () => const LanguageRouteArgs(),
+      );
+      return LanguageView(key: args.key);
     },
   );
+}
+
+class LanguageRouteArgs {
+  const LanguageRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LanguageRouteArgs{key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! LanguageRouteArgs) return false;
+    return key == other.key;
+  }
+
+  @override
+  int get hashCode => key.hashCode;
 }
 
 /// generated route for
@@ -70,6 +98,22 @@ class SettingsRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const SettingsView();
+    },
+  );
+}
+
+/// generated route for
+/// [VoiceChatView]
+class VoiceChatRoute extends PageRouteInfo<void> {
+  const VoiceChatRoute({List<PageRouteInfo>? children})
+      : super(VoiceChatRoute.name, initialChildren: children);
+
+  static const String name = 'VoiceChatRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const VoiceChatView();
     },
   );
 }

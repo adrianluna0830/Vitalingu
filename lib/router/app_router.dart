@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/views/app_startup_loading_view.dart';
 import 'package:vitalingu/views/language_view.dart';
 import 'package:vitalingu/views/select_language_view.dart';
 import 'package:vitalingu/views/settings_view.dart';
+import 'package:vitalingu/views/voice_chat_view.dart';
 
 part 'app_router.gr.dart';
 
@@ -15,11 +17,10 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
+        AutoRoute(page: VoiceChatRoute.page),
         AutoRoute(page: LanguageRoute.page),
         AutoRoute(page: SettingsRoute.page),
         AutoRoute(page: SelectLanguageRoute.page),
         AutoRoute(page: AppStartupLoadingRoute.page, initial: true),
-
       ];
 }
-

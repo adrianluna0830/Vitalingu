@@ -29,6 +29,8 @@ import 'package:vitalingu/viewmodels/app_startup_loading_view_model.dart'
     as _i256;
 import 'package:vitalingu/viewmodels/select_language_view_model.dart' as _i914;
 import 'package:vitalingu/viewmodels/settings_view_model.dart' as _i587;
+import 'package:vitalingu/views/language_view.dart' as _i1008;
+import 'package:vitalingu/views/voice_chat_view.dart' as _i940;
 import 'package:vitalingu/widgets/custom_overlay_manager.dart' as _i290;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -96,6 +98,10 @@ extension GetItInjectableX on _i174.GetIt {
               settingsService: gh<_i763.SettingsService>(),
               navigationService: gh<_i19.NavigationService>(),
             ));
+    gh.factory<_i1008.LanguageViewModel>(() => _i1008.LanguageViewModel(
+        navigationService: gh<_i19.NavigationService>()));
+    gh.factory<_i940.VoiceChatViewModel>(() => _i940.VoiceChatViewModel(
+        navigationService: gh<_i19.NavigationService>()));
     gh.factory<_i914.SelectLanguageViewModel>(
         () => _i914.SelectLanguageViewModel(
               gh<_i688.SessionTargetLanguage>(),

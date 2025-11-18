@@ -10,7 +10,7 @@ class NavigationService {
   AppRouter get router => _appRouter;
 
   Future<void> goToLanguageView() {
-    return _appRouter.push(const LanguageRoute());
+    return _appRouter.push( LanguageRoute());
   }
 
  
@@ -24,6 +24,10 @@ class NavigationService {
 
   Future<void> goToAppStartupLoadingView() {
     return _appRouter.replace(const AppStartupLoadingRoute());
+  }
+
+  Future<void> goToVoiceChatView() {
+    return _appRouter.push(const VoiceChatRoute());
   }
 
   void popBack() {
