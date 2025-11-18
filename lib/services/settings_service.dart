@@ -99,7 +99,7 @@ class SettingsService {
     pixabaySettings.apiKey = '';
     microsoftSpeechSettings.apiKey = '';
     microsoftSpeechSettings.endpoint = '';
-    nativeLanguage.language = Language(bcp47Code: "", nativeLanguageName: "");
+    nativeLanguage.language = Language(bcp47Code: "", nativeLanguageName: "", voices: []);
   }
 
   bool areSettingsComplete() {
