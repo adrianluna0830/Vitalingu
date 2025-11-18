@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:vitalingu/features/language_management/presentation/view_model/select_language_view_model.dart';
 import 'package:vitalingu/injection.dart';
+import 'package:vitalingu/features/language_management/presentation/view_model/select_language_view_model.dart';
 import 'package:vitalingu/shared/widgets/select_language/language_card.dart';
 import 'package:vitalingu/shared/widgets/select_language/language_settings_sheet.dart';
 
@@ -60,3 +60,4 @@ class _SelectLanguageViewState extends State<SelectLanguageView> {
     );
   }
 }
+

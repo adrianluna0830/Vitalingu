@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/services/navigation_service.dart';
+import 'package:vitalingu/core/services/navigation_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,4 +23,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 

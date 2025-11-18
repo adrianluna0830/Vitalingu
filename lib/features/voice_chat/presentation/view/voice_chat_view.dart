@@ -4,11 +4,11 @@ import 'package:align_positioned/align_positioned.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart'; // Asegúrate de importar signals_flutter
-import 'package:vitalingu/features/voice_chat/presentation/view_model/voice_chat_view_model.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/widgets/selectable_text/info_panel.dart';
-import 'package:vitalingu/widgets/voice_chat/more_info_circular_button.dart';
-import 'package:vitalingu/widgets/voice_chat/voice_recorder_button.dart';
+import 'package:vitalingu/features/voice_chat/presentation/view_model/voice_chat_view_model.dart';
+import 'package:vitalingu/shared/widgets/voice_chat/circular_info_button.dart';
+import 'package:vitalingu/shared/widgets/selectable_text/collapsible_info_panel.dart';
+import 'package:vitalingu/shared/widgets/voice_chat/animated_voice_button.dart';
 
 @RoutePage()
 class VoiceChatView extends StatelessWidget {
@@ -99,3 +99,4 @@ class VoiceChatView extends StatelessWidget {
     );
   }
 }
+

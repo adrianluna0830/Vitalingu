@@ -1,4 +1,4 @@
-import 'package:vitalingu/language/language.dart';
+import 'package:vitalingu/features/language_management/data/model/language.dart';
 
 class LanguageRegistry {
   static final List<Language>_languagePromptMap = [
