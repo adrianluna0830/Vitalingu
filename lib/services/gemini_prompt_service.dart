@@ -74,8 +74,6 @@ class GeminiPromptService {
 
   GeminiPromptService({required GeminiSettings geminiSettings}) : _geminiSettings = geminiSettings;
 
-
-
   Future<Either<Exception, String>> generatePrompt(
     String prompt, {
     String? systemInstruction,
@@ -122,8 +120,11 @@ class GeminiPromptService {
   ) async {
     return TaskEither<Exception, String>.tryCatch(
       () async {
+        if (_geminiSettings.apiKey == null) {
+          throw Exception('Gemini API key is not set.');
+        }
+
         final url = Uri.parse('$_baseUrl/models/$_model:generateContent');
-        
         final Map<String, dynamic> body = {'contents': contents};
 
         if (systemInstruction != null) {
@@ -137,7 +138,7 @@ class GeminiPromptService {
         final response = await http.post(
           url,
           headers: {
-            'x-goog-api-key': _geminiSettings.apiKey,
+            'x-goog-api-key': _geminiSettings.apiKey!,
             'Content-Type': 'application/json',
           },
           body: jsonEncode(body),

@@ -95,18 +95,18 @@ class SettingsService {
 
   Future<void> clearAllSettings() async {
     await storage.deleteAll();
-    geminiSettings.apiKey = '';
-    pixabaySettings.apiKey = '';
-    microsoftSpeechSettings.apiKey = '';
-    microsoftSpeechSettings.endpoint = '';
-    nativeLanguage.language = Language(bcp47Code: "", nativeLanguageName: "", voices: []);
+    geminiSettings.apiKey = null;
+    pixabaySettings.apiKey = null;
+    microsoftSpeechSettings.apiKey = null;
+    microsoftSpeechSettings.endpoint = null;
+    nativeLanguage.language = null;
   }
 
   bool areSettingsComplete() {
-    return geminiSettings.apiKey.isNotEmpty &&
-        pixabaySettings.apiKey.isNotEmpty &&
-        microsoftSpeechSettings.apiKey.isNotEmpty &&
-        microsoftSpeechSettings.endpoint.isNotEmpty &&
+    return geminiSettings.apiKey != null &&
+        pixabaySettings.apiKey != null &&
+        microsoftSpeechSettings.apiKey != null &&
+        microsoftSpeechSettings.endpoint != null &&
         nativeLanguage.language != null;
   }
 }

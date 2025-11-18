@@ -16,10 +16,14 @@ class PixabayService {
     String? orientation,
     String? category,
   }) async {
+    if (_pixabaySettings.apiKey == null) {
+      throw Exception('Pixabay API key is not set.');
+    }
+
     final uri = _buildUri(
       baseUrl: _baseUrl,
       queryParameters: {
-        'key': _pixabaySettings.apiKey,
+        'key': _pixabaySettings.apiKey!,
         if (q != null) 'q': q,
         if (imageType != null) 'image_type': imageType,
         if (orientation != null) 'orientation': orientation,

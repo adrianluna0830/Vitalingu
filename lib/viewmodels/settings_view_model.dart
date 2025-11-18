@@ -38,10 +38,10 @@ class SettingsViewModel extends ViewModelBase {
   final selectedNativeLanguage = signal<Language?>(null);
 
   void _initializeSettings() {
-    geminiApiKeyController.text = _geminiSettings.apiKey;
-    pixabayApiKeyController.text = _pixabaySettings.apiKey;
-    microsoftApiKeyController.text = _microsoftSpeechSettings.apiKey;
-    microsoftEndpointController.text = _microsoftSpeechSettings.endpoint;
+    geminiApiKeyController.text = _geminiSettings.apiKey ?? '';
+    pixabayApiKeyController.text = _pixabaySettings.apiKey ?? '';
+    microsoftApiKeyController.text = _microsoftSpeechSettings.apiKey ?? '';
+    microsoftEndpointController.text = _microsoftSpeechSettings.endpoint ?? '';
     selectedNativeLanguage.value = _nativeLanguage.language;
   }
 

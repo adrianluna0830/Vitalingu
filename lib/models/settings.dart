@@ -2,20 +2,21 @@ import 'package:injectable/injectable.dart';
 import 'package:vitalingu/language/language.dart';
 import 'package:vitalingu/models/language_settings.dart';
 
+
 @lazySingleton
 class GeminiSettings {
-  String apiKey = '';
+  String? apiKey;
 }
 
 @lazySingleton
 class PixabaySettings {
-  String apiKey = '';
+  String? apiKey;
 }
 
 @lazySingleton
 class MicrosoftSpeechSettings {
-  String apiKey = '';
-  String endpoint = '';
+  String? apiKey;
+  String? endpoint;
 }
 
 @lazySingleton
