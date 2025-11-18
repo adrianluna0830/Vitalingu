@@ -104,16 +104,44 @@ class SettingsRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [VoiceChatView]
-class VoiceChatRoute extends PageRouteInfo<void> {
-  const VoiceChatRoute({List<PageRouteInfo>? children})
-      : super(VoiceChatRoute.name, initialChildren: children);
+class VoiceChatRoute extends PageRouteInfo<VoiceChatRouteArgs> {
+  VoiceChatRoute({Key? key, List<PageRouteInfo>? children})
+      : super(
+          VoiceChatRoute.name,
+          args: VoiceChatRouteArgs(key: key),
+          initialChildren: children,
+        );
 
   static const String name = 'VoiceChatRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const VoiceChatView();
+      final args = data.argsAs<VoiceChatRouteArgs>(
+        orElse: () => const VoiceChatRouteArgs(),
+      );
+      return VoiceChatView(key: args.key);
     },
   );
+}
+
+class VoiceChatRouteArgs {
+  const VoiceChatRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'VoiceChatRouteArgs{key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! VoiceChatRouteArgs) return false;
+    return key == other.key;
+  }
+
+  @override
+  int get hashCode => key.hashCode;
 }

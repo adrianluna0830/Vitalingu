@@ -1,53 +1,99 @@
+// views/voice_chat_view.dart
+
+import 'package:align_positioned/align_positioned.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
-import 'package:signals/signals_flutter.dart';
+import 'package:signals/signals_flutter.dart'; // Asegúrate de importar signals_flutter
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/viewmodels/view_model_base.dart';
+import 'package:vitalingu/viewmodels/voice_chat_view_model.dart';
+import 'package:vitalingu/widgets/circular_action_button.dart';
+import 'package:vitalingu/widgets/info_panel.dart';
 import 'package:vitalingu/widgets/voice_recorder_button.dart';
-@injectable
-class VoiceChatViewModel extends ViewModelBase {
-  VoiceChatViewModel({required super.navigationService});
 
-  final isCircle = signal(true);
+@RoutePage()
+class VoiceChatView extends StatelessWidget {
+   VoiceChatView({super.key});
 
-  void toggleShape() {
-    isCircle.value = !isCircle.value;
-  }
+  final VoiceChatViewModel viewModel = getIt<VoiceChatViewModel>();
 
-  Future<void> goBack() async {
-    navigationService.popBack();
-  }
-
-  @override
-  void dispose() {
-    isCircle.dispose();
-  }
-}@RoutePage()
-class VoiceChatView extends StatefulWidget {
-  const VoiceChatView({super.key});
-
-  @override
-  State<VoiceChatView> createState() => _VoiceChatViewState();
-}
-
-class _VoiceChatViewState extends State<VoiceChatView> {
-  final viewModel = getIt<VoiceChatViewModel>();
+  static const animDuration = Duration(milliseconds: 250);
+  static const buttonPanelGap = 20.0;
+  static const containerMargin = 16.0;
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final panelHeight = screenSize.height * 0.50;
+
+    final bool isPanelOpen = viewModel.showInfoPanel.watch(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Voice Chat'),
+      appBar: AppBar(title: const Text('Voice Chat')),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            const Center(
+              child: Text(
+                "Contenido de la vista (si lo hay)",
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+            _buildInfoPanel(panelHeight, screenSize.width, isPanelOpen),
+            _buildInfoButton(isPanelOpen),
+            _buildVoiceRecorderButton(panelHeight, isPanelOpen),
+          ],
+        ),
       ),
-      body: Center(
-        child: SizedBox(
-          width: 100.0,
-          height: 100.0,
-          child: Watch((context) => VoiceRecorderButton(
-                isCircle: viewModel.isCircle.value,
-                onTap: viewModel.toggleShape,
-              )),
+    );
+  }
+
+  Widget _buildInfoPanel(
+      double panelHeight, double screenWidth, bool isPanelOpen) {
+    return AnimatedAlignPositioned(
+      duration: animDuration,
+      curve: Curves.easeOut,
+      alignment: Alignment.bottomCenter,
+      dy: isPanelOpen ? -containerMargin : panelHeight + containerMargin,
+      childHeight: panelHeight,
+      child: SizedBox(
+        width: screenWidth - (containerMargin * 2),
+        child: InfoPanel(
+          onClose: viewModel.closeInfoPanel,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoButton(bool isPanelOpen) {
+    return AnimatedAlignPositioned(
+      duration: animDuration,
+      curve: Curves.easeOut,
+      alignment: Alignment.bottomLeft,
+      dx: isPanelOpen ? -75 : 40,
+      dy: -20,
+      childWidth: 55,
+      childHeight: 55,
+      child: CircularActionButton(
+        icon: Icons.info_outline,
+        onTap: viewModel.openInfoPanel,
+      ),
+    );
+  }
+
+  Widget _buildVoiceRecorderButton(double panelHeight, bool isPanelOpen) {
+    return AnimatedAlignPositioned(
+      duration: animDuration,
+      curve: Curves.easeOut,
+      alignment: Alignment.bottomCenter,
+      dy: isPanelOpen
+          ? -(panelHeight + buttonPanelGap + containerMargin)
+          : -(buttonPanelGap + containerMargin),
+      childWidth: 90,
+      childHeight: 90,
+      child: Watch(
+        (context) => VoiceRecorderButton(
+          isCircle: viewModel.isCircle.value,
+          onTap: viewModel.toggleShape,
         ),
       ),
     );

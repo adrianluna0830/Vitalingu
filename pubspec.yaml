@@ -55,6 +55,7 @@ dependencies:
   fpdart: ^1.2.0
   audioplayers: ^6.5.1
   record: ^6.1.2
+  align_positioned: ^5.0.1
 
 dev_dependencies:
   flutter_test:

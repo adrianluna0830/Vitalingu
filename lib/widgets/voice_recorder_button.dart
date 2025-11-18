@@ -7,20 +7,22 @@ class VoiceRecorderButton extends StatelessWidget {
   final double innerPadding;
   final Duration animationDuration;
   final double transformedSizePercentage; 
+  final double transformedBorderRadiusFactor;
   final bool isCircle; 
   final VoidCallback onTap; 
 
   const VoiceRecorderButton({
-    Key? key,
+    super.key,
     this.borderColor = Colors.grey,
     this.borderWidth = 5.5,
     this.innerCircleColor = Colors.red,
     this.innerPadding = 10,
-    this.animationDuration = const Duration(milliseconds: 250),
+    this.animationDuration = const Duration(milliseconds: 235),
     this.transformedSizePercentage = 60.0,
+    this.transformedBorderRadiusFactor = 3.5,
     required this.isCircle,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +30,10 @@ class VoiceRecorderButton extends StatelessWidget {
       onTap: onTap,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Usar el menor valor entre ancho y alto para mantener forma circular
           final size = constraints.maxWidth < constraints.maxHeight
               ? constraints.maxWidth
               : constraints.maxHeight;
           
-          // Calcular tamaños de forma estática
           final availableSize = size - (innerPadding * 2) - (borderWidth * 2);
           final transformedSize = (transformedSizePercentage / 100) * availableSize;
           
@@ -57,7 +57,7 @@ class VoiceRecorderButton extends StatelessWidget {
                 color: innerCircleColor,
                 borderRadius: isCircle
                     ? BorderRadius.circular(availableSize / 2)
-                    : BorderRadius.circular(transformedSize / 4),
+                    : BorderRadius.circular(transformedSize / transformedBorderRadiusFactor),
               ),
             ),
           );

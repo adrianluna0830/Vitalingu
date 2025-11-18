@@ -27,7 +27,7 @@ class NavigationService {
   }
 
   Future<void> goToVoiceChatView() {
-    return _appRouter.push(const VoiceChatRoute());
+    return _appRouter.push(VoiceChatRoute());
   }
 
   void popBack() {

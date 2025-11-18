@@ -11,7 +11,7 @@ class CustomOverlay {
 
     final bool isFirstOverlay = alwaysFill || _overlays.isEmpty;
 
-    OverlayEntry _overlayEntry = OverlayEntry(
+    OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) => Stack(
         children: [
           if (isFirstOverlay)
@@ -42,14 +42,14 @@ class CustomOverlay {
       ),
     );
 
-    overlay.insert(_overlayEntry);
-    _overlays.add(_overlayEntry);
-    return _overlayEntry;
+    overlay.insert(overlayEntry);
+    _overlays.add(overlayEntry);
+    return overlayEntry;
   }
 
-  void removeOverlay(OverlayEntry _overlayEntry) {
-    _overlayEntry.remove();
-    _overlays.remove(_overlayEntry);
+  void removeOverlay(OverlayEntry overlayEntry) {
+    overlayEntry.remove();
+    _overlays.remove(overlayEntry);
   }
 
   void removeAllOverlays() {
