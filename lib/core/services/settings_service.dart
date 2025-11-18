@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:vitalingu/features/language_management/data/model/language.dart';
 import 'package:vitalingu/features/settings/data/model/settings.dart';
 import 'dart:convert' as convert;
+import 'package:vitalingu/register_languages.dart';
 
 @singleton
 class SettingsService {
@@ -51,16 +52,9 @@ class SettingsService {
   }
 
   Future<void> _loadNativeLanguage() async {
-    final languageJson = await storage.read(key: _nativeLanguageKey);
-    if (languageJson != null) {
-      try {
-        nativeLanguage.language = Language.fromJson(
-          Map<String, dynamic>.from(convert.jsonDecode(languageJson)),
-        );
-      } catch (e) {
-        // Log error and set default value
-        nativeLanguage.language = null;
-      }
+    final languageCode = await storage.read(key: _nativeLanguageKey);
+    if (languageCode != null) {
+      nativeLanguage.language = LanguageRegistry.getLanguageByCode(languageCode);
     } else {
       nativeLanguage.language = null;
     }
@@ -83,7 +77,7 @@ class SettingsService {
   }
 
   Future<void> saveAndLoadNativeLanguage(Language language) async {
-    await storage.write(key: _nativeLanguageKey, value: convert.jsonEncode(language.toJson()));
+    await storage.write(key: _nativeLanguageKey, value: language.bcp47Code);
     await _loadNativeLanguage();
   }
 

@@ -30,6 +30,8 @@ class _SettingsViewState extends State<SettingsView> {
         final selectedLanguage = viewModel.selectedNativeLanguage.value;
         final availableVoices = viewModel.availableVoices;
         final selectedVoice = viewModel.selectedVoice.value;
+        final finalSelectedVoice =
+            availableVoices.contains(selectedVoice) ? selectedVoice : null;
 
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -38,7 +40,7 @@ class _SettingsViewState extends State<SettingsView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 DropdownButtonFormField(
-                  initialValue: selectedLanguage,
+                  value: selectedLanguage,
                   decoration: const InputDecoration(
                     labelText: 'Native Language',
                   ),
@@ -56,7 +58,7 @@ class _SettingsViewState extends State<SettingsView> {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: selectedVoice,
+                          value: finalSelectedVoice,
                           decoration: const InputDecoration(
                             labelText: 'Voice',
                           ),
