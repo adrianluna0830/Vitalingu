@@ -12,7 +12,7 @@ class LanguageViewModel extends ViewModelBase
   {
     await navigationService.goToVoiceChatView();
   }
-
+  
 }
 @RoutePage()
 class LanguageView extends StatelessWidget {
