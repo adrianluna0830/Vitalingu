@@ -53,9 +53,16 @@ class SettingsService {
   Future<void> _loadNativeLanguage() async {
     final languageJson = await storage.read(key: _nativeLanguageKey);
     if (languageJson != null) {
-      nativeLanguage.language = Language.fromJson(
-        Map<String, dynamic>.from(convert.jsonDecode(languageJson)),
-      );
+      try {
+        nativeLanguage.language = Language.fromJson(
+          Map<String, dynamic>.from(convert.jsonDecode(languageJson)),
+        );
+      } catch (e) {
+        // Log error and set default value
+        nativeLanguage.language = null;
+      }
+    } else {
+      nativeLanguage.language = null;
     }
   }
 

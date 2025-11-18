@@ -4,16 +4,17 @@ class LanguageSettings {
   final bool examplesTranslatedSpeechEnabled;
   final bool dynamicGenerativeFrontcards;
   final int numberOfExamples;
-  final String maleVoiceCode;
-  final String femaleVoiceCode;
+  final String? maleVoiceCode;
+  final String? femaleVoiceCode;
 
-  const LanguageSettings({ required this.examplesTranslatedSpeechEnabled,
+  const LanguageSettings({
+    required this.examplesTranslatedSpeechEnabled,
     required this.imagesEnabled,
     required this.examplesUntranslatedSpeechEnabled,
     required this.dynamicGenerativeFrontcards,
     required this.numberOfExamples,
-    required this.maleVoiceCode,
-    required this.femaleVoiceCode,
+    this.maleVoiceCode,
+    this.femaleVoiceCode,
   });
 
   factory LanguageSettings.fromJson(Map<String, dynamic> json) {
@@ -23,8 +24,8 @@ class LanguageSettings {
       examplesTranslatedSpeechEnabled: json['examplesTranslatedSpeechEnabled'] as bool,
       dynamicGenerativeFrontcards: json['dynamicGenerativeFrontcards'] as bool,
       numberOfExamples: json['numberOfExamples'] as int,
-      maleVoiceCode: json['maleVoiceCode'] as String,
-      femaleVoiceCode: json['femaleVoiceCode'] as String,
+      maleVoiceCode: json['maleVoiceCode'] as String?,
+      femaleVoiceCode: json['femaleVoiceCode'] as String?,
     );
   }
 

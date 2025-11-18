@@ -28,6 +28,8 @@ class _SettingsViewState extends State<SettingsView> {
       body: Watch((context) {
         final loading = viewModel.isLoading.value;
         final selectedLanguage = viewModel.selectedNativeLanguage.value;
+        final availableVoices = viewModel.availableVoices;
+        final selectedVoice = viewModel.selectedVoice.value;
 
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -48,6 +50,34 @@ class _SettingsViewState extends State<SettingsView> {
                   }).toList(),
                   onChanged: loading ? null : viewModel.setNativeLanguage,
                 ),
+                const SizedBox(height: 16),
+                if (selectedLanguage != null && availableVoices.isNotEmpty)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          value: selectedVoice,
+                          decoration: const InputDecoration(
+                            labelText: 'Voice',
+                          ),
+                          items: availableVoices.map((voice) {
+                            return DropdownMenuItem(
+                              value: voice,
+                              child: Text(voice),
+                            );
+                          }).toList(),
+                          onChanged: loading ? null : viewModel.setVoice,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        icon: const Icon(Icons.volume_up),
+                        onPressed: (loading || selectedVoice == null)
+                            ? null
+                            : () => viewModel.playVoice(selectedVoice),
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: viewModel.geminiApiKeyController,

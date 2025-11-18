@@ -36,6 +36,13 @@ class SettingsViewModel extends ViewModelBase {
   List<Language> get availableLanguages => LanguageRegistry.languages;
 
   final selectedNativeLanguage = signal<Language?>(null);
+  final selectedVoice = signal<String?>(null);
+
+  List<String> get availableVoices {
+    final language = selectedNativeLanguage.value;
+    if (language == null) return [];
+    return language.voices;
+  }
 
   void _initializeSettings() {
     geminiApiKeyController.text = _geminiSettings.apiKey ?? '';
@@ -43,6 +50,11 @@ class SettingsViewModel extends ViewModelBase {
     microsoftApiKeyController.text = _microsoftSpeechSettings.apiKey ?? '';
     microsoftEndpointController.text = _microsoftSpeechSettings.endpoint ?? '';
     selectedNativeLanguage.value = _nativeLanguage.language;
+
+    // Set default voice to first available
+    if (selectedNativeLanguage.value != null && selectedNativeLanguage.value!.voices.isNotEmpty) {
+      selectedVoice.value = selectedNativeLanguage.value!.voices.first;
+    }
   }
 
   Future<void> _saveSettings() async {
@@ -73,7 +85,23 @@ class SettingsViewModel extends ViewModelBase {
   void setNativeLanguage(Language? language) {
     if (language != null) {
       selectedNativeLanguage.value = language;
+      // Update voice to first available when language changes
+      if (language.voices.isNotEmpty) {
+        selectedVoice.value = language.voices.first;
+      } else {
+        selectedVoice.value = null;
+      }
     }
+  }
+
+  void setVoice(String? voice) {
+    if (voice != null) {
+      selectedVoice.value = voice;
+    }
+  }
+
+  Future<void> playVoice(String voiceCode) async {
+    throw UnimplementedError('playVoice not yet implemented');
   }
 
   Future<void> onSavePressed() async {

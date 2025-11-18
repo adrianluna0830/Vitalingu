@@ -38,4 +38,13 @@ class SelectLanguageViewModel extends ViewModelBase {
   void goToSettings() {
     navigationService.goToSettings();
   }
+
+  Future<void> playVoice(String voiceCode) async {
+    throw UnimplementedError('playVoice not yet implemented');
+  }
+
+  List<String> getAvailableVoices(String bcp47Code) {
+    final language = LanguageRegistry.getLanguageByCode(bcp47Code);
+    return language?.voices ?? [];
+  }
 }

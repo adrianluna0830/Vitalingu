@@ -129,22 +129,10 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
   late bool examplesTranslatedSpeechEnabled;
   late bool dynamicGenerativeFrontcards;
   late int numberOfExamples;
-  late String maleVoiceCode;
-  late String femaleVoiceCode;
+  late String? maleVoiceCode;
+  late String? femaleVoiceCode;
 
-  final List<String> maleVoiceOptions = [
-    'en-US-Male-1',
-    'en-US-Male-2',
-    'es-ES-Male-1',
-    'es-MX-Male-1',
-  ];
-
-  final List<String> femaleVoiceOptions = [
-    'en-US-Female-1',
-    'en-US-Female-2',
-    'es-ES-Female-1',
-    'es-MX-Female-1',
-  ];
+  late List<String> availableVoices;
 
   @override
   void initState() {
@@ -155,17 +143,38 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
     dynamicGenerativeFrontcards = widget.languageSettings.dynamicGenerativeFrontcards;
     numberOfExamples = widget.languageSettings.numberOfExamples.clamp(1, 10);
 
-    maleVoiceCode = maleVoiceOptions.contains(widget.languageSettings.maleVoiceCode)
-        ? widget.languageSettings.maleVoiceCode
-        : maleVoiceOptions.first;
+    // Get available voices from the language
+    final viewModel = getIt<SelectLanguageViewModel>();
+    final language = viewModel.availableLanguages.firstWhere(
+      (lang) => lang.nativeLanguageName == widget.languageName,
+    );
+    availableVoices = language.voices;
 
-    femaleVoiceCode = femaleVoiceOptions.contains(widget.languageSettings.femaleVoiceCode)
-        ? widget.languageSettings.femaleVoiceCode
-        : femaleVoiceOptions.first;
+    // Set male voice
+    if (widget.languageSettings.maleVoiceCode != null &&
+        availableVoices.contains(widget.languageSettings.maleVoiceCode)) {
+      maleVoiceCode = widget.languageSettings.maleVoiceCode;
+    } else if (availableVoices.isNotEmpty) {
+      maleVoiceCode = availableVoices.first;
+    } else {
+      maleVoiceCode = null;
+    }
+
+    // Set female voice
+    if (widget.languageSettings.femaleVoiceCode != null &&
+        availableVoices.contains(widget.languageSettings.femaleVoiceCode)) {
+      femaleVoiceCode = widget.languageSettings.femaleVoiceCode;
+    } else if (availableVoices.isNotEmpty) {
+      femaleVoiceCode = availableVoices.first;
+    } else {
+      femaleVoiceCode = null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = getIt<SelectLanguageViewModel>();
+
     return Padding(
       padding: EdgeInsets.only(
         left: 16,
@@ -222,54 +231,80 @@ class _LanguageSettingsSheetState extends State<LanguageSettingsSheet> {
                 onChanged: (value) => setState(() => numberOfExamples = value.toInt()),
               ),
             ),
-            ListTile(
-              title: const Text('Male Voice'),
-              subtitle: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: TextEditingController(text: maleVoiceCode),
-                      decoration: const InputDecoration(
-                        labelText: 'Enter male voice code',
+            if (availableVoices.isNotEmpty)
+              ListTile(
+                title: const Text('Male Voice'),
+                subtitle: Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        value: maleVoiceCode,
+                        decoration: const InputDecoration(
+                          labelText: 'Select male voice',
+                        ),
+                        items: availableVoices.map((voice) {
+                          return DropdownMenuItem(
+                            value: voice,
+                            child: Text(voice),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() => maleVoiceCode = value);
+                        },
                       ),
-                      onChanged: (value) {
-                        setState(() => maleVoiceCode = value);
-                      },
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.volume_up),
-                    onPressed: () {
-                    },
-                  ),
-                ],
+                    IconButton(
+                      icon: const Icon(Icons.volume_up),
+                      onPressed: maleVoiceCode == null
+                          ? null
+                          : () => viewModel.playVoice(maleVoiceCode!),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            ListTile(
-              title: const Text('Female Voice'),
-              subtitle: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: TextEditingController(text: femaleVoiceCode),
-                      decoration: const InputDecoration(
-                        labelText: 'Enter female voice code',
+            if (availableVoices.isNotEmpty)
+              ListTile(
+                title: const Text('Female Voice'),
+                subtitle: Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        value: femaleVoiceCode,
+                        decoration: const InputDecoration(
+                          labelText: 'Select female voice',
+                        ),
+                        items: availableVoices.map((voice) {
+                          return DropdownMenuItem(
+                            value: voice,
+                            child: Text(voice),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() => femaleVoiceCode = value);
+                        },
                       ),
-                      onChanged: (value) {
-                        setState(() => femaleVoiceCode = value);
-                      },
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.volume_up),
-                    onPressed: () {
-                    },
-                  ),
-                ],
+                    IconButton(
+                      icon: const Icon(Icons.volume_up),
+                      onPressed: femaleVoiceCode == null
+                          ? null
+                          : () => viewModel.playVoice(femaleVoiceCode!),
+                    ),
+                  ],
+                ),
               ),
-            ),
             ElevatedButton(
               onPressed: () {
+                // Validate at least one voice is selected
+                if (maleVoiceCode == null && femaleVoiceCode == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please select at least one voice'),
+                    ),
+                  );
+                  return;
+                }
+
                 final settings = LanguageSettings(
                   imagesEnabled: imagesEnabled,
                   examplesUntranslatedSpeechEnabled: examplesUntranslatedSpeechEnabled,

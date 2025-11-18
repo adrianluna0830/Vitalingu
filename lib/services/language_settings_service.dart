@@ -28,8 +28,14 @@ class LanguageSettingsService {
   }
 
   LanguageSettings _createDefaultSettings() {
-    return LanguageSettings(examplesTranslatedSpeechEnabled: false, imagesEnabled: false, examplesUntranslatedSpeechEnabled: false, dynamicGenerativeFrontcards: false, numberOfExamples: 0, maleVoiceCode: '', femaleVoiceCode: ''
-      
+    return const LanguageSettings(
+      examplesTranslatedSpeechEnabled: false,
+      imagesEnabled: false,
+      examplesUntranslatedSpeechEnabled: false,
+      dynamicGenerativeFrontcards: false,
+      numberOfExamples: 3,
+      maleVoiceCode: null,
+      femaleVoiceCode: null,
     );
   }
 }
