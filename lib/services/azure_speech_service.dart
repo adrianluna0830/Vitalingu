@@ -1,17 +1,20 @@
 import 'package:flutter/services.dart';
-
+import 'package:vitalingu/models/settings.dart';
 class AzureSpeechService {
+  final MicrosoftSpeechSettings settings;
   static const MethodChannel _channel = MethodChannel('com.example.vitalingu/azure_speech');
 
-  static Future<Uint8List> synthesizeTextSSML({
+  AzureSpeechService({required this.settings});
+
+   Future<Uint8List> synthesi1zeTextSSML({
     required String apiKey,
     required String endpoint,
     required String ssml,
   }) async {
     try {
       final result = await _channel.invokeMethod('synthesizeTextSSML', {
-        'apiKey': apiKey,
-        'endpoint': endpoint,
+        'apiKey': settings.apiKey,
+        'endpoint': settings.endpoint,
         'ssml': ssml,
       });
       
@@ -21,17 +24,15 @@ class AzureSpeechService {
     }
   }
 
-  static Future<String> assessPronunciation({
-    required String apiKey,
-    required String endpoint,
+   Future<String> assessPronunciation({
     required String voice,
     required Uint8List audio,
     String? referenceText,
   }) async {
     try {
       final result = await _channel.invokeMethod('assessPronunciation', {
-        'apiKey': apiKey,
-        'endpoint': endpoint,
+        'apiKey':  settings.apiKey,
+        'endpoint': settings.endpoint,
         'voice': voice,
         'audio': audio,
         if (referenceText != null) 'referenceText': referenceText,
@@ -43,17 +44,15 @@ class AzureSpeechService {
     }
   }
 
-  static Future<String> recognizeSpeech({
-    required String apiKey,
-    required String endpoint,
+   Future<String> recognizeSpeech({
     required String voice,
     required Uint8List audio,
     required List<String> languageCandidates,
   }) async {
     try {
       final result = await _channel.invokeMethod('recognizeSpeech', {
-        'apiKey': apiKey,
-        'endpoint': endpoint,
+        'apiKey':  settings.apiKey,
+        'endpoint': settings.endpoint,
         'voice': voice,
         'audio': audio,
         'languageCandidates': languageCandidates,

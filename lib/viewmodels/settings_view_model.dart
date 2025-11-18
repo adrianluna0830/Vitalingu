@@ -13,7 +13,7 @@ class SettingsViewModel extends ViewModelBase {
   final geminiApiKeyController = TextEditingController();
   final pixabayApiKeyController = TextEditingController();
   final microsoftApiKeyController = TextEditingController();
-  final microsoftRegionController = TextEditingController();
+  final microsoftEndpointController = TextEditingController();
 
   final GeminiSettings _geminiSettings;
   final PixabaySettings _pixabaySettings;
@@ -41,7 +41,7 @@ class SettingsViewModel extends ViewModelBase {
     geminiApiKeyController.text = _geminiSettings.apiKey;
     pixabayApiKeyController.text = _pixabaySettings.apiKey;
     microsoftApiKeyController.text = _microsoftSpeechSettings.apiKey;
-    microsoftRegionController.text = _microsoftSpeechSettings.region;
+    microsoftEndpointController.text = _microsoftSpeechSettings.endpoint;
     selectedNativeLanguage.value = _nativeLanguage.language;
   }
 
@@ -54,7 +54,7 @@ class SettingsViewModel extends ViewModelBase {
       await _settingsService.saveAndLoadPixabaySettings(pixabayApiKeyController.text.trim());
       await _settingsService.saveAndLoadMicrosoftSpeechSettings(
         microsoftApiKeyController.text.trim(),
-        microsoftRegionController.text.trim(),
+        microsoftEndpointController.text.trim(),
       );
       await _settingsService.saveAndLoadNativeLanguage(selectedNativeLanguage.value!);
 
@@ -87,7 +87,7 @@ class SettingsViewModel extends ViewModelBase {
     geminiApiKeyController.dispose();
     pixabayApiKeyController.dispose();
     microsoftApiKeyController.dispose();
-    microsoftRegionController.dispose();
+    microsoftEndpointController.dispose();
   }
 
   void popBack() {

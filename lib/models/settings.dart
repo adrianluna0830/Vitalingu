@@ -15,7 +15,7 @@ class PixabaySettings {
 @lazySingleton
 class MicrosoftSpeechSettings {
   String apiKey = '';
-  String region = '';
+  String endpoint = '';
 }
 
 @lazySingleton

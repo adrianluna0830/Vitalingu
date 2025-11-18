@@ -74,10 +74,10 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
                 const SizedBox(height: 16),
                 TextField(
-                  controller: viewModel.microsoftRegionController,
+                  controller: viewModel.microsoftEndpointController,
                   enabled: !loading,
                   decoration: const InputDecoration(
-                    labelText: 'Microsoft Speech Region',
+                    labelText: 'Microsoft Speech Endpoint',
                   ),
                 ),
                 const SizedBox(height: 24),

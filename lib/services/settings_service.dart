@@ -21,7 +21,7 @@ class SettingsService {
   static const String _geminiApiKeyKey = 'gemini_api_key';
   static const String _pixabayApiKeyKey = 'pixabay_api_key';
   static const String _microsoftApiKeyKey = 'microsoft_speech_api_key';
-  static const String _microsoftRegionKey = 'microsoft_speech_region';
+  static const String _microsoftEndpointKey = 'microsoft_speech_endpoint';
   static const String _nativeLanguageKey = 'native_language';
 
   Future<void> _loadGeminiSettings() async {
@@ -40,13 +40,13 @@ class SettingsService {
 
   Future<void> _loadMicrosoftSpeechSettings() async {
     final apiKey = await storage.read(key: _microsoftApiKeyKey);
-    final region = await storage.read(key: _microsoftRegionKey);
+    final endpoint = await storage.read(key: _microsoftEndpointKey);
     
     if (apiKey != null) {
       microsoftSpeechSettings.apiKey = apiKey;
     }
-    if (region != null) {
-      microsoftSpeechSettings.region = region;
+    if (endpoint != null) {
+      microsoftSpeechSettings.endpoint = endpoint;
     }
   }
 
@@ -69,9 +69,9 @@ class SettingsService {
     await _loadPixabaySettings();
   }
 
-  Future<void> saveAndLoadMicrosoftSpeechSettings(String apiKey, String region) async {
+  Future<void> saveAndLoadMicrosoftSpeechSettings(String apiKey, String endpoint) async {
     await storage.write(key: _microsoftApiKeyKey, value: apiKey);
-    await storage.write(key: _microsoftRegionKey, value: region);
+    await storage.write(key: _microsoftEndpointKey, value: endpoint);
     await _loadMicrosoftSpeechSettings();
   }
 
@@ -98,7 +98,7 @@ class SettingsService {
     geminiSettings.apiKey = '';
     pixabaySettings.apiKey = '';
     microsoftSpeechSettings.apiKey = '';
-    microsoftSpeechSettings.region = '';
+    microsoftSpeechSettings.endpoint = '';
     nativeLanguage.language = Language(bcp47Code: "", nativeLanguageName: "");
   }
 
@@ -106,7 +106,7 @@ class SettingsService {
     return geminiSettings.apiKey.isNotEmpty &&
         pixabaySettings.apiKey.isNotEmpty &&
         microsoftSpeechSettings.apiKey.isNotEmpty &&
-        microsoftSpeechSettings.region.isNotEmpty &&
+        microsoftSpeechSettings.endpoint.isNotEmpty &&
         nativeLanguage.language != null;
   }
 }
