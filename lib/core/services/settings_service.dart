@@ -11,6 +11,7 @@ class SettingsService {
   final PixabaySettings pixabaySettings;
   final MicrosoftSpeechSettings microsoftSpeechSettings;
   final NativeLanguage nativeLanguage;
+
   SettingsService(
     this.geminiSettings,
     this.pixabaySettings,
@@ -18,89 +19,62 @@ class SettingsService {
     this.nativeLanguage,
   );
 
-  static const String _geminiApiKeyKey = 'gemini_api_key';
-  static const String _pixabayApiKeyKey = 'pixabay_api_key';
-  static const String _microsoftApiKeyKey = 'microsoft_speech_api_key';
-  static const String _microsoftEndpointKey = 'microsoft_speech_endpoint';
-  static const String _nativeLanguageKey = 'native_language';
-  static const String _nativeLanguageVoiceKey = 'native_language_voice';
+  // Keys for secure storage
+  static const String geminiApiKeyKey = 'gemini_api_key';
+  static const String pixabayApiKeyKey = 'pixabay_api_key';
+  static const String microsoftApiKeyKey = 'microsoft_speech_api_key';
+  static const String microsoftEndpointKey = 'microsoft_speech_endpoint';
+  static const String nativeLanguageKey = 'native_language';
+  static const String nativeLanguageVoiceKey = 'native_language_voice';
 
-  Future<void> _loadGeminiSettings() async {
-    final apiKey = await storage.read(key: _geminiApiKeyKey);
-    if (apiKey != null) {
-      geminiSettings.apiKey = apiKey;
-    }
-  }
-
-  Future<void> _loadPixabaySettings() async {
-    final apiKey = await storage.read(key: _pixabayApiKeyKey);
-    if (apiKey != null) {
-      pixabaySettings.apiKey = apiKey;
-    }
+  Future<void> _loadSettings(String key, Function(String?) onLoad) async {
+    final value = await storage.read(key: key);
+    onLoad(value);
   }
 
-  Future<void> _loadMicrosoftSpeechSettings() async {
-    final apiKey = await storage.read(key: _microsoftApiKeyKey);
-    final endpoint = await storage.read(key: _microsoftEndpointKey);
-    
-    if (apiKey != null) {
-      microsoftSpeechSettings.apiKey = apiKey;
-    }
-    if (endpoint != null) {
-      microsoftSpeechSettings.endpoint = endpoint;
-    }
+  Future<void> _loadAllSettings() async {
+    await Future.wait([
+      _loadSettings(geminiApiKeyKey, (v) => geminiSettings.apiKey = v),
+      _loadSettings(pixabayApiKeyKey, (v) => pixabaySettings.apiKey = v),
+      _loadSettings(microsoftApiKeyKey, (v) => microsoftSpeechSettings.apiKey = v),
+      _loadSettings(microsoftEndpointKey, (v) => microsoftSpeechSettings.endpoint = v),
+      _loadSettings(nativeLanguageKey, (v) {
+        nativeLanguage.language = v != null ? LanguageRegistry.getLanguageByCode(v) : null;
+      }),
+      _loadSettings(nativeLanguageVoiceKey, (v) => nativeLanguage.voice = v),
+    ]);
   }
 
-  Future<void> _loadNativeLanguage() async {
-    final languageCode = await storage.read(key: _nativeLanguageKey);
-    if (languageCode != null) {
-      nativeLanguage.language = LanguageRegistry.getLanguageByCode(languageCode);
-    } else {
-      nativeLanguage.language = null;
-    }
+  Future<void> _saveSetting(String key, String value) async {
+    await storage.write(key: key, value: value);
   }
-  Future<void> _loadNativeLanguageVoice() async {
-    final voice = await storage.read(key: _nativeLanguageVoiceKey);
-    if (voice != null) {
-      nativeLanguage.voice = voice;
-    } else {
-      nativeLanguage.voice = null;
-    }
-  }
+
   Future<void> saveAndLoadGeminiSettings(String apiKey) async {
-    await storage.write(key: _geminiApiKeyKey, value: apiKey);
-    await _loadGeminiSettings();
+    await _saveSetting(geminiApiKeyKey, apiKey);
+    await _loadSettings(geminiApiKeyKey, (v) => geminiSettings.apiKey = v);
   }
 
   Future<void> saveAndLoadPixabaySettings(String apiKey) async {
-    await storage.write(key: _pixabayApiKeyKey, value: apiKey);
-    await _loadPixabaySettings();
+    await _saveSetting(pixabayApiKeyKey, apiKey);
+    await _loadSettings(pixabayApiKeyKey, (v) => pixabaySettings.apiKey = v);
   }
 
   Future<void> saveAndLoadMicrosoftSpeechSettings(String apiKey, String endpoint) async {
-    await storage.write(key: _microsoftApiKeyKey, value: apiKey);
-    await storage.write(key: _microsoftEndpointKey, value: endpoint);
-    await _loadMicrosoftSpeechSettings();
+    await _saveSetting(microsoftApiKeyKey, apiKey);
+    await _saveSetting(microsoftEndpointKey, endpoint);
+    await _loadAllSettings();
   }
 
   Future<void> saveAndLoadNativeLanguage(Language language) async {
-    await storage.write(key: _nativeLanguageKey, value: language.bcp47Code);
-    await _loadNativeLanguage();
+    await _saveSetting(nativeLanguageKey, language.bcp47Code);
+    await _loadSettings(nativeLanguageKey, (v) {
+      nativeLanguage.language = LanguageRegistry.getLanguageByCode(v!);
+    });
   }
 
   Future<void> saveAndLoadNativeLanguageVoice(String voice) async {
-    await storage.write(key: _nativeLanguageVoiceKey, value: voice);
-    await _loadNativeLanguageVoice();
-  }
-
-  Future<void> loadAllSettings() async {
-    await Future.wait([
-      _loadGeminiSettings(),
-      _loadPixabaySettings(),
-      _loadMicrosoftSpeechSettings(),
-      _loadNativeLanguage(),
-      _loadNativeLanguageVoice(),
-    ]);
+    await _saveSetting(nativeLanguageVoiceKey, voice);
+    await _loadSettings(nativeLanguageVoiceKey, (v) => nativeLanguage.voice = v);
   }
 
   Future<void> clearAllSettings() async {
@@ -113,14 +87,17 @@ class SettingsService {
     nativeLanguage.voice = null;
   }
 
+  Future<void> loadAllSettings() async {
+    await _loadAllSettings();
+  }
+
   bool areSettingsComplete() {
     return geminiSettings.apiKey != null &&
         pixabaySettings.apiKey != null &&
         microsoftSpeechSettings.apiKey != null &&
         microsoftSpeechSettings.endpoint != null &&
-        nativeLanguage.language != null && nativeLanguage.voice != null;
+        nativeLanguage.language != null &&
+        nativeLanguage.voice != null;
   }
-
-
 }
 
