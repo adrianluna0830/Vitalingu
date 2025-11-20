@@ -1,20 +1,20 @@
 import 'package:flutter/services.dart';
 import 'package:vitalingu/features/settings/data/model/settings.dart';
+import 'package:injectable/injectable.dart';
+@injectable
 class AzureSpeechService {
-  final MicrosoftSpeechSettings settings;
+  final MicrosoftSpeechSettings _settings;
   static const MethodChannel _channel = MethodChannel('com.example.vitalingu/azure_speech');
 
-  AzureSpeechService({required this.settings});
+  AzureSpeechService({required MicrosoftSpeechSettings settings}) : _settings = settings;
 
-   Future<Uint8List> synthesi1zeTextSSML({
-    required String apiKey,
-    required String endpoint,
+   Future<Uint8List> synthesizeTextSSML({
     required String ssml,
   }) async {
     try {
       final result = await _channel.invokeMethod('synthesizeTextSSML', {
-        'apiKey': settings.apiKey,
-        'endpoint': settings.endpoint,
+        'apiKey': _settings.apiKey,
+        'endpoint': _settings.endpoint,
         'ssml': ssml,
       });
       
@@ -31,8 +31,8 @@ class AzureSpeechService {
   }) async {
     try {
       final result = await _channel.invokeMethod('assessPronunciation', {
-        'apiKey':  settings.apiKey,
-        'endpoint': settings.endpoint,
+        'apiKey':  _settings.apiKey,
+        'endpoint': _settings.endpoint,
         'voice': voice,
         'audio': audio,
         if (referenceText != null) 'referenceText': referenceText,
@@ -51,8 +51,8 @@ class AzureSpeechService {
   }) async {
     try {
       final result = await _channel.invokeMethod('recognizeSpeech', {
-        'apiKey':  settings.apiKey,
-        'endpoint': settings.endpoint,
+        'apiKey':  _settings.apiKey,
+        'endpoint': _settings.endpoint,
         'voice': voice,
         'audio': audio,
         'languageCandidates': languageCandidates,
@@ -64,17 +64,15 @@ class AzureSpeechService {
     }
   }
 
-  static Future<String> fastTranscription({
-    required String apiKey,
-    required String endpoint,
+  Future<String> fastTranscription({
     required String voice,
     required Uint8List audio,
     required String locale,
   }) async {
     try {
       final result = await _channel.invokeMethod('fastTranscription', {
-        'apiKey': apiKey,
-        'endpoint': endpoint,
+        'apiKey': _settings.apiKey,
+        'endpoint': _settings.endpoint,
         'voice': voice,
         'audio': audio,
         'locale': locale,

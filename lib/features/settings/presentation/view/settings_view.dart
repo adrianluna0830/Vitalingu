@@ -27,11 +27,14 @@ class _SettingsViewState extends State<SettingsView> {
       ),
       body: Watch((context) {
         final loading = viewModel.isLoading.value;
+        final availableLanguages = viewModel.availableLanguages;
         final selectedLanguage = viewModel.selectedNativeLanguage.value;
         final availableVoices = viewModel.availableVoices;
         final selectedVoice = viewModel.selectedVoice.value;
-        final finalSelectedVoice =
-            availableVoices.contains(selectedVoice) ? selectedVoice : null;
+
+        final validatedVoice = (selectedVoice != null && availableVoices.contains(selectedVoice)) 
+            ? selectedVoice 
+            : (availableVoices.isNotEmpty ? availableVoices.first : null);
 
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -40,11 +43,11 @@ class _SettingsViewState extends State<SettingsView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 DropdownButtonFormField(
-                  initialValue: selectedLanguage,
+                  value: selectedLanguage,
                   decoration: const InputDecoration(
                     labelText: 'Native Language',
                   ),
-                  items: viewModel.availableLanguages.map((language) {
+                  items: availableLanguages.map((language) {
                     return DropdownMenuItem(
                       value: language,
                       child: Text(language.nativeLanguageName),
@@ -53,12 +56,13 @@ class _SettingsViewState extends State<SettingsView> {
                   onChanged: loading ? null : viewModel.setNativeLanguage,
                 ),
                 const SizedBox(height: 16),
-                if (selectedLanguage != null && availableVoices.isNotEmpty)
+                if (availableVoices.isNotEmpty)
                   Row(
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          initialValue: finalSelectedVoice,
+                          key: ValueKey(selectedLanguage?.bcp47Code ?? 'no_language'),
+                          value: validatedVoice,
                           decoration: const InputDecoration(
                             labelText: 'Voice',
                           ),
@@ -74,9 +78,9 @@ class _SettingsViewState extends State<SettingsView> {
                       const SizedBox(width: 8),
                       IconButton(
                         icon: const Icon(Icons.volume_up),
-                        onPressed: (loading || selectedVoice == null)
+                        onPressed: (loading || validatedVoice == null)
                             ? null
-                            : () => viewModel.playVoice(selectedVoice),
+                            : () => viewModel.playVoice(validatedVoice),
                       ),
                     ],
                   ),

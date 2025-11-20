@@ -23,6 +23,7 @@ class SettingsService {
   static const String _microsoftApiKeyKey = 'microsoft_speech_api_key';
   static const String _microsoftEndpointKey = 'microsoft_speech_endpoint';
   static const String _nativeLanguageKey = 'native_language';
+  static const String _nativeLanguageVoiceKey = 'native_language_voice';
 
   Future<void> _loadGeminiSettings() async {
     final apiKey = await storage.read(key: _geminiApiKeyKey);
@@ -58,7 +59,14 @@ class SettingsService {
       nativeLanguage.language = null;
     }
   }
-
+  Future<void> _loadNativeLanguageVoice() async {
+    final voice = await storage.read(key: _nativeLanguageVoiceKey);
+    if (voice != null) {
+      nativeLanguage.voice = voice;
+    } else {
+      nativeLanguage.voice = null;
+    }
+  }
   Future<void> saveAndLoadGeminiSettings(String apiKey) async {
     await storage.write(key: _geminiApiKeyKey, value: apiKey);
     await _loadGeminiSettings();
@@ -80,8 +88,9 @@ class SettingsService {
     await _loadNativeLanguage();
   }
 
-  Future<void> clearNativeLanguage() async {
-    await storage.delete(key: _nativeLanguageKey);
+  Future<void> saveAndLoadNativeLanguageVoice(String voice) async {
+    await storage.write(key: _nativeLanguageVoiceKey, value: voice);
+    await _loadNativeLanguageVoice();
   }
 
   Future<void> loadAllSettings() async {
@@ -90,6 +99,7 @@ class SettingsService {
       _loadPixabaySettings(),
       _loadMicrosoftSpeechSettings(),
       _loadNativeLanguage(),
+      _loadNativeLanguageVoice(),
     ]);
   }
 
@@ -100,6 +110,7 @@ class SettingsService {
     microsoftSpeechSettings.apiKey = null;
     microsoftSpeechSettings.endpoint = null;
     nativeLanguage.language = null;
+    nativeLanguage.voice = null;
   }
 
   bool areSettingsComplete() {
@@ -107,7 +118,9 @@ class SettingsService {
         pixabaySettings.apiKey != null &&
         microsoftSpeechSettings.apiKey != null &&
         microsoftSpeechSettings.endpoint != null &&
-        nativeLanguage.language != null;
+        nativeLanguage.language != null && nativeLanguage.voice != null;
   }
+
+
 }
 

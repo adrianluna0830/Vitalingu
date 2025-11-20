@@ -15,6 +15,7 @@ import 'package:vitalingu/controllers/word_overlay_controller.dart' as _i790;
 import 'package:vitalingu/core/database/database_interface.dart' as _i64;
 import 'package:vitalingu/core/di/modules.dart' as _i298;
 import 'package:vitalingu/core/navigation/app_router.dart' as _i419;
+import 'package:vitalingu/core/services/ai/azure_speech_service.dart' as _i40;
 import 'package:vitalingu/core/services/ai/gemini_prompt_service.dart'
     as _i1061;
 import 'package:vitalingu/core/services/ai_wrappers/selectable_text_service.dart'
@@ -91,6 +92,8 @@ extension GetItInjectableX on _i174.GetIt {
         _i611.PixabayService(pixabaySettings: gh<_i1049.PixabaySettings>()));
     gh.factory<_i1061.GeminiPromptService>(() => _i1061.GeminiPromptService(
         geminiSettings: gh<_i1049.GeminiSettings>()));
+    gh.factory<_i40.AzureSpeechService>(() => _i40.AzureSpeechService(
+        settings: gh<_i1049.MicrosoftSpeechSettings>()));
     gh.singleton<_i161.NavigationService>(
         () => _i161.NavigationService(gh<_i419.AppRouter>()));
     gh.factory<_i264.AppStartupLoadingViewModel>(
@@ -108,14 +111,6 @@ extension GetItInjectableX on _i174.GetIt {
           targetLanguage: gh<_i1049.SessionTargetLanguage>(),
           geminiPromptService: gh<_i1061.GeminiPromptService>(),
         ));
-    gh.factory<_i487.SettingsViewModel>(() => _i487.SettingsViewModel(
-          gh<_i1049.GeminiSettings>(),
-          gh<_i1049.PixabaySettings>(),
-          gh<_i1049.MicrosoftSpeechSettings>(),
-          gh<_i1049.NativeLanguage>(),
-          gh<_i405.SettingsService>(),
-          navigationService: gh<_i161.NavigationService>(),
-        ));
     gh.factory<_i125.LanguageViewModel>(() => _i125.LanguageViewModel(
         navigationService: gh<_i161.NavigationService>()));
     gh.factory<_i647.VoiceChatViewModel>(() => _i647.VoiceChatViewModel(
@@ -126,6 +121,15 @@ extension GetItInjectableX on _i174.GetIt {
               languageSettingsService: gh<_i983.LanguageSettingsService>(),
               navigationService: gh<_i161.NavigationService>(),
             ));
+    gh.factory<_i487.SettingsViewModel>(() => _i487.SettingsViewModel(
+          gh<_i405.SettingsService>(),
+          gh<_i40.AzureSpeechService>(),
+          gh<_i1049.GeminiSettings>(),
+          gh<_i1049.PixabaySettings>(),
+          gh<_i1049.MicrosoftSpeechSettings>(),
+          gh<_i1049.NativeLanguage>(),
+          navigationService: gh<_i161.NavigationService>(),
+        ));
     return this;
   }
 }

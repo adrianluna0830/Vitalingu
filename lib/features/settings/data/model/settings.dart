@@ -22,7 +22,7 @@ class MicrosoftSpeechSettings {
 @lazySingleton
 class NativeLanguage {
   Language? language;
-
+  String? voice;
 }
 
 @lazySingleton

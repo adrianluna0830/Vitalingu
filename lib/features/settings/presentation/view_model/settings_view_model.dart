@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
+import 'package:vitalingu/core/services/ai/azure_speech_service.dart';
 import 'package:vitalingu/features/language_management/data/model/language.dart';
 import 'package:vitalingu/features/settings/data/model/settings.dart';
 import 'package:vitalingu/core/services/settings_service.dart';
@@ -14,21 +15,12 @@ class SettingsViewModel extends ViewModelBase {
   final pixabayApiKeyController = TextEditingController();
   final microsoftApiKeyController = TextEditingController();
   final microsoftEndpointController = TextEditingController();
-
+  final AzureSpeechService _microsoftSpeechService;
   final GeminiSettings _geminiSettings;
   final PixabaySettings _pixabaySettings;
   final MicrosoftSpeechSettings _microsoftSpeechSettings;
   final NativeLanguage _nativeLanguage;
 
-  SettingsViewModel(
-    this._geminiSettings,
-    this._pixabaySettings,
-    this._microsoftSpeechSettings,
-    this._nativeLanguage, this._settingsService, {
-    required super.navigationService,
-  }) {
-    _initializeSettings();
-  }
 
   final isLoading = signal(false);
   final saveSuccess = signal<bool?>(null);
@@ -38,6 +30,10 @@ class SettingsViewModel extends ViewModelBase {
   final selectedNativeLanguage = signal<Language?>(null);
   final selectedVoice = signal<String?>(null);
 
+  SettingsViewModel(this._settingsService, this._microsoftSpeechService, this._geminiSettings, this._pixabaySettings, this._microsoftSpeechSettings, this._nativeLanguage, {required super.navigationService}) {
+    _initializeSettings();
+  }
+  
   List<String> get availableVoices {
     final language = selectedNativeLanguage.value;
     if (language == null) return [];
@@ -50,9 +46,15 @@ class SettingsViewModel extends ViewModelBase {
     microsoftApiKeyController.text = _microsoftSpeechSettings.apiKey ?? '';
     microsoftEndpointController.text = _microsoftSpeechSettings.endpoint ?? '';
     selectedNativeLanguage.value = _nativeLanguage.language;
+    selectedVoice.value = _nativeLanguage.voice;
 
-    // Set default voice to first available
-    if (selectedNativeLanguage.value != null && selectedNativeLanguage.value!.voices.isNotEmpty) {
+    if (selectedNativeLanguage.value == null && availableLanguages.isNotEmpty) {
+      selectedNativeLanguage.value = availableLanguages.first;
+    }
+
+    if (selectedNativeLanguage.value != null && 
+        selectedVoice.value == null && 
+        selectedNativeLanguage.value!.voices.isNotEmpty) {
       selectedVoice.value = selectedNativeLanguage.value!.voices.first;
     }
   }
@@ -70,6 +72,10 @@ class SettingsViewModel extends ViewModelBase {
       );
       await _settingsService.saveAndLoadNativeLanguage(selectedNativeLanguage.value!);
 
+      if (selectedVoice.value != null) {
+        await _settingsService.saveAndLoadNativeLanguageVoice(selectedVoice.value!);
+      }
+
       saveSuccess.value = true;
     } catch (e) {
       saveSuccess.value = false;
@@ -85,7 +91,6 @@ class SettingsViewModel extends ViewModelBase {
   void setNativeLanguage(Language? language) {
     if (language != null) {
       selectedNativeLanguage.value = language;
-      // Update voice to first available when language changes
       if (language.voices.isNotEmpty) {
         selectedVoice.value = language.voices.first;
       } else {
