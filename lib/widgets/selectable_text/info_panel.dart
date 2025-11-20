@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/widgets/selectable_text/shimmer_info_panel_content.dart';
+import 'package:vitalingu/shared/widgets/selectable_text/shimmer_loading_panel_content.dart';
 
 class CollapsibleInfoPanel extends StatelessWidget {
   final VoidCallback onClose;

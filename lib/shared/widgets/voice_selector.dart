@@ -30,7 +30,7 @@ class VoiceSelector extends StatelessWidget {
         children: [
           Expanded(
             child: DropdownButtonFormField<String>(
-              value: voiceCode,
+              initialValue: voiceCode,
               decoration: InputDecoration(
                 labelText: dropdownLabel,
               ),

@@ -40,7 +40,7 @@ class _SettingsViewState extends State<SettingsView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 DropdownButtonFormField(
-                  value: selectedLanguage,
+                  initialValue: selectedLanguage,
                   decoration: const InputDecoration(
                     labelText: 'Native Language',
                   ),
@@ -58,7 +58,7 @@ class _SettingsViewState extends State<SettingsView> {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: finalSelectedVoice,
+                          initialValue: finalSelectedVoice,
                           decoration: const InputDecoration(
                             labelText: 'Voice',
                           ),

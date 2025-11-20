@@ -2,7 +2,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/features/language_management/data/model/language.dart';
 import 'package:vitalingu/features/settings/data/model/settings.dart';
-import 'dart:convert' as convert;
 import 'package:vitalingu/register_languages.dart';
 
 @singleton
