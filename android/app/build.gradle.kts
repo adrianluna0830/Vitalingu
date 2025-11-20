@@ -42,3 +42,9 @@ android {
 flutter {
     source = "../.."
 }
+
+// --- BLOQUE AGREGADO PARA CORREGIR EL ERROR ---
+dependencies {
+    // SDK de Azure Speech para Android
+    implementation("com.microsoft.cognitiveservices.speech:client-sdk:1.43.0")
+}

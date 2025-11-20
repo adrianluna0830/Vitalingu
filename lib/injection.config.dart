@@ -128,6 +128,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i1049.PixabaySettings>(),
           gh<_i1049.MicrosoftSpeechSettings>(),
           gh<_i1049.NativeLanguage>(),
+          gh<_i548.AudioService>(),
           navigationService: gh<_i161.NavigationService>(),
         ));
     return this;

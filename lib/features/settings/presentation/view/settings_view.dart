@@ -15,7 +15,6 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
    final SettingsViewModel viewModel = getIt<SettingsViewModel>();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +42,7 @@ class _SettingsViewState extends State<SettingsView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 DropdownButtonFormField(
-                  value: selectedLanguage,
+                  initialValue: selectedLanguage,
                   decoration: const InputDecoration(
                     labelText: 'Native Language',
                   ),
@@ -62,14 +61,19 @@ class _SettingsViewState extends State<SettingsView> {
                       Expanded(
                         child: DropdownButtonFormField<String>(
                           key: ValueKey(selectedLanguage?.bcp47Code ?? 'no_language'),
-                          value: validatedVoice,
+                          initialValue: validatedVoice,
+                          isExpanded: true, 
                           decoration: const InputDecoration(
                             labelText: 'Voice',
                           ),
                           items: availableVoices.map((voice) {
                             return DropdownMenuItem(
                               value: voice,
-                              child: Text(voice),
+                              child: Text(
+                                voice,
+                                overflow: TextOverflow.ellipsis, 
+                                maxLines: 1,
+                              ),
                             );
                           }).toList(),
                           onChanged: loading ? null : viewModel.setVoice,
@@ -129,4 +133,3 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 }
-

@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:vitalingu/features/settings/data/model/settings.dart';
 import 'package:injectable/injectable.dart';
+
 @injectable
 class AzureSpeechService {
   final MicrosoftSpeechSettings _settings;
@@ -8,7 +9,7 @@ class AzureSpeechService {
 
   AzureSpeechService({required MicrosoftSpeechSettings settings}) : _settings = settings;
 
-   Future<Uint8List> synthesizeTextSSML({
+  Future<Uint8List> synthesizeTextSSML({
     required String ssml,
   }) async {
     try {
@@ -18,14 +19,14 @@ class AzureSpeechService {
         'ssml': ssml,
       });
       
-      return Uint8List.fromList(List<int>.from(result));
+      return result as Uint8List; 
     } on PlatformException catch (e) {
       throw Exception('Error en synthesizeTextSSML: ${e.message}');
     }
   }
 
-   Future<String> assessPronunciation({
-    required String voice,
+  Future<String> assessPronunciation({
+    required String language, 
     required Uint8List audio,
     String? referenceText,
   }) async {
@@ -33,7 +34,7 @@ class AzureSpeechService {
       final result = await _channel.invokeMethod('assessPronunciation', {
         'apiKey':  _settings.apiKey,
         'endpoint': _settings.endpoint,
-        'voice': voice,
+        'language': language, 
         'audio': audio,
         if (referenceText != null) 'referenceText': referenceText,
       });
@@ -44,8 +45,7 @@ class AzureSpeechService {
     }
   }
 
-   Future<String> recognizeSpeech({
-    required String voice,
+  Future<String> recognizeSpeech({
     required Uint8List audio,
     required List<String> languageCandidates,
   }) async {
@@ -53,7 +53,6 @@ class AzureSpeechService {
       final result = await _channel.invokeMethod('recognizeSpeech', {
         'apiKey':  _settings.apiKey,
         'endpoint': _settings.endpoint,
-        'voice': voice,
         'audio': audio,
         'languageCandidates': languageCandidates,
       });
@@ -61,26 +60,6 @@ class AzureSpeechService {
       return result as String;
     } on PlatformException catch (e) {
       throw Exception('Error en recognizeSpeech: ${e.message}');
-    }
-  }
-
-  Future<String> fastTranscription({
-    required String voice,
-    required Uint8List audio,
-    required String locale,
-  }) async {
-    try {
-      final result = await _channel.invokeMethod('fastTranscription', {
-        'apiKey': _settings.apiKey,
-        'endpoint': _settings.endpoint,
-        'voice': voice,
-        'audio': audio,
-        'locale': locale,
-      });
-      
-      return result as String;
-    } on PlatformException catch (e) {
-      throw Exception('Error en fastTranscription: ${e.message}');
     }
   }
 }
