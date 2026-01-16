@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/view_models/startup/base_startup_view_model.dart';
+import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart';
 
 @RoutePage()
 class StartupIntroductionPage extends StatefulWidget {
@@ -13,7 +13,7 @@ class StartupIntroductionPage extends StatefulWidget {
 }
 
 class _StartupIntroductionPageState extends State<StartupIntroductionPage> {
-  final viewModel = getIt<BaseStartupViewModel>();
+  final viewModel = getIt<StartupIntroductionViewModel>();
 
   @override
   Widget build(BuildContext context) {

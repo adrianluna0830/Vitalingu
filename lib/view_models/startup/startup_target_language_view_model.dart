@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
+import 'package:vitalingu/repository/user_settings.dart';
 import 'package:vitalingu/view_models/startup/base_startup_view_model.dart';
 
 class StartupTargetLanguageState extends BaseStartupState {
@@ -12,23 +13,26 @@ class StartupTargetLanguageState extends BaseStartupState {
 @injectable
 class StartupTargetLanguageViewModel
     extends BaseStartupViewModel<StartupTargetLanguageState> {
-  StartupTargetLanguageViewModel()
+  StartupTargetLanguageViewModel(this.userSettings)
       : super(StartupTargetLanguageState(targetLanguage: null));
+
+  final UserSettings userSettings;
 
   SupportedLanguagesBcp47? get targetLanguage => state.value.targetLanguage;
 
-  SupportedLanguagesBcp47? getNativeLanguage() {
-    return SupportedLanguagesBcp47.en;
-  }
-
-  List<SupportedLanguagesBcp47> getSupportedLanguagesExcludingNative() {
-    final native = getNativeLanguage();
+  List<SupportedLanguagesBcp47> getSupportedLanguagesExcludingNative(
+      SupportedLanguagesBcp47 previousLanguage) {
     return SupportedLanguagesBcp47.values
-        .where((lang) => lang != native)
+        .where((lang) => lang != previousLanguage)
         .toList();
   }
 
-  void setTargetLanguage(SupportedLanguagesBcp47 language) {
-    updateState(StartupTargetLanguageState(targetLanguage: language));
+  void confirmLanguages(SupportedLanguagesBcp47 target, SupportedLanguagesBcp47 native) {
+    userSettings.saveTargetLanguage(target);
+    userSettings.saveNativeLanguage(native);
+
+    updateState(StartupTargetLanguageState(targetLanguage: target));
   }
+
+
 }

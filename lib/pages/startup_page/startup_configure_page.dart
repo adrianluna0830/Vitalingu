@@ -15,7 +15,7 @@ class _StartupConfigurePageState extends State<StartupConfigurePage> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.pageView(
-      routes: const [
+      routes:  [
         StartupIntroductionRoute(),
         StartupNativeLanguageRoute(),
         StartupTargetLanguageRoute(),

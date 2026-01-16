@@ -7,7 +7,8 @@ import 'package:vitalingu/view_models/startup/startup_target_language_view_model
 
 @RoutePage()
 class StartupTargetLanguagePage extends StatefulWidget {
-  const StartupTargetLanguagePage({super.key});
+  final SupportedLanguagesBcp47? initialLanguage;
+  const StartupTargetLanguagePage({super.key, this.initialLanguage});
 
   @override
   State<StartupTargetLanguagePage> createState() =>
@@ -21,6 +22,11 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
   Widget build(BuildContext context) {
     final currentState = viewModel.state.watch(context);
     
+    final availableLanguages = viewModel.getSupportedLanguagesExcludingNative(widget.initialLanguage!);
+    final currentValue = availableLanguages.contains(viewModel.targetLanguage) 
+        ? viewModel.targetLanguage 
+        : null;
+    
     return Scaffold(
       body: Center(
         child: Column(
@@ -28,8 +34,9 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DropdownButton<SupportedLanguagesBcp47>(
-              value: viewModel.targetLanguage,
-              items: viewModel.getSupportedLanguagesExcludingNative()
+              value: currentValue,
+              hint: Text('Select target language'),
+              items: availableLanguages
                   .map(
                     (lang) => DropdownMenuItem(
                       value: lang,
@@ -38,7 +45,7 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
                   )
                   .toList(),
               onChanged: (newValue) {
-                viewModel.setTargetLanguage(newValue!);
+                viewModel.confirmLanguages(newValue!, widget.initialLanguage!);
               },
             ),
             SizedBox(height: 16),
