@@ -1,9 +1,9 @@
 import 'package:vitalingu/models/language/cefr_enum.dart';
 
 class GrammarTopic {
-  final String topicDescription;
-  final List<String> subtopicDescriptions;
-  final CEFR level;
+  final String topicDescriptionId;
+  final List<String> subtopicDetails;
+  final CEFR cefrLevel;
 
-  GrammarTopic({required this.topicDescription, required this.subtopicDescriptions, required this.level});
+  GrammarTopic({required this.topicDescriptionId, required this.subtopicDetails, required this.cefrLevel});
 }
