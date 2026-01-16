@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vitalingu/app_router.dart';
+import 'package:vitalingu/injection.dart';
+import 'package:vitalingu/view_models/startup_view_model.dart';
 import 'package:vitalingu/widgets/page_slider/navigation_controls.dart';
 
 @RoutePage()
@@ -12,6 +14,7 @@ class StartupConfigurePage extends StatefulWidget {
 }
 
 class _StartupConfigurePageState extends State<StartupConfigurePage> {
+  final startupViewModel = getIt<StartupViewModel>();
 @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.pageView(

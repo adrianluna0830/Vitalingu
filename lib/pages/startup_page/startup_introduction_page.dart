@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:vitalingu/app_router.dart';
+import 'package:vitalingu/injection.dart';
+import 'package:vitalingu/view_models/startup_view_model.dart';
 
 @RoutePage()
 class StartupIntroductionPage extends StatelessWidget {
@@ -9,12 +10,20 @@ class StartupIntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: TextButton(
-          onPressed: () =>
-              context.tabsRouter.navigate(const StartupNativeLanguageRoute()),
-          child: Text('Next'),
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Welcome to Vitalingu!'),
+          SizedBox(height: 16),
+          TextButton(
+            onPressed: () 
+            {
+              getIt<StartupViewModel>().next(context.tabsRouter);
+            },
+
+            child: Text('Next'),
+          ),
+        ],
       ),
     );
   }
