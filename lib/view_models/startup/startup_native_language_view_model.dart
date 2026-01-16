@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
-import 'package:vitalingu/view_models/base_startup_view_model.dart';
+import 'package:vitalingu/view_models/startup/base_startup_view_model.dart';
 
 class StartupNativeLanguageState extends BaseStartupState {
   final SupportedLanguagesBcp47? nativeLanguage;

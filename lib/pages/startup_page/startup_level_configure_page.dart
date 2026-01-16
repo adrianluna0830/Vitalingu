@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/view_models/startup_level_configure_view_model.dart';
+import 'package:vitalingu/view_models/startup/startup_level_configure_view_model.dart';
 
 @RoutePage()
 class StartupLevelConfigurePage extends StatefulWidget {

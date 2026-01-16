@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/view_models/base_startup_view_model.dart';
+import 'package:vitalingu/view_models/startup/base_startup_view_model.dart';
 
 @RoutePage()
 class StartupIntroductionPage extends StatefulWidget {

@@ -13,11 +13,11 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:vitalingu/app_router.dart' as _i641;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
-import 'package:vitalingu/view_models/startup_level_configure_view_model.dart'
+import 'package:vitalingu/view_models/startup/startup_level_configure_view_model.dart'
     as _i556;
-import 'package:vitalingu/view_models/startup_native_language_view_model.dart'
+import 'package:vitalingu/view_models/startup/startup_native_language_view_model.dart'
     as _i431;
-import 'package:vitalingu/view_models/startup_target_language_view_model.dart'
+import 'package:vitalingu/view_models/startup/startup_target_language_view_model.dart'
     as _i531;
 
 extension GetItInjectableX on _i174.GetIt {
