@@ -44,8 +44,8 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
                     ),
                   )
                   .toList(),
-              onChanged: (newValue) {
-                viewModel.confirmLanguages(newValue!, widget.initialLanguage!);
+              onChanged: (newValue) async {
+                await viewModel.confirmLanguages(newValue!, widget.initialLanguage!);
               },
             ),
             SizedBox(height: 16),

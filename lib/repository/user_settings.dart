@@ -15,8 +15,8 @@ class UserSettings {
   }
 
   Future<void> loadSettings() async {
-    final prefs = await SharedPreferences.getInstance();
 
+    final prefs = await SharedPreferences.getInstance();
     final nativeLangName = prefs.getString('nativeLanguage');
     final targetLangName = prefs.getString('targetLanguage');
 

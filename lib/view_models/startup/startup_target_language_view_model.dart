@@ -1,5 +1,7 @@
 import 'package:injectable/injectable.dart';
+import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
+import 'package:vitalingu/repository/grammar_topics_repository.dart';
 import 'package:vitalingu/repository/user_settings.dart';
 import 'package:vitalingu/view_models/startup/base_startup_view_model.dart';
 
@@ -27,10 +29,9 @@ class StartupTargetLanguageViewModel
         .toList();
   }
 
-  void confirmLanguages(SupportedLanguagesBcp47 target, SupportedLanguagesBcp47 native) {
-    userSettings.saveTargetLanguage(target);
-    userSettings.saveNativeLanguage(native);
-
+  Future<void> confirmLanguages(SupportedLanguagesBcp47 target, SupportedLanguagesBcp47 native) async {
+    await userSettings.saveTargetLanguage(target);
+    await userSettings.saveNativeLanguage(native);
     updateState(StartupTargetLanguageState(targetLanguage: target));
   }
 
