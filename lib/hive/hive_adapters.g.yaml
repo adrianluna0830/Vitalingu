@@ -29,7 +29,7 @@ types:
         index: 5
   GrammarTopic:
     typeId: 2
-    nextIndex: 7
+    nextIndex: 9
     fields:
       topicDescriptionId:
         index: 0
@@ -37,8 +37,10 @@ types:
         index: 2
       topicDescriptions:
         index: 4
-      languageBcp47:
-        index: 6
+      topicOrder:
+        index: 7
+      bcp47:
+        index: 8
   UserLanguageSkillsData:
     typeId: 3
     nextIndex: 5
