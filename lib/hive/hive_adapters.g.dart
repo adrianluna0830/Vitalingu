@@ -202,22 +202,19 @@ class GrammarTopicUserDataAdapter extends TypeAdapter<GrammarTopicUserData> {
         languageBcp47: fields[3] as SupportedLanguagesBcp47,
       )
       ..globalMastery = (fields[9] as num).toDouble()
-      ..currentLocalMastery = (fields[10] as num).toDouble()
       ..currentLocalMasteryHistory = (fields[11] as List).cast<double>();
   }
 
   @override
   void write(BinaryWriter writer, GrammarTopicUserData obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(2)
       ..write(obj.topicId)
       ..writeByte(3)
       ..write(obj.languageBcp47)
       ..writeByte(9)
       ..write(obj.globalMastery)
-      ..writeByte(10)
-      ..write(obj.currentLocalMastery)
       ..writeByte(11)
       ..write(obj.currentLocalMasteryHistory);
   }

@@ -63,7 +63,5 @@ types:
         index: 3
       globalMastery:
         index: 9
-      currentLocalMastery:
-        index: 10
       currentLocalMasteryHistory:
         index: 11

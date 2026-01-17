@@ -1,7 +1,6 @@
 import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
 
 class GrammarTopicUserData {
-  double currentLocalMastery = 0;
   double globalMastery = 0;
   List<double> currentLocalMasteryHistory = [];
 
