@@ -111,7 +111,7 @@ class GrammarTopicAdapter extends TypeAdapter<GrammarTopic> {
       topicDescriptionId: fields[0] as String,
       topicDescriptions: (fields[4] as List).cast<String>(),
       cefrLevel: fields[2] as CEFR,
-      language: fields[5] as SupportedLanguagesBcp47,
+      languageBcp47: fields[6] as SupportedLanguagesBcp47,
     );
   }
 
@@ -125,8 +125,8 @@ class GrammarTopicAdapter extends TypeAdapter<GrammarTopic> {
       ..write(obj.cefrLevel)
       ..writeByte(4)
       ..write(obj.topicDescriptions)
-      ..writeByte(5)
-      ..write(obj.language);
+      ..writeByte(6)
+      ..write(obj.languageBcp47);
   }
 
   @override
@@ -198,21 +198,28 @@ class GrammarTopicUserDataAdapter extends TypeAdapter<GrammarTopicUserData> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return GrammarTopicUserData(
-      topicId: fields[2] as String,
-      language: fields[1] as SupportedLanguagesBcp47,
-    )..normalizedProgress = (fields[0] as num).toDouble();
+        topicId: fields[2] as String,
+        languageBcp47: fields[3] as SupportedLanguagesBcp47,
+      )
+      ..globalMastery = (fields[9] as num).toDouble()
+      ..currentLocalMastery = (fields[10] as num).toDouble()
+      ..currentLocalMasteryHistory = (fields[11] as List).cast<double>();
   }
 
   @override
   void write(BinaryWriter writer, GrammarTopicUserData obj) {
     writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj.normalizedProgress)
-      ..writeByte(1)
-      ..write(obj.language)
+      ..writeByte(5)
       ..writeByte(2)
-      ..write(obj.topicId);
+      ..write(obj.topicId)
+      ..writeByte(3)
+      ..write(obj.languageBcp47)
+      ..writeByte(9)
+      ..write(obj.globalMastery)
+      ..writeByte(10)
+      ..write(obj.currentLocalMastery)
+      ..writeByte(11)
+      ..write(obj.currentLocalMasteryHistory);
   }
 
   @override

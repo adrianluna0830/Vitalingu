@@ -6,9 +6,9 @@ class GrammarTopic extends IIdentifiable {
   final String topicDescriptionId;
   final List<String> topicDescriptions;
   final CEFR cefrLevel;
-  final SupportedLanguagesBcp47 language;
+  final SupportedLanguagesBcp47 languageBcp47;
   @override
-  String get id => '${language.name}-$topicDescriptionId';
+  String get id => '${languageBcp47.name}-$topicDescriptionId';
 
-  GrammarTopic({required this.topicDescriptionId, required this.topicDescriptions, required this.cefrLevel, required this.language});
+  GrammarTopic({required this.topicDescriptionId, required this.topicDescriptions, required this.cefrLevel, required this.languageBcp47});
 }

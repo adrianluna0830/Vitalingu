@@ -29,7 +29,7 @@ types:
         index: 5
   GrammarTopic:
     typeId: 2
-    nextIndex: 6
+    nextIndex: 7
     fields:
       topicDescriptionId:
         index: 0
@@ -37,8 +37,8 @@ types:
         index: 2
       topicDescriptions:
         index: 4
-      language:
-        index: 5
+      languageBcp47:
+        index: 6
   UserLanguageSkillsData:
     typeId: 3
     nextIndex: 5
@@ -55,11 +55,15 @@ types:
         index: 4
   GrammarTopicUserData:
     typeId: 4
-    nextIndex: 3
+    nextIndex: 12
     fields:
-      normalizedProgress:
-        index: 0
-      language:
-        index: 1
       topicId:
         index: 2
+      languageBcp47:
+        index: 3
+      globalMastery:
+        index: 9
+      currentLocalMastery:
+        index: 10
+      currentLocalMasteryHistory:
+        index: 11
