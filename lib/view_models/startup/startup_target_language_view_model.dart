@@ -19,7 +19,6 @@ class StartupTargetLanguageViewModel
 
   final UserSettings userSettings;
 
-  SupportedLanguagesBcp47? get targetLanguage => state.value.targetLanguage;
 
 
   Future<void> confirmLanguages(SupportedLanguagesBcp47 target) async {
