@@ -8,4 +8,8 @@ class NavigationService {
 
   NavigationService(this._router);
 
+  Future<void> goToHome() async {
+    await _router.replaceAll([const HomeRoute()]);
+  }
+
 }

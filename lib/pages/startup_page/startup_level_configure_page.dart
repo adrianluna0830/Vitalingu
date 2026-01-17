@@ -40,7 +40,7 @@ class _StartupLevelConfigurePageState extends State<StartupLevelConfigurePage> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: currentState.canContinue
-                  ? () => viewModel.navigateNext(context.tabsRouter)
+                  ? () async => await viewModel.goToNextStep()
                   : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: currentState.canContinue

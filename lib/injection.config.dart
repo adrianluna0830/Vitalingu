@@ -36,9 +36,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i377.StartupIntroductionViewModel>(
       () => _i377.StartupIntroductionViewModel(),
     );
-    gh.factory<_i1048.StartupLevelConfigureViewModel>(
-      () => _i1048.StartupLevelConfigureViewModel(),
-    );
     gh.factory<_i75.StartupNativeLanguageViewModel>(
       () => _i75.StartupNativeLanguageViewModel(),
     );
@@ -60,6 +57,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i19.NavigationService>(
       () => _i19.NavigationService(gh<_i641.AppRouter>()),
+    );
+    gh.factory<_i1048.StartupLevelConfigureViewModel>(
+      () => _i1048.StartupLevelConfigureViewModel(
+        gh<_i19.NavigationService>(),
+        gh<_i983.PrivateAppService>(),
+      ),
     );
     return this;
   }

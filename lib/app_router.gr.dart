@@ -11,6 +11,86 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [HomePage]
+class HomeRoute extends PageRouteInfo<void> {
+  const HomeRoute({List<PageRouteInfo>? children})
+    : super(HomeRoute.name, initialChildren: children);
+
+  static const String name = 'HomeRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const HomePage();
+    },
+  );
+}
+
+/// generated route for
+/// [HomeSettingsPage]
+class HomeSettingsRoute extends PageRouteInfo<void> {
+  const HomeSettingsRoute({List<PageRouteInfo>? children})
+    : super(HomeSettingsRoute.name, initialChildren: children);
+
+  static const String name = 'HomeSettingsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const HomeSettingsPage();
+    },
+  );
+}
+
+/// generated route for
+/// [HomeTabPage]
+class HomeTabRoute extends PageRouteInfo<void> {
+  const HomeTabRoute({List<PageRouteInfo>? children})
+    : super(HomeTabRoute.name, initialChildren: children);
+
+  static const String name = 'HomeTabRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const HomeTabPage();
+    },
+  );
+}
+
+/// generated route for
+/// [HomeTopicsPage]
+class HomeTopicsRoute extends PageRouteInfo<void> {
+  const HomeTopicsRoute({List<PageRouteInfo>? children})
+    : super(HomeTopicsRoute.name, initialChildren: children);
+
+  static const String name = 'HomeTopicsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const HomeTopicsPage();
+    },
+  );
+}
+
+/// generated route for
+/// [HomeWordsPage]
+class HomeWordsRoute extends PageRouteInfo<void> {
+  const HomeWordsRoute({List<PageRouteInfo>? children})
+    : super(HomeWordsRoute.name, initialChildren: children);
+
+  static const String name = 'HomeWordsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const HomeWordsPage();
+    },
+  );
+}
+
+/// generated route for
 /// [StartupConfigurePage]
 class StartupConfigureRoute extends PageRouteInfo<void> {
   const StartupConfigureRoute({List<PageRouteInfo>? children})
