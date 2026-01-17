@@ -14,6 +14,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:vitalingu/app_router.dart' as _i641;
 import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
 import 'package:vitalingu/repository/user_settings.dart' as _i413;
+import 'package:vitalingu/services/load_language_topics_service.dart' as _i475;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
     as _i377;
@@ -54,6 +55,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i19.NavigationService>(
       () => _i19.NavigationService(gh<_i641.AppRouter>()),
+    );
+    gh.factory<_i475.LoadLanguageTopicsService>(
+      () =>
+          _i475.LoadLanguageTopicsService(gh<_i700.GrammarTopicsRepository>()),
     );
     return this;
   }

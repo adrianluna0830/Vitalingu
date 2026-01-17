@@ -29,18 +29,16 @@ types:
         index: 5
   GrammarTopic:
     typeId: 2
-    nextIndex: 9
+    nextIndex: 10
     fields:
       topicDescriptionId:
         index: 0
       cefrLevel:
         index: 2
-      topicDescriptions:
-        index: 4
-      topicOrder:
-        index: 7
       bcp47:
         index: 8
+      topicLearningOrder:
+        index: 9
   UserLanguageSkillsData:
     typeId: 3
     nextIndex: 5

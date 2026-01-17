@@ -109,27 +109,24 @@ class GrammarTopicAdapter extends TypeAdapter<GrammarTopic> {
     };
     return GrammarTopic(
       topicDescriptionId: fields[0] as String,
-      topicDescriptions: (fields[4] as List).cast<String>(),
       cefrLevel: fields[2] as CEFR,
       bcp47: fields[8] as SupportedLanguagesBcp47,
-      topicOrder: (fields[7] as num).toInt(),
+      topicLearningOrder: (fields[9] as num).toInt(),
     );
   }
 
   @override
   void write(BinaryWriter writer, GrammarTopic obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.topicDescriptionId)
       ..writeByte(2)
       ..write(obj.cefrLevel)
-      ..writeByte(4)
-      ..write(obj.topicDescriptions)
-      ..writeByte(7)
-      ..write(obj.topicOrder)
       ..writeByte(8)
-      ..write(obj.bcp47);
+      ..write(obj.bcp47)
+      ..writeByte(9)
+      ..write(obj.topicLearningOrder);
   }
 
   @override

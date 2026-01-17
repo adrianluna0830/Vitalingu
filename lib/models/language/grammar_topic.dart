@@ -4,13 +4,12 @@ import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
 
 class GrammarTopic extends IIdentifiable {
   final String topicDescriptionId;
-  final List<String> topicDescriptions;
-  final int topicOrder;
+  final int topicLearningOrder;
   final CEFR cefrLevel;
   final SupportedLanguagesBcp47 bcp47;
   
   @override
   String get id => '${bcp47.name}-$topicDescriptionId';
-
-  GrammarTopic({required this.topicDescriptionId, required this.topicDescriptions, required this.cefrLevel, required this.bcp47, required this.topicOrder});
+ 
+  GrammarTopic({required this.topicDescriptionId, required this.cefrLevel, required this.bcp47, required this.topicLearningOrder});
 }

@@ -4,7 +4,6 @@ enum SupportedLanguagesBcp47 {
 }
 
 extension SupportedLanguagesExtension on SupportedLanguagesBcp47 {
-
   String get completeBCP47 {
     switch (this) {
       case SupportedLanguagesBcp47.en_US:

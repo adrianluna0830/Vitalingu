@@ -26,6 +26,10 @@ class BaseHiveRepository<T extends IIdentifiable> {
     await box.delete(item.id);
   }
 
+  Future<void> deleteItemById(String id) async {
+    await box.delete(id);
+  }
+  
   Future<void> clearAllItems() async {
     await box.clear();
   }

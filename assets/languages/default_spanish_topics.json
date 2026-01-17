@@ -1,0 +1,255 @@
+{
+    "bcp47": "es_MX",
+    "topicDescriptions": [
+        {
+            "topicDescriptionId": "subject_pronouns",
+            "topicLearningOrder": 1,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "verb_ser_present_tense",
+            "topicLearningOrder": 2,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "verb_estar_present_tense",
+            "topicLearningOrder": 3,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "definite_and_indefinite_articles",
+            "topicLearningOrder": 4,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "noun_gender_masculine_feminine",
+            "topicLearningOrder": 5,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "plural_nouns",
+            "topicLearningOrder": 6,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "present_tense_regular_ar_verbs",
+            "topicLearningOrder": 7,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "present_tense_regular_er_ir_verbs",
+            "topicLearningOrder": 8,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "possessive_adjectives",
+            "topicLearningOrder": 9,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "demonstrative_adjectives_este_ese_aquel",
+            "topicLearningOrder": 10,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "prepositions_a_de_en_con",
+            "topicLearningOrder": 11,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "question_words_interrogatives",
+            "topicLearningOrder": 12,
+            "cefrLevel": "A1"
+        },
+        {
+            "topicDescriptionId": "present_tense_stem_changing_verbs_e_ie_o_ue",
+            "topicLearningOrder": 13,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "direct_object_pronouns",
+            "topicLearningOrder": 14,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "indirect_object_pronouns",
+            "topicLearningOrder": 15,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "reflexive_verbs_and_pronouns",
+            "topicLearningOrder": 16,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "preterite_tense_regular_verbs",
+            "topicLearningOrder": 17,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "preterite_tense_irregular_verbs",
+            "topicLearningOrder": 18,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "imperfect_tense",
+            "topicLearningOrder": 19,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "comparative_adjectives",
+            "topicLearningOrder": 20,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "superlative_adjectives",
+            "topicLearningOrder": 21,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "verb_gustar_and_similar_verbs",
+            "topicLearningOrder": 22,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "informal_imperative_commands_tu",
+            "topicLearningOrder": 23,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "formal_imperative_commands_usted_ustedes",
+            "topicLearningOrder": 24,
+            "cefrLevel": "A2"
+        },
+        {
+            "topicDescriptionId": "preterite_vs_imperfect",
+            "topicLearningOrder": 25,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "present_perfect_tense",
+            "topicLearningOrder": 26,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "future_tense_simple",
+            "topicLearningOrder": 27,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "conditional_tense_simple",
+            "topicLearningOrder": 28,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "ir_a_plus_infinitive_near_future",
+            "topicLearningOrder": 29,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "present_subjunctive_mood_regular_verbs",
+            "topicLearningOrder": 30,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "present_subjunctive_irregular_verbs",
+            "topicLearningOrder": 31,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "subjunctive_with_expressions_of_doubt_emotion",
+            "topicLearningOrder": 32,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "subjunctive_with_impersonal_expressions",
+            "topicLearningOrder": 33,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "relative_pronouns_que_quien_cual",
+            "topicLearningOrder": 34,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "por_vs_para",
+            "topicLearningOrder": 35,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "double_object_pronouns",
+            "topicLearningOrder": 36,
+            "cefrLevel": "B1"
+        },
+        {
+            "topicDescriptionId": "past_perfect_pluperfect_tense",
+            "topicLearningOrder": 37,
+            "cefrLevel": "B2"
+        },
+        {
+            "topicDescriptionId": "imperfect_subjunctive_mood",
+            "topicLearningOrder": 38,
+            "cefrLevel": "B2"
+        },
+        {
+            "topicDescriptionId": "conditional_sentences_si_clauses",
+            "topicLearningOrder": 39,
+            "cefrLevel": "B2"
+        },
+        {
+            "topicDescriptionId": "present_perfect_subjunctive",
+            "topicLearningOrder": 40,
+            "cefrLevel": "B2"
+        },
+        {
+            "topicDescriptionId": "passive_voice_with_ser",
+            "topicLearningOrder": 41,
+            "cefrLevel": "B2"
+        },
+        {
+            "topicDescriptionId": "passive_se_construction",
+            "topicLearningOrder": 42,
+            "cefrLevel": "B2"
+        },
+        {
+            "topicDescriptionId": "future_perfect_tense",
+            "topicLearningOrder": 43,
+            "cefrLevel": "B2"
+        },
+        {
+            "topicDescriptionId": "conditional_perfect_tense",
+            "topicLearningOrder": 44,
+            "cefrLevel": "B2"
+        },
+        {
+            "topicDescriptionId": "gerunds_and_present_participles",
+            "topicLearningOrder": 45,
+            "cefrLevel": "B2"
+        },
+        {
+            "topicDescriptionId": "past_perfect_subjunctive_pluperfect_subjunctive",
+            "topicLearningOrder": 46,
+            "cefrLevel": "C1"
+        },
+        {
+            "topicDescriptionId": "sequence_of_tenses_in_subjunctive",
+            "topicLearningOrder": 47,
+            "cefrLevel": "C1"
+        },
+        {
+            "topicDescriptionId": "advanced_conditional_sentences_mixed_types",
+            "topicLearningOrder": 48,
+            "cefrLevel": "C1"
+        },
+        {
+            "topicDescriptionId": "diminutives_and_augmentatives",
+            "topicLearningOrder": 49,
+            "cefrLevel": "C1"
+        },
+        {
+            "topicDescriptionId": "stylistic_use_of_subjunctive_in_literature",
+            "topicLearningOrder": 50,
+            "cefrLevel": "C1"
+        }
+    ]
+}
