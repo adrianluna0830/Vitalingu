@@ -47,10 +47,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i700.GrammarTopicsRepository.create(),
       preResolve: true,
     );
-    await gh.singletonAsync<_i413.UserSettings>(
-      () => _i413.UserSettings.create(),
-      preResolve: true,
-    );
+    gh.singleton<_i413.UserSettings>(() => _i413.UserSettings());
     gh.lazySingleton<_i983.PrivateAppService>(() => _i983.PrivateAppService());
     gh.factory<_i475.LoadLanguageTopicsService>(
       () => _i475.LoadLanguageTopicsService(

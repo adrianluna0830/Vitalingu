@@ -7,8 +7,7 @@ import 'package:vitalingu/view_models/startup/startup_target_language_view_model
 
 @RoutePage()
 class StartupTargetLanguagePage extends StatefulWidget {
-  final SupportedLanguagesBcp47? initialLanguage;
-  const StartupTargetLanguagePage({super.key, this.initialLanguage});
+  const StartupTargetLanguagePage({super.key});
 
   @override
   State<StartupTargetLanguagePage> createState() =>
@@ -22,10 +21,7 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
   Widget build(BuildContext context) {
     final currentState = viewModel.state.watch(context);
     
-    final availableLanguages = viewModel.getSupportedLanguagesExcludingNative(widget.initialLanguage!);
-    final currentValue = availableLanguages.contains(viewModel.targetLanguage) 
-        ? viewModel.targetLanguage 
-        : null;
+
     
     return Scaffold(
       body: Center(
@@ -34,9 +30,9 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DropdownButton<SupportedLanguagesBcp47>(
-              value: currentValue,
+              value: currentState.targetLanguage,
               hint: Text('Select target language'),
-              items: availableLanguages
+              items: currentState.supportedLanguages
                   .map(
                     (lang) => DropdownMenuItem(
                       value: lang,
@@ -45,7 +41,7 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
                   )
                   .toList(),
               onChanged: (newValue) async {
-                await viewModel.confirmLanguages(newValue!, widget.initialLanguage!);
+                await viewModel.confirmLanguages(newValue!);
               },
             ),
             SizedBox(height: 16),

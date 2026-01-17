@@ -76,56 +76,16 @@ class StartupNativeLanguageRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [StartupTargetLanguagePage]
-class StartupTargetLanguageRoute
-    extends PageRouteInfo<StartupTargetLanguageRouteArgs> {
-  StartupTargetLanguageRoute({
-    Key? key,
-    SupportedLanguagesBcp47? initialLanguage,
-    List<PageRouteInfo>? children,
-  }) : super(
-         StartupTargetLanguageRoute.name,
-         args: StartupTargetLanguageRouteArgs(
-           key: key,
-           initialLanguage: initialLanguage,
-         ),
-         initialChildren: children,
-       );
+class StartupTargetLanguageRoute extends PageRouteInfo<void> {
+  const StartupTargetLanguageRoute({List<PageRouteInfo>? children})
+    : super(StartupTargetLanguageRoute.name, initialChildren: children);
 
   static const String name = 'StartupTargetLanguageRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<StartupTargetLanguageRouteArgs>(
-        orElse: () => const StartupTargetLanguageRouteArgs(),
-      );
-      return StartupTargetLanguagePage(
-        key: args.key,
-        initialLanguage: args.initialLanguage,
-      );
+      return const StartupTargetLanguagePage();
     },
   );
-}
-
-class StartupTargetLanguageRouteArgs {
-  const StartupTargetLanguageRouteArgs({this.key, this.initialLanguage});
-
-  final Key? key;
-
-  final SupportedLanguagesBcp47? initialLanguage;
-
-  @override
-  String toString() {
-    return 'StartupTargetLanguageRouteArgs{key: $key, initialLanguage: $initialLanguage}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! StartupTargetLanguageRouteArgs) return false;
-    return key == other.key && initialLanguage == other.initialLanguage;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ initialLanguage.hashCode;
 }

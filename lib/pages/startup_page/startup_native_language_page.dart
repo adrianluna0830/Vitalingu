@@ -27,8 +27,8 @@ class _StartupNativeLanguagePageState extends State<StartupNativeLanguagePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButton<SupportedLanguagesBcp47>(
-              value: viewModel.nativeLanguage,
-              items: viewModel.getAllSupportedLanguages()
+              value: currentState.nativeLanguage,
+              items: currentState.supportedLanguages
                   .map(
                     (lang) => DropdownMenuItem(
                       value: lang,

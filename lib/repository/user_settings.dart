@@ -1,47 +1,39 @@
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
 
 @singleton
 class UserSettings {
-  late SupportedLanguagesBcp47 nativeLanguage;
-  late SupportedLanguagesBcp47 targetLanguage;
-  
-  @FactoryMethod(preResolve: true)
-  static Future<UserSettings> create() async {
-    final settings = UserSettings();
-    await settings.loadSettings();
-    return settings;
+  static const _nativeLanguageKey = 'nativeLanguage';
+  static const _targetLanguageKey = 'targetLanguage';
+
+  Future<SupportedLanguagesBcp47> get nativeLanguage async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString(_nativeLanguageKey);
+    if (value == null) return SupportedLanguagesBcp47.en_US;
+    return SupportedLanguagesBcp47.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () => SupportedLanguagesBcp47.en_US,
+    );
   }
 
-  Future<void> loadSettings() async {
-
+  Future<void> setNativeLanguage(SupportedLanguagesBcp47 value) async {
     final prefs = await SharedPreferences.getInstance();
-    final nativeLangName = prefs.getString('nativeLanguage');
-    final targetLangName = prefs.getString('targetLanguage');
-
-    if (nativeLangName != null) {
-      nativeLanguage = SupportedLanguagesBcp47.values.firstWhere(
-        (e) => e.name == nativeLangName,
-      );
-    }
-
-    if (targetLangName != null) {
-      targetLanguage = SupportedLanguagesBcp47.values.firstWhere(
-        (e) => e.name == targetLangName,
-      );
-    }
+    await prefs.setString(_nativeLanguageKey, value.name);
   }
 
-  Future<void> saveNativeLanguage(SupportedLanguagesBcp47 language) async {
+  Future<SupportedLanguagesBcp47> get targetLanguage async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('nativeLanguage', language.name);
-    nativeLanguage = language;
+    final value = prefs.getString(_targetLanguageKey);
+    if (value == null) return SupportedLanguagesBcp47.es_MX;
+    return SupportedLanguagesBcp47.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () => SupportedLanguagesBcp47.es_MX,
+    );
   }
 
-  Future<void> saveTargetLanguage(SupportedLanguagesBcp47 language) async {
+  Future<void> setTargetLanguage(SupportedLanguagesBcp47 value) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('targetLanguage', language.name);
-    targetLanguage = language;
+    await prefs.setString(_targetLanguageKey, value.name);
   }
 }

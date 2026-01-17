@@ -28,10 +28,10 @@ class _StartupLevelConfigurePageState extends State<StartupLevelConfigurePage> {
             SizedBox(
               width: 600,
               child: Slider(
-                value: viewModel.selectedLevel.toDouble(),
+                value: currentState.selectedLevel.toDouble(),
                 min: 0,
-                max: 5,
-                divisions: 5,
+                max: 4,
+                divisions: 4,
                 onChanged: (newValue) {
                   viewModel.changeCEFRLevel(newValue.toInt());
                 },
@@ -42,13 +42,13 @@ class _StartupLevelConfigurePageState extends State<StartupLevelConfigurePage> {
               onPressed: currentState.canContinue
                   ? () => viewModel.navigateNext(context.tabsRouter)
                   : null,
-              child: Text('Next'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: currentState.canContinue
                     ? Colors.blue
                     : Colors.grey,
                 foregroundColor: Colors.white,
               ),
+              child: Text('Next'),
             ),
             SizedBox(height: 16),
             ElevatedButton(

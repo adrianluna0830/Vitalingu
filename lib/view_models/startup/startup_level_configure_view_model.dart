@@ -21,9 +21,7 @@ class StartupLevelConfigureViewModel
           targetLanguageLevel: CEFR.values[0],
         ));
 
-  int get selectedLevel => state.value.selectedLevel;
 
-  CEFR? get targetLanguageLevel => state.value.targetLanguageLevel;
 
   void changeCEFRLevel(int levelIndex) {
     updateState(StartupLevelConfigureState(
