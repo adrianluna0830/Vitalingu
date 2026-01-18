@@ -12,7 +12,6 @@ class GrammarTopicsRepository extends BaseHiveRepository<GrammarTopic> {
   @FactoryMethod(preResolve: true)
   static Future<GrammarTopicsRepository> create() async {
     var box = await Hive.openBox<GrammarTopic>('GrammarTopics_box');
-    await box.clear();
     return GrammarTopicsRepository(box: box);
   }
 

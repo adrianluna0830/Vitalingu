@@ -7,7 +7,8 @@ import 'package:vitalingu/view_models/startup/startup_target_language_view_model
 
 @RoutePage()
 class StartupTargetLanguagePage extends StatefulWidget {
-  const StartupTargetLanguagePage({super.key});
+  const StartupTargetLanguagePage({super.key, required this.onLanguageSelected});
+  final Function(SupportedLanguagesBcp47 lang) onLanguageSelected;
 
   @override
   State<StartupTargetLanguagePage> createState() =>
@@ -42,6 +43,7 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
                   .toList(),
               onChanged: (newValue) async {
                 await viewModel.confirmLanguages(newValue!);
+                widget.onLanguageSelected(newValue);
               },
             ),
             SizedBox(height: 16),

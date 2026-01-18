@@ -12,12 +12,12 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:vitalingu/app_router.dart' as _i641;
+import 'package:vitalingu/models/private_settings.dart' as _i806;
 import 'package:vitalingu/models/shared_preferences_store.dart' as _i680;
 import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
 import 'package:vitalingu/repository/user_settings.dart' as _i413;
 import 'package:vitalingu/services/load_language_topics_service.dart' as _i475;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
-import 'package:vitalingu/services/private_app_service.dart' as _i983;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
     as _i377;
 import 'package:vitalingu/view_models/startup/startup_level_configure_view_model.dart'
@@ -49,23 +49,31 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i413.UserSettings>(() => _i413.UserSettings());
-    gh.lazySingleton<_i983.PrivateAppService>(() => _i983.PrivateAppService());
-    gh.factory<_i475.LoadLanguageTopicsService>(
-      () => _i475.LoadLanguageTopicsService(
-        gh<_i983.PrivateAppService>(),
-        gh<_i700.GrammarTopicsRepository>(),
-      ),
-    );
     gh.factory<_i731.StartupTargetLanguageViewModel>(
       () => _i731.StartupTargetLanguageViewModel(gh<_i413.UserSettings>()),
     );
     gh.singleton<_i19.NavigationService>(
       () => _i19.NavigationService(gh<_i641.AppRouter>()),
     );
+    await gh.singletonAsync<_i806.HasLoadedDataSignal>(
+      () => _i806.HasLoadedDataSignal.create(
+        sharedPreferencesStore: gh<_i680.SharedPreferencesStore>(),
+      ),
+      preResolve: true,
+    );
+    await gh.singletonAsync<_i806.IsStartupCompletedSignal>(
+      () => _i806.IsStartupCompletedSignal.create(
+        sharedPreferencesStore: gh<_i680.SharedPreferencesStore>(),
+      ),
+      preResolve: true,
+    );
     gh.factory<_i1048.StartupLevelConfigureViewModel>(
-      () => _i1048.StartupLevelConfigureViewModel(
-        gh<_i19.NavigationService>(),
-        gh<_i983.PrivateAppService>(),
+      () => _i1048.StartupLevelConfigureViewModel(gh<_i19.NavigationService>()),
+    );
+    gh.factory<_i475.LoadLanguageTopicsService>(
+      () => _i475.LoadLanguageTopicsService(
+        gh<_i700.GrammarTopicsRepository>(),
+        hasLoadedDataSignal: gh<_i806.HasLoadedDataSignal>(),
       ),
     );
     return this;

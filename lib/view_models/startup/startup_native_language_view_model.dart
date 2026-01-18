@@ -24,8 +24,4 @@ class StartupNativeLanguageViewModel
     updateState(StartupNativeLanguageState(nativeLanguage: language));
   }
 
-    @override
-  void navigateNext(TabsRouter tabsRouter) {
-    tabsRouter.navigate(StartupTargetLanguageRoute());
-  }
 }

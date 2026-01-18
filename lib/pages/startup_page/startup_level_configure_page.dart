@@ -2,11 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
+import 'package:vitalingu/models/language/cefr_enum.dart';
 import 'package:vitalingu/view_models/startup/startup_level_configure_view_model.dart';
 
 @RoutePage()
 class StartupLevelConfigurePage extends StatefulWidget {
-  const StartupLevelConfigurePage({super.key});
+  const StartupLevelConfigurePage({super.key, required this.onLevelSelected, required this.onNext});
+  final Function(CEFR level) onLevelSelected;
+  final VoidCallback onNext;
 
   @override
   State<StartupLevelConfigurePage> createState() =>
@@ -34,13 +37,17 @@ class _StartupLevelConfigurePageState extends State<StartupLevelConfigurePage> {
                 divisions: 4,
                 onChanged: (newValue) {
                   viewModel.changeCEFRLevel(newValue.toInt());
+                  widget.onLevelSelected(CEFR.values[newValue.toInt()]);
                 },
               ),
             ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: currentState.canContinue
-                  ? () async => await viewModel.goToNextStep()
+                  ? () async {
+                      await viewModel.goToNextStep();
+                      widget.onNext();
+                    }
                   : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: currentState.canContinue

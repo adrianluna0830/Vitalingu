@@ -5,20 +5,19 @@ import 'package:vitalingu/gen/assets.gen.dart';
 import 'package:vitalingu/models/language/grammar_topic.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
 import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
+import 'package:vitalingu/models/private_settings.dart';
 import 'package:vitalingu/repository/grammar_topics_repository.dart';
-import 'package:vitalingu/services/private_app_service.dart';
 
 @injectable
 class LoadLanguageTopicsService {
-  final PrivateAppService privateAppService;
+  final HasLoadedDataSignal hasLoadedDataSignal;
   final GrammarTopicsRepository _grammarTopicsRepository;
   LoadLanguageTopicsService(
-    this.privateAppService,
-    this._grammarTopicsRepository,
+    this._grammarTopicsRepository, {required this.hasLoadedDataSignal}
   );
 
   Future<void> tryLoadTopics() async {
-    if (await privateAppService.hasLoadedInitialData == true) return;
+    if (hasLoadedDataSignal.value == true) return;
 
     for (var languagePath in Assets.languages.values) {
       final jsonString = await rootBundle.loadString(languagePath);
@@ -42,6 +41,6 @@ class LoadLanguageTopicsService {
         await _grammarTopicsRepository.addItem(topic);
       }
     }
-    await privateAppService.setHasLoadedInitialData(true);
+    hasLoadedDataSignal.value = true;
   }
 }
