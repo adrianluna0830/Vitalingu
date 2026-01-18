@@ -6,7 +6,7 @@ import 'package:vitalingu/models/language/user_data/grammar_topic_user_data.dart
 import 'package:vitalingu/models/language/user_data/user_language_skills_data.dart';
 @GenerateAdapters(
   [
-  AdapterSpec<SupportedLanguagesBcp47>(),
+  AdapterSpec<Languages>(),
   AdapterSpec<CEFR>(),
   AdapterSpec<GrammarTopic>(),
   AdapterSpec<UserLanguageSkillsData>(),

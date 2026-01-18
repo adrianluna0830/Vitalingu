@@ -1,7 +1,7 @@
 import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
 
 class UserLanguageSkillsData {
-  final SupportedLanguagesBcp47 language;
+  final Languages language;
   double normalizedListeningProgress = 0;
   double normalizedSpeakingProgress = 0;
   double normalizedReadingProgress = 0;

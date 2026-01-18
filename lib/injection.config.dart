@@ -15,7 +15,6 @@ import 'package:vitalingu/app_router.dart' as _i641;
 import 'package:vitalingu/models/private_settings.dart' as _i806;
 import 'package:vitalingu/models/shared_preferences_store.dart' as _i680;
 import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
-import 'package:vitalingu/repository/user_settings.dart' as _i413;
 import 'package:vitalingu/services/load_language_topics_service.dart' as _i475;
 import 'package:vitalingu/services/navigation_service.dart' as _i19;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
@@ -43,14 +42,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i75.StartupNativeLanguageViewModel>(
       () => _i75.StartupNativeLanguageViewModel(),
     );
+    gh.factory<_i731.StartupTargetLanguageViewModel>(
+      () => _i731.StartupTargetLanguageViewModel(),
+    );
     gh.singleton<_i641.AppRouter>(() => _i641.AppRouter());
     await gh.singletonAsync<_i700.GrammarTopicsRepository>(
       () => _i700.GrammarTopicsRepository.create(),
       preResolve: true,
-    );
-    gh.singleton<_i413.UserSettings>(() => _i413.UserSettings());
-    gh.factory<_i731.StartupTargetLanguageViewModel>(
-      () => _i731.StartupTargetLanguageViewModel(gh<_i413.UserSettings>()),
     );
     gh.singleton<_i19.NavigationService>(
       () => _i19.NavigationService(gh<_i641.AppRouter>()),

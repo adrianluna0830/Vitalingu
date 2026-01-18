@@ -4,7 +4,7 @@ class GrammarTopicUserData {
   double globalMastery = 0;
   List<double> currentLocalMasteryHistory = [];
 
-  final SupportedLanguagesBcp47 languageBcp47;
+  final Languages languageBcp47;
   final String topicId;
 
   GrammarTopicUserData({required this.topicId, required this.languageBcp47});

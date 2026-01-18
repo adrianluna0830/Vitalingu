@@ -6,7 +6,7 @@ class GrammarTopic extends IIdentifiable {
   final String topicDescriptionId;
   final int topicLearningOrder;
   final CEFR cefrLevel;
-  final SupportedLanguagesBcp47 bcp47;
+  final Languages bcp47;
   
   @override
   String get id => '${bcp47.name}-$topicDescriptionId';

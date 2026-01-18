@@ -7,7 +7,7 @@ import 'package:vitalingu/view_models/startup/startup_native_language_view_model
 
 @RoutePage()
 class StartupNativeLanguagePage extends StatefulWidget {
-  final Function(SupportedLanguagesBcp47 lang) onLanguageSelected;
+  final Function(Languages lang) onLanguageSelected;
   const StartupNativeLanguagePage({super.key, required this.onLanguageSelected});
 
   @override
@@ -27,7 +27,7 @@ class _StartupNativeLanguagePageState extends State<StartupNativeLanguagePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            DropdownButton<SupportedLanguagesBcp47>(
+            DropdownButton<Languages>(
               value: currentState.nativeLanguage,
               items: currentState.supportedLanguages
                   .map(

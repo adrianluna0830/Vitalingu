@@ -6,44 +6,6 @@ part of 'hive_adapters.dart';
 // AdaptersGenerator
 // **************************************************************************
 
-class SupportedLanguagesBcp47Adapter
-    extends TypeAdapter<SupportedLanguagesBcp47> {
-  @override
-  final typeId = 0;
-
-  @override
-  SupportedLanguagesBcp47 read(BinaryReader reader) {
-    switch (reader.readByte()) {
-      case 0:
-        return SupportedLanguagesBcp47.en_US;
-      case 1:
-        return SupportedLanguagesBcp47.es_MX;
-      default:
-        return SupportedLanguagesBcp47.en_US;
-    }
-  }
-
-  @override
-  void write(BinaryWriter writer, SupportedLanguagesBcp47 obj) {
-    switch (obj) {
-      case SupportedLanguagesBcp47.en_US:
-        writer.writeByte(0);
-      case SupportedLanguagesBcp47.es_MX:
-        writer.writeByte(1);
-    }
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SupportedLanguagesBcp47Adapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
 class CEFRAdapter extends TypeAdapter<CEFR> {
   @override
   final typeId = 1;
@@ -110,7 +72,7 @@ class GrammarTopicAdapter extends TypeAdapter<GrammarTopic> {
     return GrammarTopic(
       topicDescriptionId: fields[0] as String,
       cefrLevel: fields[2] as CEFR,
-      bcp47: fields[8] as SupportedLanguagesBcp47,
+      bcp47: fields[8] as Languages,
       topicLearningOrder: (fields[9] as num).toInt(),
     );
   }
@@ -151,9 +113,7 @@ class UserLanguageSkillsDataAdapter
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserLanguageSkillsData(
-        language: fields[0] as SupportedLanguagesBcp47,
-      )
+    return UserLanguageSkillsData(language: fields[0] as Languages)
       ..normalizedListeningProgress = (fields[1] as num).toDouble()
       ..normalizedSpeakingProgress = (fields[2] as num).toDouble()
       ..normalizedReadingProgress = (fields[3] as num).toDouble()
@@ -199,7 +159,7 @@ class GrammarTopicUserDataAdapter extends TypeAdapter<GrammarTopicUserData> {
     };
     return GrammarTopicUserData(
         topicId: fields[2] as String,
-        languageBcp47: fields[3] as SupportedLanguagesBcp47,
+        languageBcp47: fields[3] as Languages,
       )
       ..globalMastery = (fields[9] as num).toDouble()
       ..currentLocalMasteryHistory = (fields[11] as List).cast<double>();
@@ -226,6 +186,43 @@ class GrammarTopicUserDataAdapter extends TypeAdapter<GrammarTopicUserData> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is GrammarTopicUserDataAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class LanguagesAdapter extends TypeAdapter<Languages> {
+  @override
+  final typeId = 5;
+
+  @override
+  Languages read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 2:
+        return Languages.English;
+      case 3:
+        return Languages.Spanish;
+      default:
+        return Languages.English;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, Languages obj) {
+    switch (obj) {
+      case Languages.English:
+        writer.writeByte(2);
+      case Languages.Spanish:
+        writer.writeByte(3);
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LanguagesAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

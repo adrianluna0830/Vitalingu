@@ -1,22 +1,32 @@
-enum SupportedLanguagesBcp47 {
-  en_US,
-  es_MX,
+enum Languages {
+  English,
+  Spanish,
 }
 
-extension SupportedLanguagesExtension on SupportedLanguagesBcp47 {
-  String get completeBCP47 {
+extension SupportedLanguagesExtension on Languages {
+  
+  String get local {
     switch (this) {
-      case SupportedLanguagesBcp47.en_US:
+      case Languages.English:
+        return "en";
+      case Languages.Spanish:
+        return "es";
+    }
+  }
+
+  String get bcp47 {
+    switch (this) {
+      case Languages.English:
         return "en-US";
-      case SupportedLanguagesBcp47.es_MX:
+      case Languages.Spanish:
         return "es-MX";
     }
   }
   String get nativeName {
     switch (this) {
-      case SupportedLanguagesBcp47.en_US:
+      case Languages.English:
         return "English";
-      case SupportedLanguagesBcp47.es_MX:
+      case Languages.Spanish:
         return "Español";
     }
   }
