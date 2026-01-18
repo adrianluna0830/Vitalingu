@@ -34,7 +34,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: StartupLevelConfigureRoute.page),
       ]
     ),
-    AutoRoute(page: HomeTabRoute.page,initial: true, guards: [HasConfiguredGuard()], children: 
+    AutoRoute(page: HomeTabRoute.page,initial: true, guards: [StartupCompletedGuard()], children: 
     [
       AutoRoute(page: HomeRoute.page),
       AutoRoute(page: HomeTopicsRoute.page),
