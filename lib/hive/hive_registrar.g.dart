@@ -10,7 +10,7 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(CEFRAdapter());
     registerAdapter(GrammarTopicAdapter());
     registerAdapter(GrammarTopicUserDataAdapter());
-    registerAdapter(LanguagesAdapter());
+    registerAdapter(LanguageAdapter());
     registerAdapter(UserLanguageSkillsDataAdapter());
   }
 }
@@ -20,7 +20,7 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(CEFRAdapter());
     registerAdapter(GrammarTopicAdapter());
     registerAdapter(GrammarTopicUserDataAdapter());
-    registerAdapter(LanguagesAdapter());
+    registerAdapter(LanguageAdapter());
     registerAdapter(UserLanguageSkillsDataAdapter());
   }
 }
