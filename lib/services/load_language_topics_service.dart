@@ -24,7 +24,7 @@ class LoadLanguageTopicsService {
       final jsonData = json.decode(jsonString);
 
       final bcp47String = jsonData['bcp47'] as String;
-      final bcp47 = Languages.values.firstWhere(
+      final bcp47 = Language.values.firstWhere(
         (e) => e.name == bcp47String,
       );
       final topicDescriptions = jsonData['topicDescriptions'] as List;

@@ -8,7 +8,7 @@ import 'package:vitalingu/view_models/startup/startup_target_language_view_model
 @RoutePage()
 class StartupTargetLanguagePage extends StatefulWidget {
   const StartupTargetLanguagePage({super.key, required this.onLanguageSelected});
-  final Function(Languages lang) onLanguageSelected;
+  final Function(Language lang) onLanguageSelected;
 
   @override
   State<StartupTargetLanguagePage> createState() =>
@@ -30,7 +30,7 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            DropdownButton<Languages>(
+            DropdownButton<Language>(
               value: currentState.targetLanguage,
               hint: Text('Select target language'),
               items: currentState.supportedLanguages

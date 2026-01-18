@@ -3,8 +3,8 @@ import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
 import 'package:vitalingu/view_models/startup/base_startup_view_model.dart';
 
 class StartupTargetLanguageState extends BaseStartupState {
-  final Languages? targetLanguage;
-  final List<Languages> supportedLanguages = Languages.values;
+  final Language? targetLanguage;
+  final List<Language> supportedLanguages = Language.values;
 
   StartupTargetLanguageState({required this.targetLanguage})
       : super(canContinue: targetLanguage != null);
@@ -19,7 +19,7 @@ class StartupTargetLanguageViewModel
 
 
 
-  Future<void> confirmLanguages(Languages target) async {
+  Future<void> confirmLanguages(Language target) async {
     updateState(StartupTargetLanguageState(targetLanguage: target));
   }
 

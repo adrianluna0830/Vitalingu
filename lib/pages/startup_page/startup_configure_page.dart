@@ -16,8 +16,8 @@ class StartupConfigurePage extends StatefulWidget {
 
 class _StartupConfigurePageState extends State<StartupConfigurePage> {
 
-  late Languages nativeLanguage;
-  late Languages targetLanguage;
+  late Language nativeLanguage;
+  late Language targetLanguage;
   late CEFR selectedLevel;
 
 
@@ -36,8 +36,8 @@ class _StartupConfigurePageState extends State<StartupConfigurePage> {
     return AutoTabsRouter.pageView(
       routes:  [
         StartupIntroductionRoute(),
-        StartupNativeLanguageRoute(onLanguageSelected: (Languages p1) { nativeLanguage = p1; }),
-        StartupTargetLanguageRoute(onLanguageSelected: (Languages p1) { targetLanguage = p1; }),
+        StartupNativeLanguageRoute(onLanguageSelected: (Language p1) { nativeLanguage = p1; }),
+        StartupTargetLanguageRoute(onLanguageSelected: (Language p1) { targetLanguage = p1; }),
         StartupLevelConfigureRoute(onLevelSelected: (CEFR p1) { selectedLevel = p1; }, onNext: () { onResult(); }),
       ],
       builder: (context, child, pageController) {
@@ -69,8 +69,8 @@ class _StartupConfigurePageState extends State<StartupConfigurePage> {
 
 class StartupConfigureValues
 {
-  final Languages nativeLanguage;
-  final Languages targetLanguage;
+  final Language nativeLanguage;
+  final Language targetLanguage;
   final CEFR selectedLevel;
 
   StartupConfigureValues({

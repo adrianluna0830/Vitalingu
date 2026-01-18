@@ -5,8 +5,8 @@ import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
 import 'package:vitalingu/view_models/startup/base_startup_view_model.dart';
 
 class StartupNativeLanguageState extends BaseStartupState {
-  final Languages? nativeLanguage;
-  final List<Languages> supportedLanguages = Languages.values;
+  final Language? nativeLanguage;
+  final List<Language> supportedLanguages = Language.values;
 
   StartupNativeLanguageState({required this.nativeLanguage})
       : super(canContinue: nativeLanguage != null);
@@ -20,7 +20,7 @@ class StartupNativeLanguageViewModel
   
 
 
-  void setNativeLanguage(Languages language) {
+  void setNativeLanguage(Language language) {
     updateState(StartupNativeLanguageState(nativeLanguage: language));
   }
 

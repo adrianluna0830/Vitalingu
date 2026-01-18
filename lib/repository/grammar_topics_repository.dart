@@ -15,7 +15,7 @@ class GrammarTopicsRepository extends BaseHiveRepository<GrammarTopic> {
     return GrammarTopicsRepository(box: box);
   }
 
-  List<GrammarTopic> topicByLanguage(Languages language) {
+  List<GrammarTopic> topicByLanguage(Language language) {
     return box.values
         .where((topic) => topic.bcp47 == language)
         .toList();

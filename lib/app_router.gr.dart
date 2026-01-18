@@ -231,7 +231,7 @@ class StartupNativeLanguageRoute
     extends PageRouteInfo<StartupNativeLanguageRouteArgs> {
   StartupNativeLanguageRoute({
     Key? key,
-    required dynamic Function(Languages) onLanguageSelected,
+    required dynamic Function(Language) onLanguageSelected,
     List<PageRouteInfo>? children,
   }) : super(
          StartupNativeLanguageRoute.name,
@@ -264,7 +264,7 @@ class StartupNativeLanguageRouteArgs {
 
   final Key? key;
 
-  final dynamic Function(Languages) onLanguageSelected;
+  final dynamic Function(Language) onLanguageSelected;
 
   @override
   String toString() {
@@ -288,7 +288,7 @@ class StartupTargetLanguageRoute
     extends PageRouteInfo<StartupTargetLanguageRouteArgs> {
   StartupTargetLanguageRoute({
     Key? key,
-    required dynamic Function(Languages) onLanguageSelected,
+    required dynamic Function(Language) onLanguageSelected,
     List<PageRouteInfo>? children,
   }) : super(
          StartupTargetLanguageRoute.name,
@@ -321,7 +321,7 @@ class StartupTargetLanguageRouteArgs {
 
   final Key? key;
 
-  final dynamic Function(Languages) onLanguageSelected;
+  final dynamic Function(Language) onLanguageSelected;
 
   @override
   String toString() {
