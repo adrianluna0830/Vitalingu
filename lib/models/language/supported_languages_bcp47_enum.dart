@@ -3,7 +3,7 @@ enum Language {
   Spanish,
 }
 
-extension SupportedLanguagesExtension on Language {
+extension LanguageExtensions on Language {
   
   String get local {
     switch (this) {
