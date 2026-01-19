@@ -1,7 +1,11 @@
-import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
-
+import 'package:isar_plus/isar_plus.dart';
+import 'package:vitalingu/models/language/language.dart';
+part 'user_language_skills_data.g.dart';
+@collection
 class UserLanguageSkillsData {
-  final Language language;
+  @Id() 
+  int id = 0;
+  Language language;
   double normalizedListeningProgress = 0;
   double normalizedSpeakingProgress = 0;
   double normalizedReadingProgress = 0;

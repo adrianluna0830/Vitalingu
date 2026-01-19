@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
+import 'package:vitalingu/models/language/language.dart';
 import 'package:vitalingu/pages/guards/has_configured_guard.dart';
 import 'package:vitalingu/pages/home_page/home_page.dart';
 import 'package:vitalingu/pages/home_page/home_settings_page.dart';

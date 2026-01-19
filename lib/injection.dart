@@ -8,4 +8,5 @@ final getIt = GetIt.instance;
 @InjectableInit()
 Future<void> configureDependencies() async {
   await getIt.init();
+  
 }

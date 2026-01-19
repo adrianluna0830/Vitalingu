@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
+import 'package:vitalingu/models/language/language.dart';
 import 'package:vitalingu/view_models/startup/startup_native_language_view_model.dart';
 
 @RoutePage()

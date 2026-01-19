@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:vitalingu/app_router.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
+import 'package:vitalingu/models/language/language.dart';
 import 'package:vitalingu/widgets/page_slider/navigation_controls.dart';
 
 @RoutePage()

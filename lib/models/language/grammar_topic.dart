@@ -1,15 +1,21 @@
-import 'package:vitalingu/interfaces/i_identifiable.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/supported_languages_bcp47_enum.dart';
+import 'package:vitalingu/models/language/language.dart';
+import 'package:isar_plus/isar_plus.dart';
+part 'grammar_topic.g.dart';
+@collection
+@Index(composite: ['topicSubject', 'topicLearningOrder'])
+class GrammarTopic {
 
-class GrammarTopic extends IIdentifiable {
-  final String topicDescriptionId;
-  final int topicLearningOrder;
-  final CEFR cefrLevel;
-  final Language bcp47;
+  @Id() 
+  int id = 0;
+  int topicLearningOrder;
+  CEFR cefrLevel;
+  @Index()
+  Language targetLanguage;
+  String topicSubject;
+
+
+  GrammarTopic({required this.topicSubject, required this.topicLearningOrder, required this.cefrLevel, required this.targetLanguage});
   
-  @override
-  String get id => '${bcp47.name}-$topicDescriptionId';
  
-  GrammarTopic({required this.topicDescriptionId, required this.cefrLevel, required this.bcp47, required this.topicLearningOrder});
 }
