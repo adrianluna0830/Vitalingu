@@ -2,21 +2,21 @@ import 'package:isar_plus/isar_plus.dart';
 
 @enumValue
 enum Language {
-  English("en-US"),
-  Spanish("es-MX");
+  English("en"),
+  Spanish("es");
   
-  final String bcp47;
-  const Language(this.bcp47);
+  final String locale;
+  const Language(this.locale);
 }
 
 extension LanguageExtensions on Language {
   
-  String get local {
+  String get bcp47 {
     switch (this) {
       case Language.English:
-        return "en";
+        return "en-US";
       case Language.Spanish:
-        return "es";
+        return "es-MX";
     }
   }
 
