@@ -1,12 +1,13 @@
 import 'package:isar_plus/isar_plus.dart';
+import 'package:vitalingu/models/language/topic_learning_status_enum.dart';
 part 'user_topic_progress.g.dart';
 @collection
 class UserTopicProgress {
   @Id()
   int id = 0;
-  double globalMastery = 0;
-  List<double> currentLocalMasteryHistory = [];
+  
   int topicId;
-  bool isUnlocked = false;
-  UserTopicProgress({required this.topicId});
+  double topicMastery;
+  TopicLearningStatus topiclearningStatus;
+  UserTopicProgress({required this.topicId, required this.topicMastery, required this.topiclearningStatus});
 }

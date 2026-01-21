@@ -21,13 +21,14 @@ final UserTopicProgressSchema = IsarGeneratedSchema(
     idName: 'id',
     embedded: false,
     properties: [
-      IsarPropertySchema(name: 'globalMastery', type: IsarType.double),
-      IsarPropertySchema(
-        name: 'currentLocalMasteryHistory',
-        type: IsarType.doubleList,
-      ),
       IsarPropertySchema(name: 'topicId', type: IsarType.long),
-      IsarPropertySchema(name: 'isUnlocked', type: IsarType.bool),
+      IsarPropertySchema(name: 'topicMastery', type: IsarType.double),
+      IsarPropertySchema(
+        name: 'topiclearningStatus',
+        type: IsarType.byte,
+
+        enumMap: {"notStarted": 0, "needsPractice": 1, "mastered": 2},
+      ),
     ],
     indexes: [],
   ),
@@ -41,44 +42,34 @@ final UserTopicProgressSchema = IsarGeneratedSchema(
 
 @isarProtected
 int serializeUserTopicProgress(IsarWriter writer, UserTopicProgress object) {
-  IsarCore.writeDouble(writer, 1, object.globalMastery);
-  {
-    final list = object.currentLocalMasteryHistory;
-    final listWriter = IsarCore.beginList(writer, 2, list.length);
-    for (var i = 0; i < list.length; i++) {
-      IsarCore.writeDouble(listWriter, i, list[i]);
-    }
-    IsarCore.endList(writer, listWriter);
-  }
-  IsarCore.writeLong(writer, 3, object.topicId);
-  IsarCore.writeBool(writer, 4, value: object.isUnlocked);
+  IsarCore.writeLong(writer, 1, object.topicId);
+  IsarCore.writeDouble(writer, 2, object.topicMastery);
+  IsarCore.writeByte(writer, 3, object.topiclearningStatus.index);
   return object.id;
 }
 
 @isarProtected
 UserTopicProgress deserializeUserTopicProgress(IsarReader reader) {
   final int _topicId;
-  _topicId = IsarCore.readLong(reader, 3);
-  final object = UserTopicProgress(topicId: _topicId);
-  object.id = IsarCore.readId(reader);
-  object.globalMastery = IsarCore.readDouble(reader, 1);
+  _topicId = IsarCore.readLong(reader, 1);
+  final double _topicMastery;
+  _topicMastery = IsarCore.readDouble(reader, 2);
+  final TopicLearningStatus _topiclearningStatus;
   {
-    final length = IsarCore.readList(reader, 2, IsarCore.readerPtrPtr);
-    {
-      final reader = IsarCore.readerPtr;
-      if (reader.isNull) {
-        object.currentLocalMasteryHistory = const <double>[];
-      } else {
-        final list = List<double>.filled(length, double.nan, growable: true);
-        for (var i = 0; i < length; i++) {
-          list[i] = IsarCore.readDouble(reader, i);
-        }
-        IsarCore.freeReader(reader);
-        object.currentLocalMasteryHistory = list;
-      }
+    if (IsarCore.readNull(reader, 3)) {
+      _topiclearningStatus = TopicLearningStatus.notStarted;
+    } else {
+      _topiclearningStatus =
+          _userTopicProgressTopiclearningStatus[IsarCore.readByte(reader, 3)] ??
+          TopicLearningStatus.notStarted;
     }
   }
-  object.isUnlocked = IsarCore.readBool(reader, 4);
+  final object = UserTopicProgress(
+    topicId: _topicId,
+    topicMastery: _topicMastery,
+    topiclearningStatus: _topiclearningStatus,
+  );
+  object.id = IsarCore.readId(reader);
   return object;
 }
 
@@ -88,32 +79,21 @@ dynamic deserializeUserTopicProgressProp(IsarReader reader, int property) {
     case 0:
       return IsarCore.readId(reader);
     case 1:
-      return IsarCore.readDouble(reader, 1);
+      return IsarCore.readLong(reader, 1);
     case 2:
+      return IsarCore.readDouble(reader, 2);
+    case 3:
       {
-        final length = IsarCore.readList(reader, 2, IsarCore.readerPtrPtr);
-        {
-          final reader = IsarCore.readerPtr;
-          if (reader.isNull) {
-            return const <double>[];
-          } else {
-            final list = List<double>.filled(
-              length,
-              double.nan,
-              growable: true,
-            );
-            for (var i = 0; i < length; i++) {
-              list[i] = IsarCore.readDouble(reader, i);
-            }
-            IsarCore.freeReader(reader);
-            return list;
-          }
+        if (IsarCore.readNull(reader, 3)) {
+          return TopicLearningStatus.notStarted;
+        } else {
+          return _userTopicProgressTopiclearningStatus[IsarCore.readByte(
+                reader,
+                3,
+              )] ??
+              TopicLearningStatus.notStarted;
         }
       }
-    case 3:
-      return IsarCore.readLong(reader, 3);
-    case 4:
-      return IsarCore.readBool(reader, 4);
     default:
       throw ArgumentError('Unknown property: $property');
   }
@@ -122,9 +102,9 @@ dynamic deserializeUserTopicProgressProp(IsarReader reader, int property) {
 sealed class _UserTopicProgressUpdate {
   bool call({
     required int id,
-    double? globalMastery,
     int? topicId,
-    bool? isUnlocked,
+    double? topicMastery,
+    TopicLearningStatus? topiclearningStatus,
   });
 }
 
@@ -136,16 +116,17 @@ class _UserTopicProgressUpdateImpl implements _UserTopicProgressUpdate {
   @override
   bool call({
     required int id,
-    Object? globalMastery = ignore,
     Object? topicId = ignore,
-    Object? isUnlocked = ignore,
+    Object? topicMastery = ignore,
+    Object? topiclearningStatus = ignore,
   }) {
     return collection.updateProperties(
           [id],
           {
-            if (globalMastery != ignore) 1: globalMastery as double?,
-            if (topicId != ignore) 3: topicId as int?,
-            if (isUnlocked != ignore) 4: isUnlocked as bool?,
+            if (topicId != ignore) 1: topicId as int?,
+            if (topicMastery != ignore) 2: topicMastery as double?,
+            if (topiclearningStatus != ignore)
+              3: topiclearningStatus as TopicLearningStatus?,
           },
         ) >
         0;
@@ -155,9 +136,9 @@ class _UserTopicProgressUpdateImpl implements _UserTopicProgressUpdate {
 sealed class _UserTopicProgressUpdateAll {
   int call({
     required List<int> id,
-    double? globalMastery,
     int? topicId,
-    bool? isUnlocked,
+    double? topicMastery,
+    TopicLearningStatus? topiclearningStatus,
   });
 }
 
@@ -169,14 +150,15 @@ class _UserTopicProgressUpdateAllImpl implements _UserTopicProgressUpdateAll {
   @override
   int call({
     required List<int> id,
-    Object? globalMastery = ignore,
     Object? topicId = ignore,
-    Object? isUnlocked = ignore,
+    Object? topicMastery = ignore,
+    Object? topiclearningStatus = ignore,
   }) {
     return collection.updateProperties(id, {
-      if (globalMastery != ignore) 1: globalMastery as double?,
-      if (topicId != ignore) 3: topicId as int?,
-      if (isUnlocked != ignore) 4: isUnlocked as bool?,
+      if (topicId != ignore) 1: topicId as int?,
+      if (topicMastery != ignore) 2: topicMastery as double?,
+      if (topiclearningStatus != ignore)
+        3: topiclearningStatus as TopicLearningStatus?,
     });
   }
 }
@@ -189,7 +171,11 @@ extension UserTopicProgressUpdate on IsarCollection<int, UserTopicProgress> {
 }
 
 sealed class _UserTopicProgressQueryUpdate {
-  int call({double? globalMastery, int? topicId, bool? isUnlocked});
+  int call({
+    int? topicId,
+    double? topicMastery,
+    TopicLearningStatus? topiclearningStatus,
+  });
 }
 
 class _UserTopicProgressQueryUpdateImpl
@@ -201,14 +187,15 @@ class _UserTopicProgressQueryUpdateImpl
 
   @override
   int call({
-    Object? globalMastery = ignore,
     Object? topicId = ignore,
-    Object? isUnlocked = ignore,
+    Object? topicMastery = ignore,
+    Object? topiclearningStatus = ignore,
   }) {
     return query.updateProperties(limit: limit, {
-      if (globalMastery != ignore) 1: globalMastery as double?,
-      if (topicId != ignore) 3: topicId as int?,
-      if (isUnlocked != ignore) 4: isUnlocked as bool?,
+      if (topicId != ignore) 1: topicId as int?,
+      if (topicMastery != ignore) 2: topicMastery as double?,
+      if (topiclearningStatus != ignore)
+        3: topiclearningStatus as TopicLearningStatus?,
     });
   }
 }
@@ -230,16 +217,17 @@ class _UserTopicProgressQueryBuilderUpdateImpl
 
   @override
   int call({
-    Object? globalMastery = ignore,
     Object? topicId = ignore,
-    Object? isUnlocked = ignore,
+    Object? topicMastery = ignore,
+    Object? topiclearningStatus = ignore,
   }) {
     final q = query.build();
     try {
       return q.updateProperties(limit: limit, {
-        if (globalMastery != ignore) 1: globalMastery as double?,
-        if (topicId != ignore) 3: topicId as int?,
-        if (isUnlocked != ignore) 4: isUnlocked as bool?,
+        if (topicId != ignore) 1: topicId as int?,
+        if (topicMastery != ignore) 2: topicMastery as double?,
+        if (topiclearningStatus != ignore)
+          3: topiclearningStatus as TopicLearningStatus?,
       });
     } finally {
       q.close();
@@ -255,6 +243,12 @@ extension UserTopicProgressQueryBuilderUpdate
   _UserTopicProgressQueryUpdate get updateAll =>
       _UserTopicProgressQueryBuilderUpdateImpl(this);
 }
+
+const _userTopicProgressTopiclearningStatus = {
+  0: TopicLearningStatus.notStarted,
+  1: TopicLearningStatus.needsPractice,
+  2: TopicLearningStatus.mastered,
+};
 
 extension UserTopicProgressQueryFilter
     on QueryBuilder<UserTopicProgress, UserTopicProgress, QFilterCondition> {
@@ -311,80 +305,59 @@ extension UserTopicProgressQueryFilter
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  globalMasteryEqualTo(double value, {double epsilon = Filter.epsilon}) {
+  topicIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        EqualCondition(property: 1, value: value, epsilon: epsilon),
+        EqualCondition(property: 1, value: value),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  globalMasteryGreaterThan(double value, {double epsilon = Filter.epsilon}) {
+  topicIdGreaterThan(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        GreaterCondition(property: 1, value: value, epsilon: epsilon),
+        GreaterCondition(property: 1, value: value),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  globalMasteryGreaterThanOrEqualTo(
-    double value, {
-    double epsilon = Filter.epsilon,
-  }) {
+  topicIdGreaterThanOrEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        GreaterOrEqualCondition(property: 1, value: value, epsilon: epsilon),
+        GreaterOrEqualCondition(property: 1, value: value),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  globalMasteryLessThan(double value, {double epsilon = Filter.epsilon}) {
+  topicIdLessThan(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(LessCondition(property: 1, value: value));
+    });
+  }
+
+  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
+  topicIdLessThanOrEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        LessCondition(property: 1, value: value, epsilon: epsilon),
+        LessOrEqualCondition(property: 1, value: value),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  globalMasteryLessThanOrEqualTo(
-    double value, {
-    double epsilon = Filter.epsilon,
-  }) {
+  topicIdBetween(int lower, int upper) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        LessOrEqualCondition(property: 1, value: value, epsilon: epsilon),
+        BetweenCondition(property: 1, lower: lower, upper: upper),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  globalMasteryBetween(
-    double lower,
-    double upper, {
-    double epsilon = Filter.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        BetweenCondition(
-          property: 1,
-          lower: lower,
-          upper: upper,
-
-          epsilon: epsilon,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  currentLocalMasteryHistoryElementEqualTo(
-    double value, {
-    double epsilon = Filter.epsilon,
-  }) {
+  topicMasteryEqualTo(double value, {double epsilon = Filter.epsilon}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(property: 2, value: value, epsilon: epsilon),
@@ -393,10 +366,7 @@ extension UserTopicProgressQueryFilter
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  currentLocalMasteryHistoryElementGreaterThan(
-    double value, {
-    double epsilon = Filter.epsilon,
-  }) {
+  topicMasteryGreaterThan(double value, {double epsilon = Filter.epsilon}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(property: 2, value: value, epsilon: epsilon),
@@ -405,7 +375,7 @@ extension UserTopicProgressQueryFilter
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  currentLocalMasteryHistoryElementGreaterThanOrEqualTo(
+  topicMasteryGreaterThanOrEqualTo(
     double value, {
     double epsilon = Filter.epsilon,
   }) {
@@ -417,10 +387,7 @@ extension UserTopicProgressQueryFilter
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  currentLocalMasteryHistoryElementLessThan(
-    double value, {
-    double epsilon = Filter.epsilon,
-  }) {
+  topicMasteryLessThan(double value, {double epsilon = Filter.epsilon}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(property: 2, value: value, epsilon: epsilon),
@@ -429,7 +396,7 @@ extension UserTopicProgressQueryFilter
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  currentLocalMasteryHistoryElementLessThanOrEqualTo(
+  topicMasteryLessThanOrEqualTo(
     double value, {
     double epsilon = Filter.epsilon,
   }) {
@@ -441,7 +408,7 @@ extension UserTopicProgressQueryFilter
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  currentLocalMasteryHistoryElementBetween(
+  topicMasteryBetween(
     double lower,
     double upper, {
     double epsilon = Filter.epsilon,
@@ -460,76 +427,58 @@ extension UserTopicProgressQueryFilter
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  currentLocalMasteryHistoryIsEmpty() {
-    return not().currentLocalMasteryHistoryIsNotEmpty();
-  }
-
-  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  currentLocalMasteryHistoryIsNotEmpty() {
+  topiclearningStatusEqualTo(TopicLearningStatus value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        const GreaterOrEqualCondition(property: 2, value: null),
+        EqualCondition(property: 3, value: value.index),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  topicIdEqualTo(int value) {
+  topiclearningStatusGreaterThan(TopicLearningStatus value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        EqualCondition(property: 3, value: value),
+        GreaterCondition(property: 3, value: value.index),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  topicIdGreaterThan(int value) {
+  topiclearningStatusGreaterThanOrEqualTo(TopicLearningStatus value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        GreaterCondition(property: 3, value: value),
+        GreaterOrEqualCondition(property: 3, value: value.index),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  topicIdGreaterThanOrEqualTo(int value) {
+  topiclearningStatusLessThan(TopicLearningStatus value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        GreaterOrEqualCondition(property: 3, value: value),
+        LessCondition(property: 3, value: value.index),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  topicIdLessThan(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(LessCondition(property: 3, value: value));
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  topicIdLessThanOrEqualTo(int value) {
+  topiclearningStatusLessThanOrEqualTo(TopicLearningStatus value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        LessOrEqualCondition(property: 3, value: value),
+        LessOrEqualCondition(property: 3, value: value.index),
       );
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  topicIdBetween(int lower, int upper) {
+  topiclearningStatusBetween(
+    TopicLearningStatus lower,
+    TopicLearningStatus upper,
+  ) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        BetweenCondition(property: 3, lower: lower, upper: upper),
-      );
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterFilterCondition>
-  isUnlockedEqualTo(bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        EqualCondition(property: 4, value: value),
+        BetweenCondition(property: 3, lower: lower.index, upper: upper.index),
       );
     });
   }
@@ -554,44 +503,44 @@ extension UserTopicProgressQuerySortBy
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  sortByGlobalMastery() {
+  sortByTopicId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(1);
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  sortByGlobalMasteryDesc() {
+  sortByTopicIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(1, sort: Sort.desc);
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  sortByTopicId() {
+  sortByTopicMastery() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(2);
+    });
+  }
+
+  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
+  sortByTopicMasteryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(2, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
+  sortByTopiclearningStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3);
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  sortByTopicIdDesc() {
+  sortByTopiclearningStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3, sort: Sort.desc);
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  sortByIsUnlocked() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4);
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  sortByIsUnlockedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4, sort: Sort.desc);
     });
   }
 }
@@ -612,44 +561,44 @@ extension UserTopicProgressQuerySortThenBy
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  thenByGlobalMastery() {
+  thenByTopicId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(1);
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  thenByGlobalMasteryDesc() {
+  thenByTopicIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(1, sort: Sort.desc);
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  thenByTopicId() {
+  thenByTopicMastery() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(2);
+    });
+  }
+
+  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
+  thenByTopicMasteryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(2, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
+  thenByTopiclearningStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3);
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  thenByTopicIdDesc() {
+  thenByTopiclearningStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3, sort: Sort.desc);
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  thenByIsUnlocked() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4);
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterSortBy>
-  thenByIsUnlockedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4, sort: Sort.desc);
     });
   }
 }
@@ -657,30 +606,23 @@ extension UserTopicProgressQuerySortThenBy
 extension UserTopicProgressQueryWhereDistinct
     on QueryBuilder<UserTopicProgress, UserTopicProgress, QDistinct> {
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterDistinct>
-  distinctByGlobalMastery() {
+  distinctByTopicId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(1);
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterDistinct>
-  distinctByCurrentLocalMasteryHistory() {
+  distinctByTopicMastery() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(2);
     });
   }
 
   QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterDistinct>
-  distinctByTopicId() {
+  distinctByTopiclearningStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(3);
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, UserTopicProgress, QAfterDistinct>
-  distinctByIsUnlocked() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(4);
     });
   }
 }
@@ -693,29 +635,23 @@ extension UserTopicProgressQueryProperty1
     });
   }
 
-  QueryBuilder<UserTopicProgress, double, QAfterProperty>
-  globalMasteryProperty() {
+  QueryBuilder<UserTopicProgress, int, QAfterProperty> topicIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(1);
     });
   }
 
-  QueryBuilder<UserTopicProgress, List<double>, QAfterProperty>
-  currentLocalMasteryHistoryProperty() {
+  QueryBuilder<UserTopicProgress, double, QAfterProperty>
+  topicMasteryProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(2);
     });
   }
 
-  QueryBuilder<UserTopicProgress, int, QAfterProperty> topicIdProperty() {
+  QueryBuilder<UserTopicProgress, TopicLearningStatus, QAfterProperty>
+  topiclearningStatusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, bool, QAfterProperty> isUnlockedProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addProperty(4);
     });
   }
 }
@@ -728,30 +664,23 @@ extension UserTopicProgressQueryProperty2<R>
     });
   }
 
-  QueryBuilder<UserTopicProgress, (R, double), QAfterProperty>
-  globalMasteryProperty() {
+  QueryBuilder<UserTopicProgress, (R, int), QAfterProperty> topicIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(1);
     });
   }
 
-  QueryBuilder<UserTopicProgress, (R, List<double>), QAfterProperty>
-  currentLocalMasteryHistoryProperty() {
+  QueryBuilder<UserTopicProgress, (R, double), QAfterProperty>
+  topicMasteryProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(2);
     });
   }
 
-  QueryBuilder<UserTopicProgress, (R, int), QAfterProperty> topicIdProperty() {
+  QueryBuilder<UserTopicProgress, (R, TopicLearningStatus), QAfterProperty>
+  topiclearningStatusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, (R, bool), QAfterProperty>
-  isUnlockedProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addProperty(4);
     });
   }
 }
@@ -764,31 +693,24 @@ extension UserTopicProgressQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<UserTopicProgress, (R1, R2, double), QOperations>
-  globalMasteryProperty() {
+  QueryBuilder<UserTopicProgress, (R1, R2, int), QOperations>
+  topicIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(1);
     });
   }
 
-  QueryBuilder<UserTopicProgress, (R1, R2, List<double>), QOperations>
-  currentLocalMasteryHistoryProperty() {
+  QueryBuilder<UserTopicProgress, (R1, R2, double), QOperations>
+  topicMasteryProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(2);
     });
   }
 
-  QueryBuilder<UserTopicProgress, (R1, R2, int), QOperations>
-  topicIdProperty() {
+  QueryBuilder<UserTopicProgress, (R1, R2, TopicLearningStatus), QOperations>
+  topiclearningStatusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
-    });
-  }
-
-  QueryBuilder<UserTopicProgress, (R1, R2, bool), QOperations>
-  isUnlockedProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addProperty(4);
     });
   }
 }
