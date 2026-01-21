@@ -1,5 +1,5 @@
 import 'package:isar_plus/isar_plus.dart';
-import 'package:vitalingu/models/language/language.dart';
+import 'package:vitalingu/models/language/language_enum.dart';
 import 'package:vitalingu/models/language/user_data/user_language_skills_data.dart';
 
 class UserLanguageSkillsDataRepository {

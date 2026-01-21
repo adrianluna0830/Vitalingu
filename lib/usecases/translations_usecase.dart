@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/models/language/language.dart';
+import 'package:vitalingu/models/language/language_enum.dart';
 import 'package:vitalingu/models/language/topic_translation.dart';
 import 'package:vitalingu/repository/grammar_topics_repository.dart';
 import 'package:vitalingu/repository/topic_translations_repository.dart';

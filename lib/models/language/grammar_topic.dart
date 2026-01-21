@@ -1,5 +1,5 @@
 import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/language.dart';
+import 'package:vitalingu/models/language/language_enum.dart';
 import 'package:isar_plus/isar_plus.dart';
 part 'grammar_topic.g.dart';
 @collection

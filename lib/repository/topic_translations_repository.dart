@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:isar_plus/isar_plus.dart';
 import 'package:vitalingu/models/language/topic_translation.dart';
-import 'package:vitalingu/models/language/language.dart';
+import 'package:vitalingu/models/language/language_enum.dart';
 
 @singleton
 class TopicTranslationsRepository 
