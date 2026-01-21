@@ -27,7 +27,12 @@ final UserTopicProgressSchema = IsarGeneratedSchema(
         name: 'topiclearningStatus',
         type: IsarType.byte,
 
-        enumMap: {"notStarted": 0, "needsPractice": 1, "mastered": 2},
+        enumMap: {
+          "notStarted": 0,
+          "learning": 1,
+          "reviewing": 2,
+          "mastered": 3,
+        },
       ),
     ],
     indexes: [],
@@ -246,8 +251,9 @@ extension UserTopicProgressQueryBuilderUpdate
 
 const _userTopicProgressTopiclearningStatus = {
   0: TopicLearningStatus.notStarted,
-  1: TopicLearningStatus.needsPractice,
-  2: TopicLearningStatus.mastered,
+  1: TopicLearningStatus.learning,
+  2: TopicLearningStatus.reviewing,
+  3: TopicLearningStatus.mastered,
 };
 
 extension UserTopicProgressQueryFilter
