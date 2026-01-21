@@ -79,12 +79,22 @@ UserLanguageSkillsData deserializeUserLanguageSkillsData(IsarReader reader) {
           Language.English;
     }
   }
-  final object = UserLanguageSkillsData(language: _language);
+  final double _normalizedListeningProgress;
+  _normalizedListeningProgress = IsarCore.readDouble(reader, 2);
+  final double _normalizedSpeakingProgress;
+  _normalizedSpeakingProgress = IsarCore.readDouble(reader, 3);
+  final double _normalizedReadingProgress;
+  _normalizedReadingProgress = IsarCore.readDouble(reader, 4);
+  final double _normalizedWritingProgress;
+  _normalizedWritingProgress = IsarCore.readDouble(reader, 5);
+  final object = UserLanguageSkillsData(
+    language: _language,
+    normalizedListeningProgress: _normalizedListeningProgress,
+    normalizedSpeakingProgress: _normalizedSpeakingProgress,
+    normalizedReadingProgress: _normalizedReadingProgress,
+    normalizedWritingProgress: _normalizedWritingProgress,
+  );
   object.id = IsarCore.readId(reader);
-  object.normalizedListeningProgress = IsarCore.readDouble(reader, 2);
-  object.normalizedSpeakingProgress = IsarCore.readDouble(reader, 3);
-  object.normalizedReadingProgress = IsarCore.readDouble(reader, 4);
-  object.normalizedWritingProgress = IsarCore.readDouble(reader, 5);
   return object;
 }
 
