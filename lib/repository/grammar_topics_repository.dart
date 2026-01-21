@@ -26,11 +26,11 @@ class GrammarTopicsRepository
     bool alreadyExists =
         await isar.grammarTopics
             .where()
-            .targetLanguageEqualTo(topic.grammarLanguage)
-            .topicLearningOrderEqualTo(topic.topicLearningOrder)
+            .targetLanguageEqualTo(topic.language)
+            .topicLearningOrderEqualTo(topic.subjectLearningOrder)
             .or()
-            .targetLanguageEqualTo(topic.grammarLanguage)
-            .topicSubjectEqualTo(topic.grammarSubject)
+            .targetLanguageEqualTo(topic.language)
+            .topicSubjectEqualTo(topic.topicTitle)
             .findFirstAsync() !=
         null;
 
