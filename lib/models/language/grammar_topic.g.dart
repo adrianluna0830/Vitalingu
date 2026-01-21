@@ -28,17 +28,17 @@ final GrammarTopicSchema = IsarGeneratedSchema(
         enumMap: {"A1": 0, "A2": 1, "B1": 2, "B2": 3, "C1": 4, "C2": 5},
       ),
       IsarPropertySchema(
-        name: 'targetLanguage',
+        name: 'grammarLanguage',
         type: IsarType.byte,
 
         enumMap: {"English": 0, "Spanish": 1},
       ),
-      IsarPropertySchema(name: 'topicSubject', type: IsarType.string),
+      IsarPropertySchema(name: 'grammarSubject', type: IsarType.string),
     ],
     indexes: [
       IsarIndexSchema(
-        name: 'targetLanguage',
-        properties: ["targetLanguage"],
+        name: 'grammarLanguage',
+        properties: ["grammarLanguage"],
         unique: false,
         hash: false,
       ),
@@ -56,8 +56,8 @@ final GrammarTopicSchema = IsarGeneratedSchema(
 int serializeGrammarTopic(IsarWriter writer, GrammarTopic object) {
   IsarCore.writeLong(writer, 1, object.topicLearningOrder);
   IsarCore.writeByte(writer, 2, object.cefrLevel.index);
-  IsarCore.writeByte(writer, 3, object.targetLanguage.index);
-  IsarCore.writeString(writer, 4, object.topicSubject);
+  IsarCore.writeByte(writer, 3, object.grammarLanguage.index);
+  IsarCore.writeString(writer, 4, object.grammarSubject);
   return object.id;
 }
 
@@ -74,23 +74,23 @@ GrammarTopic deserializeGrammarTopic(IsarReader reader) {
           _grammarTopicCefrLevel[IsarCore.readByte(reader, 2)] ?? CEFR.A1;
     }
   }
-  final Language _targetLanguage;
+  final Language _grammarLanguage;
   {
     if (IsarCore.readNull(reader, 3)) {
-      _targetLanguage = Language.English;
+      _grammarLanguage = Language.English;
     } else {
-      _targetLanguage =
-          _grammarTopicTargetLanguage[IsarCore.readByte(reader, 3)] ??
+      _grammarLanguage =
+          _grammarTopicGrammarLanguage[IsarCore.readByte(reader, 3)] ??
           Language.English;
     }
   }
-  final String _topicSubject;
-  _topicSubject = IsarCore.readString(reader, 4) ?? '';
+  final String _grammarSubject;
+  _grammarSubject = IsarCore.readString(reader, 4) ?? '';
   final object = GrammarTopic(
     topicLearningOrder: _topicLearningOrder,
     cefrLevel: _cefrLevel,
-    targetLanguage: _targetLanguage,
-    topicSubject: _topicSubject,
+    grammarLanguage: _grammarLanguage,
+    grammarSubject: _grammarSubject,
   );
   object.id = IsarCore.readId(reader);
   return object;
@@ -117,7 +117,7 @@ dynamic deserializeGrammarTopicProp(IsarReader reader, int property) {
         if (IsarCore.readNull(reader, 3)) {
           return Language.English;
         } else {
-          return _grammarTopicTargetLanguage[IsarCore.readByte(reader, 3)] ??
+          return _grammarTopicGrammarLanguage[IsarCore.readByte(reader, 3)] ??
               Language.English;
         }
       }
@@ -133,8 +133,8 @@ sealed class _GrammarTopicUpdate {
     required int id,
     int? topicLearningOrder,
     CEFR? cefrLevel,
-    Language? targetLanguage,
-    String? topicSubject,
+    Language? grammarLanguage,
+    String? grammarSubject,
   });
 }
 
@@ -148,16 +148,16 @@ class _GrammarTopicUpdateImpl implements _GrammarTopicUpdate {
     required int id,
     Object? topicLearningOrder = ignore,
     Object? cefrLevel = ignore,
-    Object? targetLanguage = ignore,
-    Object? topicSubject = ignore,
+    Object? grammarLanguage = ignore,
+    Object? grammarSubject = ignore,
   }) {
     return collection.updateProperties(
           [id],
           {
             if (topicLearningOrder != ignore) 1: topicLearningOrder as int?,
             if (cefrLevel != ignore) 2: cefrLevel as CEFR?,
-            if (targetLanguage != ignore) 3: targetLanguage as Language?,
-            if (topicSubject != ignore) 4: topicSubject as String?,
+            if (grammarLanguage != ignore) 3: grammarLanguage as Language?,
+            if (grammarSubject != ignore) 4: grammarSubject as String?,
           },
         ) >
         0;
@@ -169,8 +169,8 @@ sealed class _GrammarTopicUpdateAll {
     required List<int> id,
     int? topicLearningOrder,
     CEFR? cefrLevel,
-    Language? targetLanguage,
-    String? topicSubject,
+    Language? grammarLanguage,
+    String? grammarSubject,
   });
 }
 
@@ -184,14 +184,14 @@ class _GrammarTopicUpdateAllImpl implements _GrammarTopicUpdateAll {
     required List<int> id,
     Object? topicLearningOrder = ignore,
     Object? cefrLevel = ignore,
-    Object? targetLanguage = ignore,
-    Object? topicSubject = ignore,
+    Object? grammarLanguage = ignore,
+    Object? grammarSubject = ignore,
   }) {
     return collection.updateProperties(id, {
       if (topicLearningOrder != ignore) 1: topicLearningOrder as int?,
       if (cefrLevel != ignore) 2: cefrLevel as CEFR?,
-      if (targetLanguage != ignore) 3: targetLanguage as Language?,
-      if (topicSubject != ignore) 4: topicSubject as String?,
+      if (grammarLanguage != ignore) 3: grammarLanguage as Language?,
+      if (grammarSubject != ignore) 4: grammarSubject as String?,
     });
   }
 }
@@ -206,8 +206,8 @@ sealed class _GrammarTopicQueryUpdate {
   int call({
     int? topicLearningOrder,
     CEFR? cefrLevel,
-    Language? targetLanguage,
-    String? topicSubject,
+    Language? grammarLanguage,
+    String? grammarSubject,
   });
 }
 
@@ -221,14 +221,14 @@ class _GrammarTopicQueryUpdateImpl implements _GrammarTopicQueryUpdate {
   int call({
     Object? topicLearningOrder = ignore,
     Object? cefrLevel = ignore,
-    Object? targetLanguage = ignore,
-    Object? topicSubject = ignore,
+    Object? grammarLanguage = ignore,
+    Object? grammarSubject = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (topicLearningOrder != ignore) 1: topicLearningOrder as int?,
       if (cefrLevel != ignore) 2: cefrLevel as CEFR?,
-      if (targetLanguage != ignore) 3: targetLanguage as Language?,
-      if (topicSubject != ignore) 4: topicSubject as String?,
+      if (grammarLanguage != ignore) 3: grammarLanguage as Language?,
+      if (grammarSubject != ignore) 4: grammarSubject as String?,
     });
   }
 }
@@ -250,16 +250,16 @@ class _GrammarTopicQueryBuilderUpdateImpl implements _GrammarTopicQueryUpdate {
   int call({
     Object? topicLearningOrder = ignore,
     Object? cefrLevel = ignore,
-    Object? targetLanguage = ignore,
-    Object? topicSubject = ignore,
+    Object? grammarLanguage = ignore,
+    Object? grammarSubject = ignore,
   }) {
     final q = query.build();
     try {
       return q.updateProperties(limit: limit, {
         if (topicLearningOrder != ignore) 1: topicLearningOrder as int?,
         if (cefrLevel != ignore) 2: cefrLevel as CEFR?,
-        if (targetLanguage != ignore) 3: targetLanguage as Language?,
-        if (topicSubject != ignore) 4: topicSubject as String?,
+        if (grammarLanguage != ignore) 3: grammarLanguage as Language?,
+        if (grammarSubject != ignore) 4: grammarSubject as String?,
       });
     } finally {
       q.close();
@@ -284,7 +284,7 @@ const _grammarTopicCefrLevel = {
   4: CEFR.C1,
   5: CEFR.C2,
 };
-const _grammarTopicTargetLanguage = {0: Language.English, 1: Language.Spanish};
+const _grammarTopicGrammarLanguage = {0: Language.English, 1: Language.Spanish};
 
 extension GrammarTopicQueryFilter
     on QueryBuilder<GrammarTopic, GrammarTopic, QFilterCondition> {
@@ -452,7 +452,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  targetLanguageEqualTo(Language value) {
+  grammarLanguageEqualTo(Language value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(property: 3, value: value.index),
@@ -461,7 +461,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  targetLanguageGreaterThan(Language value) {
+  grammarLanguageGreaterThan(Language value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(property: 3, value: value.index),
@@ -470,7 +470,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  targetLanguageGreaterThanOrEqualTo(Language value) {
+  grammarLanguageGreaterThanOrEqualTo(Language value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(property: 3, value: value.index),
@@ -479,7 +479,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  targetLanguageLessThan(Language value) {
+  grammarLanguageLessThan(Language value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(property: 3, value: value.index),
@@ -488,7 +488,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  targetLanguageLessThanOrEqualTo(Language value) {
+  grammarLanguageLessThanOrEqualTo(Language value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(property: 3, value: value.index),
@@ -497,7 +497,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  targetLanguageBetween(Language lower, Language upper) {
+  grammarLanguageBetween(Language lower, Language upper) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(property: 3, lower: lower.index, upper: upper.index),
@@ -506,7 +506,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectEqualTo(String value, {bool caseSensitive = true}) {
+  grammarSubjectEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(property: 4, value: value, caseSensitive: caseSensitive),
@@ -515,7 +515,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectGreaterThan(String value, {bool caseSensitive = true}) {
+  grammarSubjectGreaterThan(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
@@ -528,7 +528,10 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectGreaterThanOrEqualTo(String value, {bool caseSensitive = true}) {
+  grammarSubjectGreaterThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
@@ -541,7 +544,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectLessThan(String value, {bool caseSensitive = true}) {
+  grammarSubjectLessThan(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(property: 4, value: value, caseSensitive: caseSensitive),
@@ -550,7 +553,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectLessThanOrEqualTo(String value, {bool caseSensitive = true}) {
+  grammarSubjectLessThanOrEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
@@ -563,7 +566,11 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectBetween(String lower, String upper, {bool caseSensitive = true}) {
+  grammarSubjectBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
@@ -577,7 +584,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectStartsWith(String value, {bool caseSensitive = true}) {
+  grammarSubjectStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
@@ -590,7 +597,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectEndsWith(String value, {bool caseSensitive = true}) {
+  grammarSubjectEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
@@ -603,7 +610,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectContains(String value, {bool caseSensitive = true}) {
+  grammarSubjectContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
@@ -616,7 +623,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectMatches(String pattern, {bool caseSensitive = true}) {
+  grammarSubjectMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
@@ -629,7 +636,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectIsEmpty() {
+  grammarSubjectIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(property: 4, value: ''),
@@ -638,7 +645,7 @@ extension GrammarTopicQueryFilter
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterFilterCondition>
-  topicSubjectIsNotEmpty() {
+  grammarSubjectIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(property: 4, value: ''),
@@ -691,20 +698,20 @@ extension GrammarTopicQuerySortBy
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy>
-  sortByTargetLanguage() {
+  sortByGrammarLanguage() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3);
     });
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy>
-  sortByTargetLanguageDesc() {
+  sortByGrammarLanguageDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy> sortByTopicSubject({
+  QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy> sortByGrammarSubject({
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -713,7 +720,7 @@ extension GrammarTopicQuerySortBy
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy>
-  sortByTopicSubjectDesc({bool caseSensitive = true}) {
+  sortByGrammarSubjectDesc({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc, caseSensitive: caseSensitive);
     });
@@ -761,20 +768,20 @@ extension GrammarTopicQuerySortThenBy
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy>
-  thenByTargetLanguage() {
+  thenByGrammarLanguage() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3);
     });
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy>
-  thenByTargetLanguageDesc() {
+  thenByGrammarLanguageDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy> thenByTopicSubject({
+  QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy> thenByGrammarSubject({
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -783,7 +790,7 @@ extension GrammarTopicQuerySortThenBy
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterSortBy>
-  thenByTopicSubjectDesc({bool caseSensitive = true}) {
+  thenByGrammarSubjectDesc({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc, caseSensitive: caseSensitive);
     });
@@ -807,14 +814,14 @@ extension GrammarTopicQueryWhereDistinct
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterDistinct>
-  distinctByTargetLanguage() {
+  distinctByGrammarLanguage() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(3);
     });
   }
 
   QueryBuilder<GrammarTopic, GrammarTopic, QAfterDistinct>
-  distinctByTopicSubject({bool caseSensitive = true}) {
+  distinctByGrammarSubject({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(4, caseSensitive: caseSensitive);
     });
@@ -842,13 +849,13 @@ extension GrammarTopicQueryProperty1
   }
 
   QueryBuilder<GrammarTopic, Language, QAfterProperty>
-  targetLanguageProperty() {
+  grammarLanguageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<GrammarTopic, String, QAfterProperty> topicSubjectProperty() {
+  QueryBuilder<GrammarTopic, String, QAfterProperty> grammarSubjectProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
@@ -877,14 +884,14 @@ extension GrammarTopicQueryProperty2<R>
   }
 
   QueryBuilder<GrammarTopic, (R, Language), QAfterProperty>
-  targetLanguageProperty() {
+  grammarLanguageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
   QueryBuilder<GrammarTopic, (R, String), QAfterProperty>
-  topicSubjectProperty() {
+  grammarSubjectProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
@@ -913,14 +920,14 @@ extension GrammarTopicQueryProperty3<R1, R2>
   }
 
   QueryBuilder<GrammarTopic, (R1, R2, Language), QOperations>
-  targetLanguageProperty() {
+  grammarLanguageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
   QueryBuilder<GrammarTopic, (R1, R2, String), QOperations>
-  topicSubjectProperty() {
+  grammarSubjectProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });

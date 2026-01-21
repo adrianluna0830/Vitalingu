@@ -3,7 +3,7 @@ import 'package:vitalingu/models/language/language_enum.dart';
 import 'package:isar_plus/isar_plus.dart';
 part 'grammar_topic.g.dart';
 @collection
-@Index(composite: ['topicSubject', 'topicLearningOrder'])
+@Index(composite: ['grammarSubject', 'topicLearningOrder'])
 class GrammarTopic {
 
   @Id() 
@@ -11,11 +11,11 @@ class GrammarTopic {
   int topicLearningOrder;
   CEFR cefrLevel;
   @Index()
-  Language targetLanguage;
-  String topicSubject;
+  Language grammarLanguage;
+  String grammarSubject;
 
 
-  GrammarTopic({required this.topicSubject, required this.topicLearningOrder, required this.cefrLevel, required this.targetLanguage});
+  GrammarTopic({required this.grammarSubject, required this.topicLearningOrder, required this.cefrLevel, required this.grammarLanguage});
   
  
 }
