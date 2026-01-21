@@ -11,13 +11,13 @@ class GrammarTopicsRepository
   GrammarTopicsRepository(this.isar);
 
   Future<List<GrammarTopic>> getAllGrammarTopics(Language language) async {
-    final topics =  await isar.grammarTopics.where().targetLanguageEqualTo(language).findAllAsync();
+    final topics =  await isar.grammarTopics.where().languageEqualTo(language).findAllAsync();
     return topics;
   }
 
   Future<GrammarTopic?> getGrammarTopic(Language language, int learningOrder) async
   {
-    final topic = await isar.grammarTopics.where().targetLanguageEqualTo(language).topicLearningOrderEqualTo(learningOrder).findFirstAsync();
+    final topic = await isar.grammarTopics.where().languageEqualTo(language).topicLearningOrderEqualTo(learningOrder).findFirstAsync();
     return  topic;
   }
 
@@ -26,11 +26,11 @@ class GrammarTopicsRepository
     bool alreadyExists =
         await isar.grammarTopics
             .where()
-            .targetLanguageEqualTo(topic.language)
-            .topicLearningOrderEqualTo(topic.subjectLearningOrder)
+            .languageEqualTo(topic.language)
+            .topicLearningOrderEqualTo(topic.topicLearningOrder)
             .or()
-            .targetLanguageEqualTo(topic.language)
-            .topicSubjectEqualTo(topic.topicTitle)
+            .languageEqualTo(topic.language)
+            .topicTitleEqualTo(topic.topicTitle)
             .findFirstAsync() !=
         null;
 
