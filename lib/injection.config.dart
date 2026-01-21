@@ -24,6 +24,7 @@ import 'package:vitalingu/repository/topic_translations_repository.dart'
     as _i992;
 import 'package:vitalingu/repository/user_topic_progress_repository.dart'
     as _i914;
+import 'package:vitalingu/usecases/load_language_topics_usecase.dart' as _i71;
 import 'package:vitalingu/usecases/translations_usecase.dart' as _i449;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
     as _i377;
@@ -112,6 +113,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i178.HomeSettingsViewModel(
         nativeLanguageSignal: gh<_i70.NativeLanguageSignal>(),
         targetLanguageSignal: gh<_i70.TargetLanguageSignal>(),
+      ),
+    );
+    gh.factory<_i71.LoadLanguageTopicsUsecase>(
+      () => _i71.LoadLanguageTopicsUsecase(
+        gh<_i700.GrammarTopicsRepository>(),
+        gh<_i992.TopicTranslationsRepository>(),
       ),
     );
     gh.factory<_i1048.StartupLevelConfigureViewModel>(

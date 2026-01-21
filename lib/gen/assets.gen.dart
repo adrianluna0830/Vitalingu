@@ -16,12 +16,8 @@ class $AssetsLanguagesGen {
   String get defaultEnglishTopics =>
       'assets/languages/default_english_topics.json';
 
-  /// File path: assets/languages/default_spanish_topics.json
-  String get defaultSpanishTopics =>
-      'assets/languages/default_spanish_topics.json';
-
   /// List of all assets
-  List<String> get values => [defaultEnglishTopics, defaultSpanishTopics];
+  List<String> get values => [defaultEnglishTopics];
 }
 
 class Assets {

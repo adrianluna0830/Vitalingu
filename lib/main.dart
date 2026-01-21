@@ -4,7 +4,6 @@ import 'package:vitalingu/injection.dart';
 
 void main() async {
   await configureDependencies();
-  // await getIt<LoadLanguageTopicsService>().tryLoadTopics();
   runApp(MyApp());
 }
 

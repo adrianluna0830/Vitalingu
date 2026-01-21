@@ -1,255 +1,155 @@
 {
-  "bcp47": "en_US",
-  "topicDescriptions": [
+  "language": "English",
+  "topics": [
     {
-      "topicDescriptionId": "subject_pronouns",
-      "topicLearningOrder": 1,
-      "cefrLevel": "A1"
+      "learningOrder": 1,
+      "cefrLevel": "A1",
+      "topicTitle": "Greetings and Introductions",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Greetings and Introductions"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Saludos y Presentaciones"
+        }
+      ]
     },
     {
-      "topicDescriptionId": "verb_to_be_present_tense",
-      "topicLearningOrder": 2,
-      "cefrLevel": "A1"
+      "learningOrder": 2,
+      "cefrLevel": "A1",
+      "topicTitle": "Numbers and Basic Math",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Numbers and Basic Math"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Números y Matemáticas Básicas"
+        }
+      ]
     },
     {
-      "topicDescriptionId": "articles_a_an_the",
-      "topicLearningOrder": 3,
-      "cefrLevel": "A1"
+      "learningOrder": 3,
+      "cefrLevel": "A1",
+      "topicTitle": "Family and Relationships",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Family and Relationships"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Familia y Relaciones"
+        }
+      ]
     },
     {
-      "topicDescriptionId": "plural_nouns_regular",
-      "topicLearningOrder": 4,
-      "cefrLevel": "A1"
+      "learningOrder": 4,
+      "cefrLevel": "A2",
+      "topicTitle": "Daily Routines and Activities",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Daily Routines and Activities"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Rutinas Diarias y Actividades"
+        }
+      ]
     },
     {
-      "topicDescriptionId": "present_simple_tense",
-      "topicLearningOrder": 5,
-      "cefrLevel": "A1"
+      "learningOrder": 5,
+      "cefrLevel": "A2",
+      "topicTitle": "Food and Dining",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Food and Dining"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Comida y Restaurantes"
+        }
+      ]
     },
     {
-      "topicDescriptionId": "possessive_adjectives",
-      "topicLearningOrder": 6,
-      "cefrLevel": "A1"
+      "learningOrder": 6,
+      "cefrLevel": "A2",
+      "topicTitle": "Travel and Transportation",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Travel and Transportation"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Viajes y Transporte"
+        }
+      ]
     },
     {
-      "topicDescriptionId": "demonstrative_pronouns_this_that_these_those",
-      "topicLearningOrder": 7,
-      "cefrLevel": "A1"
+      "learningOrder": 7,
+      "cefrLevel": "B1",
+      "topicTitle": "Work and Career",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Work and Career"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Trabajo y Carrera"
+        }
+      ]
     },
     {
-      "topicDescriptionId": "prepositions_of_place",
-      "topicLearningOrder": 8,
-      "cefrLevel": "A1"
+      "learningOrder": 8,
+      "cefrLevel": "B1",
+      "topicTitle": "Health and Wellness",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Health and Wellness"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Salud y Bienestar"
+        }
+      ]
     },
     {
-      "topicDescriptionId": "present_continuous_tense",
-      "topicLearningOrder": 9,
-      "cefrLevel": "A1"
+      "learningOrder": 9,
+      "cefrLevel": "B2",
+      "topicTitle": "Technology and Digital Communication",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Technology and Digital Communication"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Tecnología y Comunicación Digital"
+        }
+      ]
     },
     {
-      "topicDescriptionId": "object_pronouns",
-      "topicLearningOrder": 10,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "past_simple_tense_regular_verbs",
-      "topicLearningOrder": 11,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "past_simple_tense_irregular_verbs",
-      "topicLearningOrder": 12,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "comparative_adjectives",
-      "topicLearningOrder": 13,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "superlative_adjectives",
-      "topicLearningOrder": 14,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "countable_and_uncountable_nouns",
-      "topicLearningOrder": 15,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "quantifiers_some_any_much_many",
-      "topicLearningOrder": 16,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "prepositions_of_time",
-      "topicLearningOrder": 17,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "modal_verbs_can_could_ability_permission",
-      "topicLearningOrder": 18,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "future_with_going_to",
-      "topicLearningOrder": 19,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "adverbs_of_frequency",
-      "topicLearningOrder": 20,
-      "cefrLevel": "A2"
-    },
-    {
-      "topicDescriptionId": "present_perfect_tense",
-      "topicLearningOrder": 21,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "past_continuous_tense",
-      "topicLearningOrder": 22,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "future_simple_tense_will",
-      "topicLearningOrder": 23,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "first_conditional",
-      "topicLearningOrder": 24,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "relative_clauses_defining",
-      "topicLearningOrder": 25,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "modal_verbs_should_ought_to_advice",
-      "topicLearningOrder": 26,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "modal_verbs_must_have_to_obligation",
-      "topicLearningOrder": 27,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "passive_voice_present_simple",
-      "topicLearningOrder": 28,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "passive_voice_past_simple",
-      "topicLearningOrder": 29,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "reported_speech_statements",
-      "topicLearningOrder": 30,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "present_perfect_continuous_tense",
-      "topicLearningOrder": 31,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "used_to_past_habits",
-      "topicLearningOrder": 32,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "second_conditional",
-      "topicLearningOrder": 33,
-      "cefrLevel": "B1"
-    },
-    {
-      "topicDescriptionId": "past_perfect_tense",
-      "topicLearningOrder": 34,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "third_conditional",
-      "topicLearningOrder": 35,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "relative_clauses_non_defining",
-      "topicLearningOrder": 36,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "modal_verbs_deduction_might_may_must_cant",
-      "topicLearningOrder": 37,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "reported_speech_questions",
-      "topicLearningOrder": 38,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "passive_voice_continuous_and_perfect_tenses",
-      "topicLearningOrder": 39,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "wish_and_if_only_regrets_hypothetical_situations",
-      "topicLearningOrder": 40,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "causative_have_get",
-      "topicLearningOrder": 41,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "gerunds_and_infinitives",
-      "topicLearningOrder": 42,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "phrasal_verbs_separable_inseparable",
-      "topicLearningOrder": 43,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "past_perfect_continuous_tense",
-      "topicLearningOrder": 44,
-      "cefrLevel": "B2"
-    },
-    {
-      "topicDescriptionId": "mixed_conditionals",
-      "topicLearningOrder": 45,
-      "cefrLevel": "C1"
-    },
-    {
-      "topicDescriptionId": "inversion_for_emphasis",
-      "topicLearningOrder": 46,
-      "cefrLevel": "C1"
-    },
-    {
-      "topicDescriptionId": "cleft_sentences_it_what_clauses",
-      "topicLearningOrder": 47,
-      "cefrLevel": "C1"
-    },
-    {
-      "topicDescriptionId": "subjunctive_mood",
-      "topicLearningOrder": 48,
-      "cefrLevel": "C1"
-    },
-    {
-      "topicDescriptionId": "nominalization",
-      "topicLearningOrder": 49,
-      "cefrLevel": "C1"
-    },
-    {
-      "topicDescriptionId": "advanced_participle_clauses",
-      "topicLearningOrder": 50,
-      "cefrLevel": "C1"
+      "learningOrder": 10,
+      "cefrLevel": "C1",
+      "topicTitle": "Culture, Society and Current Events",
+      "translations": [
+        {
+          "language": "English",
+          "translation": "Culture, Society and Current Events"
+        },
+        {
+          "language": "Spanish",
+          "translation": "Cultura, Sociedad y Actualidad"
+        }
+      ]
     }
   ]
 }
