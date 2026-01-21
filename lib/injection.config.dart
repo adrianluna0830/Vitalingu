@@ -17,6 +17,8 @@ import 'package:vitalingu/models/isar_module.dart' as _i774;
 import 'package:vitalingu/models/private_settings.dart' as _i806;
 import 'package:vitalingu/models/shared_preferences_store.dart' as _i680;
 import 'package:vitalingu/models/user_app_settings.dart' as _i70;
+import 'package:vitalingu/pages/home_page/home_settings_view_model.dart'
+    as _i178;
 import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
 import 'package:vitalingu/repository/topic_translations_repository.dart'
     as _i992;
@@ -105,6 +107,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i377.StartupIntroductionViewModel>(
       () =>
           _i377.StartupIntroductionViewModel(appRouter: gh<_i641.AppRouter>()),
+    );
+    gh.factory<_i178.HomeSettingsViewModel>(
+      () => _i178.HomeSettingsViewModel(
+        nativeLanguageSignal: gh<_i70.NativeLanguageSignal>(),
+        targetLanguageSignal: gh<_i70.TargetLanguageSignal>(),
+      ),
     );
     gh.factory<_i1048.StartupLevelConfigureViewModel>(
       () => _i1048.StartupLevelConfigureViewModel(
