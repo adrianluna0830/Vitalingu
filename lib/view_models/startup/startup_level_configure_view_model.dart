@@ -1,38 +1,27 @@
 import 'package:injectable/injectable.dart';
+import 'package:signals/signals_flutter.dart';
+import 'package:vitalingu/app_router.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/services/navigation_service.dart';
-import 'package:vitalingu/view_models/startup/base_startup_view_model.dart';
-
-class StartupLevelConfigureState extends BaseStartupState {
-  final int selectedLevel;
-  final CEFR? targetLanguageLevel;
-
-  StartupLevelConfigureState({
-    required this.selectedLevel,
-    required this.targetLanguageLevel,
-  }) : super(canContinue: true);
-}
+import 'package:vitalingu/models/private_settings.dart';
 
 @injectable
-class StartupLevelConfigureViewModel
-    extends BaseStartupViewModel<StartupLevelConfigureState> {
-  StartupLevelConfigureViewModel(this._navigationService)
-      : super(StartupLevelConfigureState(
-          selectedLevel: 0,
-          targetLanguageLevel: CEFR.values[0],
-        ));
+class StartupLevelConfigureViewModel {
+  final IsStartupCompletedSignal isStartupCompletedSignal;
+  final AppRouter _appRouter;
 
-  final NavigationService _navigationService;
+  StartupLevelConfigureViewModel(this._appRouter, this.isStartupCompletedSignal);
 
+  Signal<CEFR> selectedLevel = Signal<CEFR>(CEFR.A1);
 
-  void changeCEFRLevel(int levelIndex) {
-    updateState(StartupLevelConfigureState(
-      selectedLevel: levelIndex,
-      targetLanguageLevel: CEFR.values[levelIndex],
-    ));
+  Future<void> changeLevel(CEFR level) async {
+    selectedLevel.value = level;
+    await isStartupCompletedSignal.save(true);
+    isStartupCompletedSignal.value = true;
   }
 
-  Future<void> goToNextStep() async {
-    _navigationService.goToHome();
+  void goToHomePage() {
+    print(isStartupCompletedSignal.value);
+    _appRouter.replace(HomeTabRoute());
   }
+  
 }

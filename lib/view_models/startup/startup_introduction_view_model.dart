@@ -1,13 +1,14 @@
-
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/view_models/startup/base_startup_view_model.dart';
-class StartupIntroductionState extends BaseStartupState {
-  StartupIntroductionState({required super.canContinue});
-}
+import 'package:vitalingu/app_router.dart';
 
 @injectable
-class StartupIntroductionViewModel extends BaseStartupViewModel<StartupIntroductionState> {
-  StartupIntroductionViewModel()
-      : super(StartupIntroductionState(canContinue: true));
-}
+class StartupIntroductionViewModel {
+  final AppRouter _appRouter;
 
+  StartupIntroductionViewModel({required AppRouter appRouter}) : _appRouter = appRouter;
+
+  void goToNativeLanguageSelectionPage()
+  {
+    _appRouter.push(StartupNativeLanguageRoute());
+  }
+}

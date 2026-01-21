@@ -14,7 +14,6 @@ class StartupIntroductionPage extends StatefulWidget {
 
 class _StartupIntroductionPageState extends State<StartupIntroductionPage> {
   final viewModel = getIt<StartupIntroductionViewModel>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +24,7 @@ class _StartupIntroductionPageState extends State<StartupIntroductionPage> {
             Text('Welcome to Vitalingu!'),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () => viewModel.navigateNext(context.tabsRouter),
+              onPressed: () => {viewModel.goToNativeLanguageSelectionPage()},
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue, 
                 foregroundColor: Colors.white,

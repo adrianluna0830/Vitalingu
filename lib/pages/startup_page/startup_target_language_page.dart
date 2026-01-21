@@ -2,13 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language/language.dart';
+import 'package:vitalingu/models/language/language_enum.dart';
 import 'package:vitalingu/view_models/startup/startup_target_language_view_model.dart';
 
 @RoutePage()
 class StartupTargetLanguagePage extends StatefulWidget {
-  const StartupTargetLanguagePage({super.key, required this.onLanguageSelected});
-  final Function(Language lang) onLanguageSelected;
+  const StartupTargetLanguagePage({super.key});
 
   @override
   State<StartupTargetLanguagePage> createState() =>
@@ -17,13 +16,8 @@ class StartupTargetLanguagePage extends StatefulWidget {
 
 class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
   final viewModel = getIt<StartupTargetLanguageViewModel>();
-
   @override
   Widget build(BuildContext context) {
-    final currentState = viewModel.state.watch(context);
-    
-
-    
     return Scaffold(
       body: Center(
         child: Column(
@@ -31,9 +25,9 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DropdownButton<Language>(
-              value: currentState.targetLanguage,
+              value: viewModel.targetLanguageSignal.watch(context),
               hint: Text('Select target language'),
-              items: currentState.supportedLanguages
+              items: viewModel.supportedLanguages.watch(context)
                   .map(
                     (lang) => DropdownMenuItem(
                       value: lang,
@@ -41,27 +35,22 @@ class _StartupTargetLanguagePageState extends State<StartupTargetLanguagePage> {
                     ),
                   )
                   .toList(),
-              onChanged: (newValue) async {
-                await viewModel.confirmLanguages(newValue!);
-                widget.onLanguageSelected(newValue);
+              onChanged: (newValue) {
+                viewModel.selectTargetLanguage(newValue!);
               },
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: currentState.canContinue
-                  ? () => viewModel.navigateNext(context.tabsRouter)
-                  : null,
+              onPressed: () => viewModel.goToLevelSelectionPage(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: currentState.canContinue
-                    ? Colors.blue
-                    : Colors.grey,
+                backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
               ),
               child: Text('Next'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () => viewModel.navigatePrevious(context.tabsRouter),
+              onPressed: () => viewModel.goToNativeLanguageSelectionPage(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue, 
                 foregroundColor: Colors.white,
