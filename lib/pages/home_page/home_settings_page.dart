@@ -4,6 +4,7 @@ import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
 import 'package:vitalingu/models/language/language_enum.dart';
+import 'package:vitalingu/models/language_specific_settings.dart';
 import 'package:vitalingu/pages/home_page/home_settings_view_model.dart';
 
 @RoutePage()
@@ -16,6 +17,7 @@ class HomeSettingsPage extends StatefulWidget {
 
 class _HomeSettingsPageState extends State<HomeSettingsPage> {
   final viewModel = getIt<HomeSettingsViewModel>();
+  final textfieldController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +35,11 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
             label: 'Target Language',
             selectedLanguage: viewModel.targetLanguageSignal.watch(context),
             onChanged: (language) {
+
               viewModel.updateTargetLanguage(language);
             },
-          ),
+          ),        
+        
         ],
       ),
     );

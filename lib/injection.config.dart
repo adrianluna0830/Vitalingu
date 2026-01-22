@@ -12,9 +12,13 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:isar_plus/isar_plus.dart' as _i1056;
+import 'package:sembast/sembast_io.dart' as _i156;
+import 'package:sembast/utils/database_utils.dart' as _i854;
 import 'package:vitalingu/app_router.dart' as _i641;
 import 'package:vitalingu/models/isar_module.dart' as _i774;
+import 'package:vitalingu/models/language_specific_settings.dart' as _i582;
 import 'package:vitalingu/models/private_settings.dart' as _i806;
+import 'package:vitalingu/models/sembast_module.dart' as _i228;
 import 'package:vitalingu/models/shared_preferences_store.dart' as _i680;
 import 'package:vitalingu/models/user_app_settings.dart' as _i70;
 import 'package:vitalingu/pages/home_page/home_settings_view_model.dart'
@@ -43,8 +47,13 @@ extension GetItInjectableX on _i174.GetIt {
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final isarModule = _$IsarModule();
+    final sembastModule = _$SembastModule();
     await gh.factoryAsync<_i1056.Isar>(
       () => isarModule.provideIsar(),
+      preResolve: true,
+    );
+    await gh.factoryAsync<_i156.Database>(
+      () => sembastModule.database,
       preResolve: true,
     );
     gh.factory<_i680.SharedPreferencesStore>(
@@ -127,6 +136,36 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i806.IsStartupCompletedSignal>(),
       ),
     );
+    gh.factoryAsync<_i582.SpeakingSkillSignal>(
+      () => _i582.SpeakingSkillSignal.create(
+        db: gh<_i854.Database>(),
+        targetLanguage: gh<_i70.TargetLanguageSignal>(),
+      ),
+    );
+    gh.factoryAsync<_i582.HearingSkillSignal>(
+      () => _i582.HearingSkillSignal.create(
+        db: gh<_i854.Database>(),
+        targetLanguage: gh<_i70.TargetLanguageSignal>(),
+      ),
+    );
+    gh.factoryAsync<_i582.ListeningSkillSignal>(
+      () => _i582.ListeningSkillSignal.create(
+        db: gh<_i854.Database>(),
+        targetLanguage: gh<_i70.TargetLanguageSignal>(),
+      ),
+    );
+    gh.factoryAsync<_i582.WritingSkillSignal>(
+      () => _i582.WritingSkillSignal.create(
+        db: gh<_i854.Database>(),
+        targetLanguage: gh<_i70.TargetLanguageSignal>(),
+      ),
+    );
+    gh.factoryAsync<_i582.HasStartedLanguage>(
+      () => _i582.HasStartedLanguage.create(
+        db: gh<_i854.Database>(),
+        targetLanguage: gh<_i70.TargetLanguageSignal>(),
+      ),
+    );
     gh.factory<_i731.StartupTargetLanguageViewModel>(
       () => _i731.StartupTargetLanguageViewModel(
         gh<_i70.TargetLanguageSignal>(),
@@ -145,3 +184,5 @@ extension GetItInjectableX on _i174.GetIt {
 }
 
 class _$IsarModule extends _i774.IsarModule {}
+
+class _$SembastModule extends _i228.SembastModule {}

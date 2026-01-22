@@ -11,7 +11,6 @@ class HomeSettingsViewModel {
   void updateNativeLanguage(Language language) {
     nativeLanguageSignal.value = language;
     
-    print('Native language updated to: ${nativeLanguageSignal.value}');
   }
 
   void updateTargetLanguage(Language language) {
