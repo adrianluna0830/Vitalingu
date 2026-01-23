@@ -1,47 +1,68 @@
-// import 'package:injectable/injectable.dart';
-// import 'package:isar_plus/isar_plus.dart';
-// import 'package:vitalingu/models/language/user_data/user_topic_progress.dart';
+import 'package:injectable/injectable.dart';
+import 'package:sembast/sembast.dart';
+import 'package:vitalingu/models/language/user_data/user_topic_progress.dart';
 
-// @singleton
-// class UserTopicProgressRepository {
-//   final Isar isar;
+@singleton
+class UserTopicProgressRepository {
+  final Database _db;
+  final _store = intMapStoreFactory.store('user_topic_progress');
 
-//   UserTopicProgressRepository(this.isar);
+  UserTopicProgressRepository(this._db);
 
-//   Future<UserTopicProgress?> getUserTopicProgress(int topicId) async {
-//     final progress = await isar.userTopicProgress
-//         .where()
-//         .topicIdEqualTo(topicId)
-//         .findFirstAsync();
-//     return progress;
-//   }
+  Future<UserTopicProgress> getOrCreate(int grammarTopicId) async {
+    return await _db.transaction((txn) async {
+      final finder = Finder(filter: Filter.equals('topicId', grammarTopicId));
+      var existing = await _store.findFirst(txn, finder: finder);
 
-//   Future<UserTopicProgress?> addProgress(UserTopicProgress progress) async {
-//     bool alreadyExists =
-//         await isar.userTopicProgress
-//             .where()
-//             .topicIdEqualTo(progress.topicId)
-//             .findFirstAsync() !=
-//         null;
+      if (existing != null) {
+        return UserTopicProgress.fromJson(existing.value, existing.key);
+      } else {
+        final newProgress = UserTopicProgress(topicId: grammarTopicId);
+        final newKey = await _store.add(txn, newProgress.toJson());
+        newProgress.id = newKey;
+        return newProgress;
+      }
+    });
+  }
 
-//     if (alreadyExists) return null;
+  Future<UserTopicProgress?> update(UserTopicProgress progress) async {
+    if (progress.id == null) {
+      return null;
+    }
+    
+    final updatedRecord = await _store.record(progress.id!).update(_db, progress.toJson());
 
-//     await isar.writeAsync((isar) async {
-//       progress.id = isar.userTopicProgress.autoIncrement();
-//       isar.userTopicProgress.put(progress);
-//     });
-//     return progress;
-//   }
+    if (updatedRecord != null) {
+      return UserTopicProgress.fromJson(updatedRecord, progress.id!);
+    } else {
+      return null;
+    }
+  }
 
-//   Future<bool> updateProgress(UserTopicProgress progress) async {
-//     final existingProgress = await getUserTopicProgress(progress.topicId);
-//     if (existingProgress == null) {
-//       return false;
-//     }
+  Future<List<UserTopicProgress>> getOrCreateMany(List<int> grammarTopicIds) async {
+    return await _db.transaction((txn) async {
+      final finder = Finder(filter: Filter.inList('topicId', grammarTopicIds));
+      final existingSnapshots = await _store.find(txn, finder: finder);
 
-//     await isar.writeAsync((isar) async {
-//       isar.userTopicProgress.put(progress);
-//     });
-//     return true;
-//   }
-// }
+      final existingProgressMap = <int, UserTopicProgress>{};
+      for (final snapshot in existingSnapshots) {
+        final progress = UserTopicProgress.fromJson(snapshot.value, snapshot.key);
+        existingProgressMap[progress.topicId] = progress;
+      }
+
+      final results = <UserTopicProgress>[];
+
+      for (final topicId in grammarTopicIds) {
+        if (existingProgressMap.containsKey(topicId)) {
+          results.add(existingProgressMap[topicId]!);
+        } else {
+          final newProgress = UserTopicProgress(topicId: topicId);
+          final newKey = await _store.add(txn, newProgress.toJson());
+          newProgress.id = newKey;
+          results.add(newProgress);
+        }
+      }
+      return results;
+    });
+  }
+}

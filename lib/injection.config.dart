@@ -23,6 +23,8 @@ import 'package:vitalingu/models/user_app_settings.dart' as _i70;
 import 'package:vitalingu/pages/home_page/home_settings_view_model.dart'
     as _i178;
 import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
+import 'package:vitalingu/repository/user_topic_progress_repository.dart'
+    as _i914;
 import 'package:vitalingu/usecases/load_language_topics_usecase.dart' as _i71;
 import 'package:vitalingu/view_models/home_topics_view_model.dart' as _i668;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
@@ -55,6 +57,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i641.AppRouter>(() => _i641.AppRouter());
     gh.singleton<_i700.GrammarTopicsRepository>(
       () => _i700.GrammarTopicsRepository(gh<_i310.Database>()),
+    );
+    gh.singleton<_i914.UserTopicProgressRepository>(
+      () => _i914.UserTopicProgressRepository(gh<_i310.Database>()),
     );
     await gh.singletonAsync<_i70.GeminiApiKeySignal>(
       () => _i70.GeminiApiKeySignal.create(
