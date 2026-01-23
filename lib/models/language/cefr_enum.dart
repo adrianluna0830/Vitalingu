@@ -1,6 +1,4 @@
-import 'package:isar_plus/isar_plus.dart';
 
-@enumValue
 enum CEFR {
   A1(1),
   A2(2),

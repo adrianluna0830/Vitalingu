@@ -11,11 +11,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:isar_plus/isar_plus.dart' as _i1056;
 import 'package:sembast/sembast_io.dart' as _i156;
 import 'package:sembast/utils/database_utils.dart' as _i854;
 import 'package:vitalingu/app_router.dart' as _i641;
-import 'package:vitalingu/models/isar_module.dart' as _i774;
 import 'package:vitalingu/models/language_specific_settings.dart' as _i582;
 import 'package:vitalingu/models/private_settings.dart' as _i806;
 import 'package:vitalingu/models/sembast_module.dart' as _i228;
@@ -23,13 +21,6 @@ import 'package:vitalingu/models/shared_preferences_store.dart' as _i680;
 import 'package:vitalingu/models/user_app_settings.dart' as _i70;
 import 'package:vitalingu/pages/home_page/home_settings_view_model.dart'
     as _i178;
-import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
-import 'package:vitalingu/repository/topic_translations_repository.dart'
-    as _i992;
-import 'package:vitalingu/repository/user_topic_progress_repository.dart'
-    as _i914;
-import 'package:vitalingu/usecases/load_language_topics_usecase.dart' as _i71;
-import 'package:vitalingu/usecases/translations_usecase.dart' as _i449;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
     as _i377;
 import 'package:vitalingu/view_models/startup/startup_level_configure_view_model.dart'
@@ -46,12 +37,7 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    final isarModule = _$IsarModule();
     final sembastModule = _$SembastModule();
-    await gh.factoryAsync<_i1056.Isar>(
-      () => isarModule.provideIsar(),
-      preResolve: true,
-    );
     await gh.factoryAsync<_i156.Database>(
       () => sembastModule.database,
       preResolve: true,
@@ -68,21 +54,6 @@ extension GetItInjectableX on _i174.GetIt {
         encryptedStore: gh<_i680.EncryptedSharedPreferencesStore>(),
       ),
       preResolve: true,
-    );
-    gh.singleton<_i700.GrammarTopicsRepository>(
-      () => _i700.GrammarTopicsRepository(gh<_i1056.Isar>()),
-    );
-    gh.singleton<_i992.TopicTranslationsRepository>(
-      () => _i992.TopicTranslationsRepository(gh<_i1056.Isar>()),
-    );
-    gh.singleton<_i914.UserTopicProgressRepository>(
-      () => _i914.UserTopicProgressRepository(gh<_i1056.Isar>()),
-    );
-    gh.factory<_i449.TranslationsUsecase>(
-      () => _i449.TranslationsUsecase(
-        topicTranslationsRepository: gh<_i992.TopicTranslationsRepository>(),
-        grammarTopicsRepository: gh<_i700.GrammarTopicsRepository>(),
-      ),
     );
     await gh.singletonAsync<_i806.HasLoadedDataSignal>(
       () => _i806.HasLoadedDataSignal.create(
@@ -122,12 +93,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i178.HomeSettingsViewModel(
         nativeLanguageSignal: gh<_i70.NativeLanguageSignal>(),
         targetLanguageSignal: gh<_i70.TargetLanguageSignal>(),
-      ),
-    );
-    gh.factory<_i71.LoadLanguageTopicsUsecase>(
-      () => _i71.LoadLanguageTopicsUsecase(
-        gh<_i700.GrammarTopicsRepository>(),
-        gh<_i992.TopicTranslationsRepository>(),
       ),
     );
     gh.factory<_i1048.StartupLevelConfigureViewModel>(
@@ -182,7 +147,5 @@ extension GetItInjectableX on _i174.GetIt {
     return this;
   }
 }
-
-class _$IsarModule extends _i774.IsarModule {}
 
 class _$SembastModule extends _i228.SembastModule {}
