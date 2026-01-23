@@ -4,12 +4,14 @@ class UserTopicProgress {
   int topicId;
   double topicMastery;
   TopicLearningStatus topiclearningStatus;
+  bool isEnabled;
 
   UserTopicProgress({
     this.id,
     required this.topicId,
     this.topicMastery = 0.0,
     this.topiclearningStatus = TopicLearningStatus.notStarted,
+    this.isEnabled = false,
   });
 
   Map<String, dynamic> toJson() {
@@ -17,6 +19,7 @@ class UserTopicProgress {
       'topicId': topicId,
       'topicMastery': topicMastery,
       'topiclearningStatus': topiclearningStatus.name,
+      'isEnabled': isEnabled,
     };
   }
 
@@ -26,6 +29,7 @@ class UserTopicProgress {
       topicId: json['topicId'],
       topicMastery: json['topicMastery'],
       topiclearningStatus: TopicLearningStatus.values.byName(json['topiclearningStatus']),
+      isEnabled: json['isEnabled'] ?? false,
     );
   }
 }
