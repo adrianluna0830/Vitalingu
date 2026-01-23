@@ -11,6 +11,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:sembast/sembast.dart' as _i310;
 import 'package:sembast/sembast_io.dart' as _i156;
 import 'package:sembast/utils/database_utils.dart' as _i854;
 import 'package:vitalingu/app_router.dart' as _i641;
@@ -21,6 +22,8 @@ import 'package:vitalingu/models/shared_preferences_store.dart' as _i680;
 import 'package:vitalingu/models/user_app_settings.dart' as _i70;
 import 'package:vitalingu/pages/home_page/home_settings_view_model.dart'
     as _i178;
+import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
+import 'package:vitalingu/usecases/load_language_topics_usecase.dart' as _i71;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
     as _i377;
 import 'package:vitalingu/view_models/startup/startup_level_configure_view_model.dart'
@@ -49,6 +52,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i680.EncryptedSharedPreferencesStore(),
     );
     gh.singleton<_i641.AppRouter>(() => _i641.AppRouter());
+    gh.singleton<_i700.GrammarTopicsRepository>(
+      () => _i700.GrammarTopicsRepository(gh<_i310.Database>()),
+    );
     await gh.singletonAsync<_i70.GeminiApiKeySignal>(
       () => _i70.GeminiApiKeySignal.create(
         encryptedStore: gh<_i680.EncryptedSharedPreferencesStore>(),
@@ -138,6 +144,13 @@ extension GetItInjectableX on _i174.GetIt {
         nativeLanguageSignal: gh<_i70.NativeLanguageSignal>(),
       ),
     );
+    await gh.singletonAsync<_i71.LoadLanguageTopicsUseCase>(() {
+      final i = _i71.LoadLanguageTopicsUseCase(
+        gh<_i700.GrammarTopicsRepository>(),
+        gh<_i806.HasLoadedDataSignal>(),
+      );
+      return i.call().then((_) => i);
+    }, preResolve: true);
     gh.factory<_i75.StartupNativeLanguageViewModel>(
       () => _i75.StartupNativeLanguageViewModel(
         gh<_i70.NativeLanguageSignal>(),
