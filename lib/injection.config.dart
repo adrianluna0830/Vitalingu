@@ -24,6 +24,7 @@ import 'package:vitalingu/pages/home_page/home_settings_view_model.dart'
     as _i178;
 import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
 import 'package:vitalingu/usecases/load_language_topics_usecase.dart' as _i71;
+import 'package:vitalingu/view_models/home_topics_view_model.dart' as _i668;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
     as _i377;
 import 'package:vitalingu/view_models/startup/startup_level_configure_view_model.dart'
@@ -134,6 +135,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factoryAsync<_i582.HasStartedLanguage>(
       () => _i582.HasStartedLanguage.create(
         db: gh<_i854.Database>(),
+        targetLanguage: gh<_i70.TargetLanguageSignal>(),
+      ),
+    );
+    gh.factory<_i668.HomeTopicsViewModel>(
+      () => _i668.HomeTopicsViewModel(
+        grammarTopicsRepository: gh<_i700.GrammarTopicsRepository>(),
         targetLanguage: gh<_i70.TargetLanguageSignal>(),
       ),
     );
