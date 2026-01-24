@@ -1,0 +1,222 @@
+[
+  {
+    "topicCode": "spa_ser_estar",
+    "topicLearningOrder": 1,
+    "cefrLevel": "A1",
+    "language": "Spanish",
+    "difficulty": "easy",
+    "translations": {
+      "Spanish": "Ser y Estar",
+      "English": "Ser and Estar"
+    }
+  },
+  {
+    "topicCode": "spa_genero_numero",
+    "topicLearningOrder": 2,
+    "cefrLevel": "A1",
+    "language": "Spanish",
+    "difficulty": "easy",
+    "translations": {
+      "Spanish": "Género y Número",
+      "English": "Gender and Number"
+    }
+  },
+  {
+    "topicCode": "spa_articulos",
+    "topicLearningOrder": 3,
+    "cefrLevel": "A1",
+    "language": "Spanish",
+    "difficulty": "easy",
+    "translations": {
+      "Spanish": "Artículos Definidos e Indefinidos",
+      "English": "Definite and Indefinite Articles"
+    }
+  },
+  {
+    "topicCode": "spa_presente_indicativo",
+    "topicLearningOrder": 4,
+    "cefrLevel": "A1",
+    "language": "Spanish",
+    "difficulty": "easy",
+    "translations": {
+      "Spanish": "Presente Indicativo",
+      "English": "Present Indicative"
+    }
+  },
+  {
+    "topicCode": "spa_adjetivos_posesivos",
+    "topicLearningOrder": 5,
+    "cefrLevel": "A1",
+    "language": "Spanish",
+    "difficulty": "easy",
+    "translations": {
+      "Spanish": "Adjetivos Posesivos",
+      "English": "Possessive Adjectives"
+    }
+  },
+  {
+    "topicCode": "spa_tener_idioms",
+    "topicLearningOrder": 6,
+    "cefrLevel": "A1",
+    "language": "Spanish",
+    "difficulty": "medium",
+    "translations": {
+      "Spanish": "Expresiones con Tener",
+      "English": "Expressions with Tener"
+    }
+  },
+  {
+    "topicCode": "spa_ir_a_infinitivo",
+    "topicLearningOrder": 7,
+    "cefrLevel": "A1",
+    "language": "Spanish",
+    "difficulty": "easy",
+    "translations": {
+      "Spanish": "Futuro Próximo (Ir a)",
+      "English": "Near Future (Ir a)"
+    }
+  },
+  {
+    "topicCode": "spa_reflexivos",
+    "topicLearningOrder": 8,
+    "cefrLevel": "A2",
+    "language": "Spanish",
+    "difficulty": "medium",
+    "translations": {
+      "Spanish": "Verbos Reflexivos",
+      "English": "Reflexive Verbs"
+    }
+  },
+  {
+    "topicCode": "spa_preterito_perfecto",
+    "topicLearningOrder": 9,
+    "cefrLevel": "A2",
+    "language": "Spanish",
+    "difficulty": "medium",
+    "translations": {
+      "Spanish": "Pretérito Perfecto Compuesto",
+      "English": "Present Perfect"
+    }
+  },
+  {
+    "topicCode": "spa_preterito_indefinido",
+    "topicLearningOrder": 10,
+    "cefrLevel": "A2",
+    "language": "Spanish",
+    "difficulty": "hard",
+    "translations": {
+      "Spanish": "Pretérito Indefinido",
+      "English": "Preterite Tense"
+    }
+  },
+  {
+    "topicCode": "spa_preterito_imperfecto",
+    "topicLearningOrder": 11,
+    "cefrLevel": "A2",
+    "language": "Spanish",
+    "difficulty": "medium",
+    "translations": {
+      "Spanish": "Pretérito Imperfecto",
+      "English": "Imperfect Tense"
+    }
+  },
+  {
+    "topicCode": "spa_por_para",
+    "topicLearningOrder": 12,
+    "cefrLevel": "A2",
+    "language": "Spanish",
+    "difficulty": "hard",
+    "translations": {
+      "Spanish": "Por vs Para",
+      "English": "Por vs Para"
+    }
+  },
+  {
+    "topicCode": "spa_obj_directo_indirecto",
+    "topicLearningOrder": 13,
+    "cefrLevel": "A2",
+    "language": "Spanish",
+    "difficulty": "hard",
+    "translations": {
+      "Spanish": "Pronombres de Objeto Directo e Indirecto",
+      "English": "Direct and Indirect Object Pronouns"
+    }
+  },
+  {
+    "topicCode": "spa_futuro_simple",
+    "topicLearningOrder": 14,
+    "cefrLevel": "B1",
+    "language": "Spanish",
+    "difficulty": "easy",
+    "translations": {
+      "Spanish": "Futuro Simple",
+      "English": "Future Simple"
+    }
+  },
+  {
+    "topicCode": "spa_imperativo",
+    "topicLearningOrder": 15,
+    "cefrLevel": "B1",
+    "language": "Spanish",
+    "difficulty": "medium",
+    "translations": {
+      "Spanish": "Imperativo",
+      "English": "Imperative Mood"
+    }
+  },
+  {
+    "topicCode": "spa_subjuntivo_presente",
+    "topicLearningOrder": 16,
+    "cefrLevel": "B1",
+    "language": "Spanish",
+    "difficulty": "hard",
+    "translations": {
+      "Spanish": "Subjuntivo Presente",
+      "English": "Present Subjunctive"
+    }
+  },
+  {
+    "topicCode": "spa_condicional_simple",
+    "topicLearningOrder": 17,
+    "cefrLevel": "B1",
+    "language": "Spanish",
+    "difficulty": "easy",
+    "translations": {
+      "Spanish": "Condicional Simple",
+      "English": "Conditional Simple"
+    }
+  },
+  {
+    "topicCode": "spa_subjuntivo_imperfecto",
+    "topicLearningOrder": 18,
+    "cefrLevel": "B2",
+    "language": "Spanish",
+    "difficulty": "hard",
+    "translations": {
+      "Spanish": "Subjuntivo Imperfecto",
+      "English": "Imperfect Subjunctive"
+    }
+  },
+  {
+    "topicCode": "spa_pluscuamperfecto",
+    "topicLearningOrder": 19,
+    "cefrLevel": "B2",
+    "language": "Spanish",
+    "difficulty": "medium",
+    "translations": {
+      "Spanish": "Pretérito Pluscuamperfecto",
+      "English": "Past Perfect"
+    }
+  },
+  {
+    "topicCode": "spa_si_clauses",
+    "topicLearningOrder": 20,
+    "cefrLevel": "C1",
+    "language": "Spanish",
+    "difficulty": "hard",
+    "translations": {
+      "Spanish": "Cláusulas con Si",
+      "English": "Si Clauses (Hypothetical)"
+    }
+  }
+]

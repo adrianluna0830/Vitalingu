@@ -12,12 +12,14 @@
 class $AssetsLanguagesGen {
   const $AssetsLanguagesGen();
 
-  /// File path: assets/languages/default_english_topics.json
-  String get defaultEnglishTopics =>
-      'assets/languages/default_english_topics.json';
+  /// File path: assets/languages/english.json
+  String get english => 'assets/languages/english.json';
+
+  /// File path: assets/languages/spanish.json
+  String get spanish => 'assets/languages/spanish.json';
 
   /// List of all assets
-  List<String> get values => [defaultEnglishTopics];
+  List<String> get values => [english, spanish];
 }
 
 class Assets {

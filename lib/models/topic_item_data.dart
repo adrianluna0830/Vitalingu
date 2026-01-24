@@ -6,14 +6,14 @@ class TopicItemData {
   final String title;
   final CEFR level;
   final TopicLearningStatus status;
-  final int topicId;
+  final String topicCode;
   final bool isSelected;
 
   TopicItemData(
     this.title,
     this.level,
     this.status,
-    this.topicId,
+    this.topicCode,
     this.isSelected,
   );
 
@@ -21,7 +21,7 @@ class TopicItemData {
     String? title,
     CEFR? level,
     TopicLearningStatus? status,
-    int? topicId,
+    String? topicCode,
     bool? isSelected,
     Color? color,
   }) {
@@ -29,7 +29,7 @@ class TopicItemData {
       title ?? this.title,
       level ?? this.level,
       status ?? this.status,
-      topicId ?? this.topicId,
+      topicCode ?? this.topicCode,
       isSelected ?? this.isSelected,
     );
   }

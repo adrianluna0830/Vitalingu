@@ -1,0 +1,222 @@
+[
+  {
+    "topicCode": "eng_to_be",
+    "topicLearningOrder": 1,
+    "cefrLevel": "A1",
+    "language": "English",
+    "difficulty": "easy",
+    "translations": {
+      "English": "Verb To Be",
+      "Spanish": "Verbo To Be (Ser/Estar)"
+    }
+  },
+  {
+    "topicCode": "eng_present_simple",
+    "topicLearningOrder": 2,
+    "cefrLevel": "A1",
+    "language": "English",
+    "difficulty": "easy",
+    "translations": {
+      "English": "Present Simple",
+      "Spanish": "Presente Simple"
+    }
+  },
+  {
+    "topicCode": "eng_articles",
+    "topicLearningOrder": 3,
+    "cefrLevel": "A1",
+    "language": "English",
+    "difficulty": "easy",
+    "translations": {
+      "English": "Articles (A/An/The)",
+      "Spanish": "Artículos (A/An/The)"
+    }
+  },
+  {
+    "topicCode": "eng_plural_nouns",
+    "topicLearningOrder": 4,
+    "cefrLevel": "A1",
+    "language": "English",
+    "difficulty": "easy",
+    "translations": {
+      "English": "Plural Nouns",
+      "Spanish": "Sustantivos Plurales"
+    }
+  },
+  {
+    "topicCode": "eng_pronouns_subject",
+    "topicLearningOrder": 5,
+    "cefrLevel": "A1",
+    "language": "English",
+    "difficulty": "easy",
+    "translations": {
+      "English": "Subject Pronouns",
+      "Spanish": "Pronombres Sujeto"
+    }
+  },
+  {
+    "topicCode": "eng_present_continuous",
+    "topicLearningOrder": 6,
+    "cefrLevel": "A1",
+    "language": "English",
+    "difficulty": "medium",
+    "translations": {
+      "English": "Present Continuous",
+      "Spanish": "Presente Continuo"
+    }
+  },
+  {
+    "topicCode": "eng_past_simple",
+    "topicLearningOrder": 7,
+    "cefrLevel": "A2",
+    "language": "English",
+    "difficulty": "medium",
+    "translations": {
+      "English": "Past Simple",
+      "Spanish": "Pasado Simple"
+    }
+  },
+  {
+    "topicCode": "eng_future_will",
+    "topicLearningOrder": 8,
+    "cefrLevel": "A2",
+    "language": "English",
+    "difficulty": "easy",
+    "translations": {
+      "English": "Future with Will",
+      "Spanish": "Futuro con Will"
+    }
+  },
+  {
+    "topicCode": "eng_past_continuous",
+    "topicLearningOrder": 9,
+    "cefrLevel": "A2",
+    "language": "English",
+    "difficulty": "medium",
+    "translations": {
+      "English": "Past Continuous",
+      "Spanish": "Pasado Continuo"
+    }
+  },
+  {
+    "topicCode": "eng_present_perfect",
+    "topicLearningOrder": 10,
+    "cefrLevel": "A2",
+    "language": "English",
+    "difficulty": "hard",
+    "translations": {
+      "English": "Present Perfect",
+      "Spanish": "Presente Perfecto"
+    }
+  },
+  {
+    "topicCode": "eng_modals_ability",
+    "topicLearningOrder": 11,
+    "cefrLevel": "A2",
+    "language": "English",
+    "difficulty": "medium",
+    "translations": {
+      "English": "Modals of Ability",
+      "Spanish": "Modales de Habilidad"
+    }
+  },
+  {
+    "topicCode": "eng_comparatives",
+    "topicLearningOrder": 12,
+    "cefrLevel": "A2",
+    "language": "English",
+    "difficulty": "easy",
+    "translations": {
+      "English": "Comparatives & Superlatives",
+      "Spanish": "Comparativos y Superlativos"
+    }
+  },
+  {
+    "topicCode": "eng_first_conditional",
+    "topicLearningOrder": 13,
+    "cefrLevel": "B1",
+    "language": "English",
+    "difficulty": "medium",
+    "translations": {
+      "English": "First Conditional",
+      "Spanish": "Primer Condicional"
+    }
+  },
+  {
+    "topicCode": "eng_passive_voice",
+    "topicLearningOrder": 14,
+    "cefrLevel": "B1",
+    "language": "English",
+    "difficulty": "hard",
+    "translations": {
+      "English": "Passive Voice",
+      "Spanish": "Voz Pasiva"
+    }
+  },
+  {
+    "topicCode": "eng_reported_speech",
+    "topicLearningOrder": 15,
+    "cefrLevel": "B1",
+    "language": "English",
+    "difficulty": "hard",
+    "translations": {
+      "English": "Reported Speech",
+      "Spanish": "Estilo Indirecto"
+    }
+  },
+  {
+    "topicCode": "eng_gerunds_infinitives",
+    "topicLearningOrder": 16,
+    "cefrLevel": "B1",
+    "language": "English",
+    "difficulty": "medium",
+    "translations": {
+      "English": "Gerunds vs Infinitives",
+      "Spanish": "Gerundios vs Infinitivos"
+    }
+  },
+  {
+    "topicCode": "eng_second_conditional",
+    "topicLearningOrder": 17,
+    "cefrLevel": "B2",
+    "language": "English",
+    "difficulty": "medium",
+    "translations": {
+      "English": "Second Conditional",
+      "Spanish": "Segundo Condicional"
+    }
+  },
+  {
+    "topicCode": "eng_third_conditional",
+    "topicLearningOrder": 18,
+    "cefrLevel": "B2",
+    "language": "English",
+    "difficulty": "hard",
+    "translations": {
+      "English": "Third Conditional",
+      "Spanish": "Tercer Condicional"
+    }
+  },
+  {
+    "topicCode": "eng_mixed_conditionals",
+    "topicLearningOrder": 19,
+    "cefrLevel": "C1",
+    "language": "English",
+    "difficulty": "hard",
+    "translations": {
+      "English": "Mixed Conditionals",
+      "Spanish": "Condicionales Mixtos"
+    }
+  },
+  {
+    "topicCode": "eng_subjunctive_mood",
+    "topicLearningOrder": 20,
+    "cefrLevel": "C1",
+    "language": "English",
+    "difficulty": "hard",
+    "translations": {
+      "English": "Subjunctive Mood",
+      "Spanish": "Modo Subjuntivo"
+    }
+  }
+]
