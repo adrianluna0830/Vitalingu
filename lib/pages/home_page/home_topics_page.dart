@@ -38,12 +38,25 @@ class _HomeTopicsPageState extends State<HomeTopicsPage> {
       actions: [
         if (isSelectable)
           _EditStatusButton(
-            onStatusSelected: vm.updateStatusForSelectedTopics,
-            nativeLanguage: vm.nativeLanguageSignal.value,
+            notStartedText: vm.statusNotStartedText.watch(context),
+            learningText: vm.statusLearningText.watch(context),
+            reviewingText: vm.statusReviewingText.watch(context),
+            masteredText: vm.statusMasteredText.watch(context),
+            onNotStarted: () =>
+                vm.updateStatusForSelectedTopics(TopicLearningStatus.notStarted),
+            onLearning: () =>
+                vm.updateStatusForSelectedTopics(TopicLearningStatus.learning),
+            onReviewing: () =>
+                vm.updateStatusForSelectedTopics(TopicLearningStatus.reviewing),
+            onMastered: () =>
+                vm.updateStatusForSelectedTopics(TopicLearningStatus.mastered),
           ),
         if (!isSelectable)
           _ChangeLevelButton(
-            onLevelSelected: vm.updateTopicStatusWithCEFR,
+            onA1: () => vm.updateTopicStatusWithCEFR(CEFR.A1),
+            onA2: () => vm.updateTopicStatusWithCEFR(CEFR.A2),
+            onB1: () => vm.updateTopicStatusWithCEFR(CEFR.B1),
+            onB2: () => vm.updateTopicStatusWithCEFR(CEFR.B2),
           ),
       ],
     );
@@ -61,12 +74,24 @@ class _HomeTopicsPageState extends State<HomeTopicsPage> {
 }
 
 class _EditStatusButton extends StatelessWidget {
-  final Function(TopicLearningStatus) onStatusSelected;
-  final dynamic nativeLanguage;
+  final String notStartedText;
+  final String learningText;
+  final String reviewingText;
+  final String masteredText;
+  final VoidCallback onNotStarted;
+  final VoidCallback onLearning;
+  final VoidCallback onReviewing;
+  final VoidCallback onMastered;
 
   const _EditStatusButton({
-    required this.onStatusSelected,
-    required this.nativeLanguage,
+    required this.notStartedText,
+    required this.learningText,
+    required this.reviewingText,
+    required this.masteredText,
+    required this.onNotStarted,
+    required this.onLearning,
+    required this.onReviewing,
+    required this.onMastered,
   });
 
   @override
@@ -78,25 +103,45 @@ class _EditStatusButton extends StatelessWidget {
   }
 
   Future<void> _handlePress(BuildContext context) async {
-    final selectedStatus = await showDialog<TopicLearningStatus>(
+    await showDialog(
       context: context,
       builder: (context) => SelectStatusDialog(
-        statuses: TopicLearningStatus.values,
-        nativeLanguage: nativeLanguage,
+        notStartedText: notStartedText,
+        learningText: learningText,
+        reviewingText: reviewingText,
+        masteredText: masteredText,
+        onNotStarted: () {
+          onNotStarted();
+          Navigator.pop(context);
+        },
+        onLearning: () {
+          onLearning();
+          Navigator.pop(context);
+        },
+        onReviewing: () {
+          onReviewing();
+          Navigator.pop(context);
+        },
+        onMastered: () {
+          onMastered();
+          Navigator.pop(context);
+        },
       ),
     );
-
-    if (selectedStatus != null) {
-      onStatusSelected(selectedStatus);
-    }
   }
 }
 
 class _ChangeLevelButton extends StatelessWidget {
-  final Function(CEFR) onLevelSelected;
+  final VoidCallback onA1;
+  final VoidCallback onA2;
+  final VoidCallback onB1;
+  final VoidCallback onB2;
 
   const _ChangeLevelButton({
-    required this.onLevelSelected,
+    required this.onA1,
+    required this.onA2,
+    required this.onB1,
+    required this.onB2,
   });
 
   @override
@@ -108,13 +153,26 @@ class _ChangeLevelButton extends StatelessWidget {
   }
 
   Future<void> _handlePress(BuildContext context) async {
-    final selectedLevel = await showDialog<CEFR>(
+    await showDialog(
       context: context,
-      builder: (context) => const SelectLevelDialog(),
+      builder: (context) => SelectLevelDialog(
+        onA1: () {
+          onA1();
+          Navigator.pop(context);
+        },
+        onA2: () {
+          onA2();
+          Navigator.pop(context);
+        },
+        onB1: () {
+          onB1();
+          Navigator.pop(context);
+        },
+        onB2: () {
+          onB2();
+          Navigator.pop(context);
+        },
+      ),
     );
-
-    if (selectedLevel != null) {
-      onLevelSelected(selectedLevel);
-    }
   }
 }

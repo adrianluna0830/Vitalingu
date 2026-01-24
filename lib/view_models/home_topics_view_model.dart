@@ -2,28 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_core.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
+import 'package:vitalingu/models/language/grammar_topic.dart';
 import 'package:vitalingu/models/language/topic_learning_status_enum.dart';
+import 'package:vitalingu/models/language/user_data/user_topic_data.dart';
 import 'package:vitalingu/models/topic_item_data.dart';
 import 'package:vitalingu/models/topic_item_view_dto.dart';
 import 'package:vitalingu/models/user_app_settings.dart';
-import 'package:vitalingu/services/user_topic_data_service.dart';
+import 'package:vitalingu/repository/grammar_topics_repository.dart';
+import 'package:vitalingu/repository/user_topic_data_repository.dart';
 
 @injectable
 class HomeTopicsViewModel {
   final NativeLanguageSignal nativeLanguageSignal;
   final TargetLanguageSignal targetLanguageSignal;
-  final UserTopicDataService _userTopicDataService;
+  final GrammarTopicsRepository _grammarTopicsRepository;
+  final UserTopicDataRepository _userTopicDataRepository;
 
   HomeTopicsViewModel(
     this.nativeLanguageSignal,
     this.targetLanguageSignal,
-    this._userTopicDataService,
+    this._grammarTopicsRepository,
+    this._userTopicDataRepository,
   ) {
     _loadTopicCards();
     _registerSelectableEffect();
-    _registerTargetLanguageChangedEffect();
+    _registerLanguageChangedEffects();
   }
-
 
   final isSelectable = signal<bool>(false);
 
@@ -42,65 +46,80 @@ class HomeTopicsViewModel {
     }).toList();
   });
 
-  EffectCleanup? _selectableEffect;
+  late final statusNotStartedText = computed(() =>
+      TopicLearningStatus.notStarted.description(nativeLanguageSignal.value));
+  late final statusLearningText = computed(() =>
+      TopicLearningStatus.learning.description(nativeLanguageSignal.value));
+  late final statusReviewingText = computed(() =>
+      TopicLearningStatus.reviewing.description(nativeLanguageSignal.value));
+  late final statusMasteredText = computed(() =>
+      TopicLearningStatus.mastered.description(nativeLanguageSignal.value));
 
+  EffectCleanup? _selectableEffect;
+  EffectCleanup? _targetLanguageEffect;
 
   void dispose() {
     _selectableEffect?.call();
+    _targetLanguageEffect?.call();
   }
 
-
-
-  void updateStatus(int index) {
+  void updateStatus(int index) async {
     final topic = _topicsSignal[index];
     final newStatus = _getNextStatus(topic.status);
-    _userTopicDataService.updateTopicStatus(topic.topicId, newStatus);
+    await _updateTopicStatus(topic.topicCode, newStatus);
     _topicsSignal[index] = topic.copyWith(status: newStatus);
+  }
+
+  Future<void> _updateTopicStatus(
+      String topicCode, TopicLearningStatus newStatus) async {
+    final userTopicData = await _userTopicDataRepository.getOrCreate(topicCode);
+    userTopicData.topicLearningStatus = newStatus;
+    await _userTopicDataRepository.update(userTopicData);
   }
 
   void onToggleSelect(int index) {
     isSelectable.value = !isSelectable.value;
-    if(!isSelectable.value) return;
+    if (!isSelectable.value) return;
     final topic = _topicsSignal[index];
     _topicsSignal[index] = topic.copyWith(isSelected: true);
   }
 
   void onTopicTap(int index) {
-    if(isSelectable.value == true) 
-    {
+    if (isSelectable.value == true) {
       final topic = _topicsSignal[index];
       _topicsSignal[index] = topic.copyWith(isSelected: !topic.isSelected);
+    } else {
+      _explainTopic(_topicsSignal[index].topicCode);
     }
-    else {
-      _explainTopic(_topicsSignal[index].topicId);
-    }
-
   }
 
   void updateStatusForSelectedTopics(TopicLearningStatus newStatus) async {
-    final selectedTopics = _topicsSignal.where((topic) => topic.isSelected).toList();
+    final selectedTopics =
+        _topicsSignal.where((topic) => topic.isSelected).toList();
     if (selectedTopics.isEmpty) {
       isSelectable.value = false;
       return;
     }
 
     for (final topic in selectedTopics) {
-      await _userTopicDataService.updateTopicStatus(topic.topicId, newStatus);
-      final index = _topicsSignal.indexWhere((t) => t.topicId == topic.topicId);
-      _topicsSignal[index] = _topicsSignal[index].copyWith(status: newStatus);
-      
+      await _updateTopicStatus(topic.topicCode, newStatus);
+      final index =
+          _topicsSignal.indexWhere((t) => t.topicCode == topic.topicCode);
+      if (index != -1) {
+        _topicsSignal[index] = _topicsSignal[index].copyWith(status: newStatus);
+      }
     }
 
     isSelectable.value = false;
   }
 
-    Future<void> updateTopicStatusWithCEFR(CEFR selectedLevel) async {
+  Future<void> updateTopicStatusWithCEFR(CEFR selectedLevel) async {
     for (int i = 0; i < _topicsSignal.length; i++) {
       final topic = _topicsSignal[i];
 
       if (topic.level.level <= selectedLevel.level) {
-        await _userTopicDataService.updateTopicStatus(
-          topic.topicId,
+        await _updateTopicStatus(
+          topic.topicCode,
           TopicLearningStatus.mastered,
         );
         _topicsSignal[i] = topic.copyWith(
@@ -110,18 +129,17 @@ class HomeTopicsViewModel {
     }
   }
 
-  void _explainTopic(int topicId) {
-
+  void _explainTopic(String topicCode) {
+    // TODO: Implement explanation navigation
   }
 
-    TopicLearningStatus _getNextStatus(TopicLearningStatus currentStatus) {
+  TopicLearningStatus _getNextStatus(TopicLearningStatus currentStatus) {
     final allStatuses = TopicLearningStatus.values;
     final currentIndex = allStatuses.indexOf(currentStatus);
     final nextIndex = (currentIndex + 1) % allStatuses.length;
     return allStatuses[nextIndex];
   }
 
-  
   void _registerSelectableEffect() {
     _selectableEffect = effect(() {
       final selectable = isSelectable.value;
@@ -135,13 +153,15 @@ class HomeTopicsViewModel {
       }
     });
   }
-  void _registerTargetLanguageChangedEffect() {
-    _selectableEffect = effect(() {
+
+  void _registerLanguageChangedEffects() {
+    _targetLanguageEffect = effect(() {
       targetLanguageSignal.value;
+      nativeLanguageSignal.value;
       _loadTopicCards();
     });
   }
-  
+
   Color _getColorForCefr(CEFR level) {
     switch (level) {
       case CEFR.A1:
@@ -159,24 +179,44 @@ class HomeTopicsViewModel {
     }
   }
 
-  
   Future<void> _loadTopicCards() async {
-    final grammarTopicsWithData = await _userTopicDataService
-        .getGrammarTopicsWithDataSorted(targetLanguageSignal.value);
+    final targetLang = targetLanguageSignal.value;
+    final nativeLang = nativeLanguageSignal.value;
+
+    final grammarTopics = _grammarTopicsRepository.getAll(targetLang);
+    final topicCodes = grammarTopics.map((e) => e.topicCode).toList();
+
+    grammarTopics.sort((a, b) => a.topicLearningOrder.compareTo(b.topicLearningOrder));
+
+    final userTopicDataList =
+        await _userTopicDataRepository.getOrCreateMany(topicCodes);
+    final userTopicDataMap = {
+      for (var item in userTopicDataList) item.topicCode: item
+    };
 
     _topicsSignal.clear();
+    final newTopics = <TopicItemData>[];
 
-    for (var (grammarTopic, userTopicData) in grammarTopicsWithData) {
-      _topicsSignal.add(
+    for (var grammarTopic in grammarTopics) {
+      final userTopicData = userTopicDataMap[grammarTopic.topicCode] ??
+          UserTopicData(topicCode: grammarTopic.topicCode);
+
+      final title = grammarTopic.translations[nativeLang];
+      if (title == null) {
+        throw Exception(
+            'Missing translation for topic ${grammarTopic.topicCode} in language ${nativeLang.name}');
+      }
+
+      newTopics.add(
         TopicItemData(
-          grammarTopic.topicTitle,
+          title,
           grammarTopic.cefrLevel,
           userTopicData.topicLearningStatus,
-          grammarTopic.id!,
+          grammarTopic.topicCode,
           false,
         ),
       );
     }
+    _topicsSignal.addAll(newTopics);
   }
-
 }

@@ -1,30 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
-import 'package:vitalingu/models/language/topic_learning_status_enum.dart';
 
 class SelectStatusDialog extends StatelessWidget {
-  final List<TopicLearningStatus> statuses;
-  final Language nativeLanguage;
+  final String notStartedText;
+  final String learningText;
+  final String reviewingText;
+  final String masteredText;
 
-  const SelectStatusDialog({super.key, required this.statuses, required this.nativeLanguage});
+  final VoidCallback onNotStarted;
+  final VoidCallback onLearning;
+  final VoidCallback onReviewing;
+  final VoidCallback onMastered;
+
+  const SelectStatusDialog({
+    super.key,
+    required this.notStartedText,
+    required this.learningText,
+    required this.reviewingText,
+    required this.masteredText,
+    required this.onNotStarted,
+    required this.onLearning,
+    required this.onReviewing,
+    required this.onMastered,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return SimpleDialog(
       title: const Text('Select Status'),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: ListView(
-          shrinkWrap: true,
-          children: statuses.map((status) {
-            return ListTile(
-              title: Text(status.description(nativeLanguage)),
-              onTap: () {
-                Navigator.of(context).pop(status);
-              },
-            );
-          }).toList(),
+      children: [
+        SimpleDialogOption(
+          onPressed: onNotStarted,
+          child: Text(notStartedText),
         ),
-      ),
+        SimpleDialogOption(
+          onPressed: onLearning,
+          child: Text(learningText),
+        ),
+        SimpleDialogOption(
+          onPressed: onReviewing,
+          child: Text(reviewingText),
+        ),
+        SimpleDialogOption(
+          onPressed: onMastered,
+          child: Text(masteredText),
+        ),
+      ],
     );
   }
 }
