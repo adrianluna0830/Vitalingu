@@ -4,8 +4,9 @@ import 'package:vitalingu/app_router.dart';
 import 'package:vitalingu/injection.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
-    SignalsObserver.instance = null;
+  SignalsObserver.instance = null;
   runApp(MyApp());
 }
 
