@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:signals/signals.dart';
 import 'package:vitalingu/app_router.dart';
 import 'package:vitalingu/injection.dart';
 
 void main() async {
   await configureDependencies();
+    SignalsObserver.instance = null;
   runApp(MyApp());
 }
 

@@ -1,11 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/grammar_topic.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
 import 'package:vitalingu/models/language/topic_learning_status_enum.dart';
+import 'package:vitalingu/models/topic_item_view_dto.dart';
 import 'package:vitalingu/view_models/home_topics_view_model.dart';
+import 'package:vitalingu/widgets/select_level_dialog.dart';
+import 'package:vitalingu/widgets/select_status_dialog.dart';
+import 'package:vitalingu/widgets/topics_list_widget.dart';
 
 @RoutePage()
 class HomeTopicsPage extends StatefulWidget {
@@ -16,178 +19,102 @@ class HomeTopicsPage extends StatefulWidget {
 }
 
 class _HomeTopicsPageState extends State<HomeTopicsPage> {
-  final HomeTopicsViewModel viewModel = getIt<HomeTopicsViewModel>();
-  late Future<List<GrammarTopic>> _topicsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _topicsFuture = viewModel.getTopics();
-  }
+  final vm = getIt<HomeTopicsViewModel>();
 
   @override
   Widget build(BuildContext context) {
+    final topics = vm.convertedTopics.watch(context);
+    final isSelectable = vm.isSelectable.watch(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Topics')),
-      body: FutureBuilder<List<GrammarTopic>>(
-        future: _topicsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      appBar: _buildAppBar(context, isSelectable),
+      body: _buildBody(topics, isSelectable),
+    );
+  }
 
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
+  AppBar _buildAppBar(BuildContext context, bool isSelectable) {
+    return AppBar(
+      title: const Text('Home Topics'),
+      actions: [
+        if (isSelectable)
+          _EditStatusButton(
+            onStatusSelected: vm.updateStatusForSelectedTopics,
+            nativeLanguage: vm.nativeLanguageSignal.value,
+          ),
+        if (!isSelectable)
+          _ChangeLevelButton(
+            onLevelSelected: vm.updateTopicStatusWithCEFR,
+          ),
+      ],
+    );
+  }
 
-          final topics = snapshot.data ?? [];
-
-          if (topics.isEmpty) {
-            return const Center(child: Text('No topics found.'));
-          }
-
-          return ListView.builder(
-            reverse: true,
-            itemCount: topics.length,
-            itemBuilder: (context, index) {
-              final topic = topics[index];
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                child: TopicCard(
-                  title: topic.topicTitle.toString(),
-                  cefrLevel: topic.cefrLevel,
-                  status: TopicLearningStatus.learning,
-                  language: Language.Spanish,
-                  isEnabled: true,
-                  onLock: () {
-                    debugPrint('Visibility ON ${topic.topicTitle}');
-                  },
-                  onUnlock: () {
-                    debugPrint('Visibility OFF ${topic.topicTitle}');
-                  },
-                  onEditStatus: (currentStatus) {
-                    debugPrint(
-                      'Edit status pressed. Current status: $currentStatus',
-                    );
-                  },
-                ),
-              );
-            },
-          );
-        },
-      ),
+  Widget _buildBody(List<TopicItemViewDTO> topics, bool isSelectable) {
+    return TopicsListWidget(
+      topics: topics,
+      isSelectable: isSelectable,
+      onTopicTap: vm.onTopicTap,
+      onLongTap: vm.onToggleSelect,
+      onStatusTap: vm.updateStatus,
     );
   }
 }
 
-class TopicCard extends StatelessWidget {
-  final String title;
-  final CEFR cefrLevel;
-  final TopicLearningStatus status;
-  final Language language;
-  final bool isEnabled;
-  final VoidCallback onLock;
-  final VoidCallback onUnlock;
+class _EditStatusButton extends StatelessWidget {
+  final Function(TopicLearningStatus) onStatusSelected;
+  final dynamic nativeLanguage;
 
-  final void Function(TopicLearningStatus status) onEditStatus;
-
-  const TopicCard({
-    super.key,
-    required this.title,
-    required this.cefrLevel,
-    required this.status,
-    required this.language,
-    required this.isEnabled,
-    required this.onLock,
-    required this.onUnlock,
-    required this.onEditStatus,
+  const _EditStatusButton({
+    required this.onStatusSelected,
+    required this.nativeLanguage,
   });
-
-  Color _cefrColor(CEFR level) {
-    switch (level) {
-      case CEFR.A1:
-        return Colors.lightGreen;
-      case CEFR.A2:
-        return const Color.fromARGB(255, 111, 161, 54);
-      case CEFR.B1:
-        return Colors.blue;
-      case CEFR.B2:
-        return Colors.indigo;
-      case CEFR.C1:
-        return Colors.orange;
-      case CEFR.C2:
-        return Colors.red;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 12),
-            child: Text(
-              cefrLevel.name,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: _cefrColor(cefrLevel),
-                fontSize: 20,
-              ),
-            ),
-          ),
+    return IconButton(
+      icon: const Icon(Icons.edit),
+      onPressed: () => _handlePress(context),
+    );
+  }
 
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        status.description(language),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      InkWell(
-                        onTap: () => onEditStatus(status),
-                        child: const Icon(
-                          Icons.edit,
-                          size: 14,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          IconButton(
-            icon: Icon(
-              isEnabled ? Icons.visibility : Icons.visibility_off,
-            ),
-            onPressed: isEnabled ? onLock : onUnlock,
-          ),
-          const SizedBox(width: 8),
-        ],
+  Future<void> _handlePress(BuildContext context) async {
+    final selectedStatus = await showDialog<TopicLearningStatus>(
+      context: context,
+      builder: (context) => SelectStatusDialog(
+        statuses: TopicLearningStatus.values,
+        nativeLanguage: nativeLanguage,
       ),
     );
+
+    if (selectedStatus != null) {
+      onStatusSelected(selectedStatus);
+    }
+  }
+}
+
+class _ChangeLevelButton extends StatelessWidget {
+  final Function(CEFR) onLevelSelected;
+
+  const _ChangeLevelButton({
+    required this.onLevelSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.change_circle),
+      onPressed: () => _handlePress(context),
+    );
+  }
+
+  Future<void> _handlePress(BuildContext context) async {
+    final selectedLevel = await showDialog<CEFR>(
+      context: context,
+      builder: (context) => const SelectLevelDialog(),
+    );
+
+    if (selectedLevel != null) {
+      onLevelSelected(selectedLevel);
+    }
   }
 }

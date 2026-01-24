@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/models/preload_language_related_data/english.dart';
+import 'package:vitalingu/models/preload_language_related_data/spanish.dart';
 import 'package:vitalingu/models/private_settings.dart';
 import 'package:vitalingu/repository/grammar_topics_repository.dart';
 
@@ -20,7 +21,6 @@ class LoadLanguageTopicsUseCase {
       
       _hasLoadedDataSignal.value = true;
       await _hasLoadedDataSignal.save(true);
-      print('Language topics loaded successfully.');
     }
   }
 }

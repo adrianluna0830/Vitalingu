@@ -23,8 +23,10 @@ import 'package:vitalingu/models/user_app_settings.dart' as _i70;
 import 'package:vitalingu/pages/home_page/home_settings_view_model.dart'
     as _i178;
 import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
-import 'package:vitalingu/repository/user_topic_progress_repository.dart'
-    as _i914;
+import 'package:vitalingu/repository/user_topic_data_repository.dart' as _i769;
+import 'package:vitalingu/services/user_topic_data_service.dart' as _i909;
+import 'package:vitalingu/usecases/get_grammar_topic_from_user_topic_data_usecase.dart'
+    as _i769;
 import 'package:vitalingu/usecases/load_language_topics_usecase.dart' as _i71;
 import 'package:vitalingu/view_models/home_topics_view_model.dart' as _i668;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
@@ -58,14 +60,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i700.GrammarTopicsRepository>(
       () => _i700.GrammarTopicsRepository(gh<_i310.Database>()),
     );
-    gh.singleton<_i914.UserTopicProgressRepository>(
-      () => _i914.UserTopicProgressRepository(gh<_i310.Database>()),
+    gh.singleton<_i769.UserTopicDataRepository>(
+      () => _i769.UserTopicDataRepository(gh<_i310.Database>()),
     );
     await gh.singletonAsync<_i70.GeminiApiKeySignal>(
       () => _i70.GeminiApiKeySignal.create(
         encryptedStore: gh<_i680.EncryptedSharedPreferencesStore>(),
       ),
       preResolve: true,
+    );
+    gh.factory<_i909.UserTopicDataService>(
+      () => _i909.UserTopicDataService(
+        gh<_i769.UserTopicDataRepository>(),
+        gh<_i700.GrammarTopicsRepository>(),
+      ),
     );
     await gh.singletonAsync<_i806.HasLoadedDataSignal>(
       () => _i806.HasLoadedDataSignal.create(
@@ -107,6 +115,11 @@ extension GetItInjectableX on _i174.GetIt {
         targetLanguageSignal: gh<_i70.TargetLanguageSignal>(),
       ),
     );
+    gh.singleton<_i769.GetGrammarTopicFromUserTopicDataUseCase>(
+      () => _i769.GetGrammarTopicFromUserTopicDataUseCase(
+        gh<_i700.GrammarTopicsRepository>(),
+      ),
+    );
     gh.factory<_i1048.StartupLevelConfigureViewModel>(
       () => _i1048.StartupLevelConfigureViewModel(
         gh<_i641.AppRouter>(),
@@ -143,12 +156,6 @@ extension GetItInjectableX on _i174.GetIt {
         targetLanguage: gh<_i70.TargetLanguageSignal>(),
       ),
     );
-    gh.factory<_i668.HomeTopicsViewModel>(
-      () => _i668.HomeTopicsViewModel(
-        grammarTopicsRepository: gh<_i700.GrammarTopicsRepository>(),
-        targetLanguage: gh<_i70.TargetLanguageSignal>(),
-      ),
-    );
     gh.factory<_i731.StartupTargetLanguageViewModel>(
       () => _i731.StartupTargetLanguageViewModel(
         gh<_i70.TargetLanguageSignal>(),
@@ -167,6 +174,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i75.StartupNativeLanguageViewModel(
         gh<_i70.NativeLanguageSignal>(),
         gh<_i641.AppRouter>(),
+      ),
+    );
+    gh.factory<_i668.HomeTopicsViewModel>(
+      () => _i668.HomeTopicsViewModel(
+        gh<_i70.NativeLanguageSignal>(),
+        gh<_i70.TargetLanguageSignal>(),
+        gh<_i909.UserTopicDataService>(),
       ),
     );
     return this;
