@@ -1,9 +1,31 @@
 import 'package:vitalingu/models/language/language_enum.dart';
+
 class TopicTranslation {
-  int id = 0;
+  int? id;
   String translation;
   Language translationLanguage;
-  int topicId;
+  String topicCode;
 
-  TopicTranslation({required this.topicId, required this.translationLanguage, required this.translation}); 
+  TopicTranslation(
+      {this.id,
+      required this.topicCode,
+      required this.translationLanguage,
+      required this.translation});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'topicCode': topicCode,
+      'translationLanguage': translationLanguage.name,
+      'translation': translation,
+    };
+  }
+
+  factory TopicTranslation.fromJson(Map<String, dynamic> json, int id) {
+    return TopicTranslation(
+      id: id,
+      topicCode: json['topicCode'],
+      translationLanguage: Language.values.byName(json['translationLanguage']),
+      translation: json['translation'],
+    );
+  }
 }

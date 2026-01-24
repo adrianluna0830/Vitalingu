@@ -23,6 +23,8 @@ import 'package:vitalingu/models/user_app_settings.dart' as _i70;
 import 'package:vitalingu/pages/home_page/home_settings_view_model.dart'
     as _i178;
 import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
+import 'package:vitalingu/repository/topic_translations_repository.dart'
+    as _i992;
 import 'package:vitalingu/repository/user_topic_data_repository.dart' as _i769;
 import 'package:vitalingu/services/user_topic_data_service.dart' as _i909;
 import 'package:vitalingu/usecases/get_grammar_topic_from_user_topic_data_usecase.dart'
@@ -72,6 +74,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i909.UserTopicDataService>(
       () => _i909.UserTopicDataService(
         gh<_i769.UserTopicDataRepository>(),
+        gh<_i700.GrammarTopicsRepository>(),
+      ),
+    );
+    gh.singleton<_i992.TopicTranslationsRepository>(
+      () => _i992.TopicTranslationsRepository(
+        gh<_i310.Database>(),
         gh<_i700.GrammarTopicsRepository>(),
       ),
     );

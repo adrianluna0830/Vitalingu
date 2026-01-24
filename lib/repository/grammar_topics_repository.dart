@@ -96,6 +96,7 @@ class GrammarTopicsRepository {
             filter: Filter.and([
           Filter.equals('language', topic.language.name),
           Filter.or([
+            Filter.equals('topicCode', topic.topicCode),
             Filter.equals('topicLearningOrder', topic.topicLearningOrder),
             Filter.equals('topicTitle', topic.topicTitle)
           ])
