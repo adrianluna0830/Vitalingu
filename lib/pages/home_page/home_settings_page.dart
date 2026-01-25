@@ -2,10 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language/cefr_enum.dart';
 import 'package:vitalingu/models/language/language_enum.dart';
-import 'package:vitalingu/models/language_specific_settings.dart';
 import 'package:vitalingu/pages/home_page/home_settings_view_model.dart';
+import 'package:vitalingu/widgets/text_field_and_validator.dart';
 
 @RoutePage()
 class HomeSettingsPage extends StatefulWidget {
@@ -38,7 +37,12 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
 
               viewModel.updateTargetLanguage(language);
             },
-          ),        
+          ),
+          TextFieldAndValidator(onChanged: (value) {
+            viewModel.updateGeminiApiKey(value);
+          }, initialValue: viewModel.geminiApiKeySignal.watch(context),errorMessage: null,),
+
+
         
         ],
       ),
@@ -70,32 +74,6 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
   }
 }
 
-class CEFRDropdown extends StatelessWidget {
-  final CEFR selectedCEFR;
-  final List<CEFR> cefrs;
-  final Function(CEFR) onChanged;
-  const CEFRDropdown({
-    super.key,
-    required this.selectedCEFR,
-    required this.cefrs,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton(
-      items: cefrs.map((cefr) {
-        return DropdownMenuItem(value: cefr, child: Text(cefr.name));
-      }).toList(),
-      onChanged: (CEFR? newValue) {
-        if (newValue != null) {
-          onChanged(newValue);
-        }
-      },
-      value: selectedCEFR,
-    );
-  }
-}
 
 
 class LanguageDropdown extends StatelessWidget {

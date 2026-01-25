@@ -5,8 +5,10 @@ import 'package:vitalingu/models/user_app_settings.dart';
 class HomeSettingsViewModel {
   final NativeLanguageSignal nativeLanguageSignal;
   final TargetLanguageSignal targetLanguageSignal;
+  final GeminiApiKeySignal geminiApiKeySignal;
 
-  HomeSettingsViewModel({required this.nativeLanguageSignal, required this.targetLanguageSignal});
+  HomeSettingsViewModel(this.nativeLanguageSignal, this.targetLanguageSignal, this.geminiApiKeySignal);
+
 
   void updateNativeLanguage(Language language) {
     nativeLanguageSignal.value = language;
@@ -15,5 +17,9 @@ class HomeSettingsViewModel {
 
   void updateTargetLanguage(Language language) {
     targetLanguageSignal.value = language;
+  }
+
+  void updateGeminiApiKey(String apiKey) {
+    geminiApiKeySignal.value = apiKey;
   }
 }
