@@ -9,12 +9,15 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:sembast/sembast.dart' as _i310;
 import 'package:sembast/sembast_io.dart' as _i156;
 import 'package:sembast/utils/database_utils.dart' as _i854;
 import 'package:vitalingu/app_router.dart' as _i641;
+import 'package:vitalingu/models/dio_module.dart' as _i31;
+import 'package:vitalingu/models/gemini_ai_client.dart' as _i25;
 import 'package:vitalingu/models/language_specific_settings.dart' as _i582;
 import 'package:vitalingu/models/private_settings.dart' as _i806;
 import 'package:vitalingu/models/sembast_module.dart' as _i228;
@@ -42,6 +45,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final sembastModule = _$SembastModule();
+    final dioModule = _$DioModule();
     await gh.factoryAsync<_i156.Database>(
       () => sembastModule.database,
       preResolve: true,
@@ -57,6 +61,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i700.GrammarTopicsRepository.create(),
       preResolve: true,
     );
+    gh.lazySingleton<_i361.Dio>(() => dioModule.dio);
     gh.singleton<_i769.UserTopicDataRepository>(
       () => _i769.UserTopicDataRepository(gh<_i310.Database>()),
     );
@@ -65,6 +70,9 @@ extension GetItInjectableX on _i174.GetIt {
         encryptedStore: gh<_i680.EncryptedSharedPreferencesStore>(),
       ),
       preResolve: true,
+    );
+    gh.singleton<_i25.GeminiAiClient>(
+      () => _i25.GeminiAiClient(gh<_i361.Dio>(), gh<_i70.GeminiApiKeySignal>()),
     );
     await gh.singletonAsync<_i806.HasLoadedDataSignal>(
       () => _i806.HasLoadedDataSignal.create(
@@ -106,12 +114,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i70.TargetLanguageSignal>(),
         gh<_i700.GrammarTopicsRepository>(),
         gh<_i769.UserTopicDataRepository>(),
-      ),
-    );
-    gh.factory<_i178.HomeSettingsViewModel>(
-      () => _i178.HomeSettingsViewModel(
-        nativeLanguageSignal: gh<_i70.NativeLanguageSignal>(),
-        targetLanguageSignal: gh<_i70.TargetLanguageSignal>(),
       ),
     );
     gh.factory<_i1048.StartupLevelConfigureViewModel>(
@@ -163,8 +165,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i641.AppRouter>(),
       ),
     );
+    gh.factory<_i178.HomeSettingsViewModel>(
+      () => _i178.HomeSettingsViewModel(
+        gh<_i70.NativeLanguageSignal>(),
+        gh<_i70.TargetLanguageSignal>(),
+        gh<_i70.GeminiApiKeySignal>(),
+      ),
+    );
     return this;
   }
 }
 
 class _$SembastModule extends _i228.SembastModule {}
+
+class _$DioModule extends _i31.DioModule {}
