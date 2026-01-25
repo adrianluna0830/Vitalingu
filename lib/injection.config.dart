@@ -23,10 +23,9 @@ import 'package:vitalingu/models/private_settings.dart' as _i806;
 import 'package:vitalingu/models/sembast_module.dart' as _i228;
 import 'package:vitalingu/models/shared_preferences_store.dart' as _i680;
 import 'package:vitalingu/models/user_app_settings.dart' as _i70;
-import 'package:vitalingu/pages/home_page/home_settings_view_model.dart'
-    as _i178;
 import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
 import 'package:vitalingu/repository/user_topic_data_repository.dart' as _i769;
+import 'package:vitalingu/view_models/home_settings_view_model.dart' as _i764;
 import 'package:vitalingu/view_models/home_topics_view_model.dart' as _i668;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
     as _i377;
@@ -165,8 +164,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i641.AppRouter>(),
       ),
     );
-    gh.factory<_i178.HomeSettingsViewModel>(
-      () => _i178.HomeSettingsViewModel(
+    gh.factory<_i764.HomeSettingsViewModel>(
+      () => _i764.HomeSettingsViewModel(
         gh<_i70.NativeLanguageSignal>(),
         gh<_i70.TargetLanguageSignal>(),
         gh<_i70.GeminiApiKeySignal>(),
