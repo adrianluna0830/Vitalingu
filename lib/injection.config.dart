@@ -24,9 +24,10 @@ import 'package:vitalingu/models/private_settings.dart' as _i806;
 import 'package:vitalingu/models/sembast_module.dart' as _i228;
 import 'package:vitalingu/models/shared_preferences_store.dart' as _i680;
 import 'package:vitalingu/models/user_app_settings.dart' as _i70;
-import 'package:vitalingu/pages/chat_page.dart' as _i312;
 import 'package:vitalingu/repository/learning_units_repository.dart' as _i438;
 import 'package:vitalingu/repository/user_unit_data_repository.dart' as _i186;
+import 'package:vitalingu/services/ai_client_chat.dart' as _i547;
+import 'package:vitalingu/view_models/chat_view_model.dart' as _i729;
 import 'package:vitalingu/view_models/home_settings_view_model.dart' as _i764;
 import 'package:vitalingu/view_models/home_units_view_model.dart' as _i342;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
@@ -74,6 +75,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i715.AiClient>(
       () => _i25.GeminiAiClient(gh<_i361.Dio>(), gh<_i70.GeminiApiKeySignal>()),
+    );
+    gh.factoryParam<_i547.AiClientChat, String?, dynamic>(
+      (systemInstruction, _) =>
+          _i547.AiClientChat.create(gh<_i715.AiClient>(), systemInstruction),
     );
     await gh.singletonAsync<_i806.HasLoadedDataSignal>(
       () => _i806.HasLoadedDataSignal.create(
@@ -174,8 +179,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i70.GeminiApiKeySignal>(),
       ),
     );
-    gh.factory<_i312.ChatViewModel>(
-      () => _i312.ChatViewModel(
+    gh.factory<_i729.ChatViewModel>(
+      () => _i729.ChatViewModel(
         gh<_i715.AiClient>(),
         gh<_i70.NativeLanguageSignal>(),
         gh<_i70.TargetLanguageSignal>(),

@@ -81,7 +81,6 @@ class GeminiAiClient implements AiClient {
         ),
         data: {"contents": contents},
       );
-
       final responseText = _parseResponse(response);
       conversation.addModelMessage(responseText);
       return conversation;

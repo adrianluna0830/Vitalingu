@@ -1,24 +1,31 @@
-
-
 import 'package:vitalingu/models/chat_message.dart';
 
 class ChatConversation {
-  final List<ChatMessage> _messages = [];
+  final List<ChatMessage> _messages;
 
+  ChatConversation([List<ChatMessage>? messages]) 
+      : _messages = messages != null ? List.from(messages) : [];
 
-
-  void addModelMessage(String messageContent) {
+  ChatConversation addModelMessage(String messageContent) {
     _messages.add(ChatMessage(
       content: messageContent,
       role: 'model',
+      isUserMessage: false,
     ));
+    return this;
   }
 
-  void addUserMessage(String messageContent) {
+  ChatConversation addUserMessage(String messageContent) {
     _messages.add(ChatMessage(
       content: messageContent,
       role: 'user',
+      isUserMessage: true,
     ));
+    return this;
+  }
+
+  ChatConversation copyWith() {
+    return ChatConversation(_messages);
   }
 
   List<ChatMessage> get allMessages => _messages;
