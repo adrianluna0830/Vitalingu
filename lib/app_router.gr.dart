@@ -59,17 +59,17 @@ class HomeTabRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [HomeTopicsPage]
-class HomeTopicsRoute extends PageRouteInfo<void> {
-  const HomeTopicsRoute({List<PageRouteInfo>? children})
-    : super(HomeTopicsRoute.name, initialChildren: children);
+/// [HomeUnitsPage]
+class HomeUnitsRoute extends PageRouteInfo<void> {
+  const HomeUnitsRoute({List<PageRouteInfo>? children})
+    : super(HomeUnitsRoute.name, initialChildren: children);
 
-  static const String name = 'HomeTopicsRoute';
+  static const String name = 'HomeUnitsRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const HomeTopicsPage();
+      return const HomeUnitsPage();
     },
   );
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TopicItemWidget extends StatelessWidget {
+class UnitItemWidget extends StatelessWidget {
   final bool isCompleted;
   final bool isSelectable;
   final bool isSelected;
@@ -12,7 +12,7 @@ class TopicItemWidget extends StatelessWidget {
   final VoidCallback onLongTap;
   final Color levelColor;
 
-  const TopicItemWidget({
+  const UnitItemWidget({
     super.key,
     required this.isCompleted,
     required this.isSelectable,

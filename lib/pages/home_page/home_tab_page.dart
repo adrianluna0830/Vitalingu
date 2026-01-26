@@ -11,7 +11,7 @@ class HomeTabPage extends StatelessWidget {
     return AutoTabsScaffold(
       routes: [
         HomeRoute(),
-        HomeTopicsRoute(),
+        HomeUnitsRoute(),
         HomeWordsRoute(),
         HomeSettingsRoute(),
       ],
@@ -27,7 +27,7 @@ class HomeTabPage extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.topic,color: Colors.black,),
-              label: 'Topics',
+              label: 'Units',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.book,color: Colors.black,),

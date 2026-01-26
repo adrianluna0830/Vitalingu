@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_core.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/grammar_topic.dart';
-import 'package:vitalingu/models/language/topic_learning_status_enum.dart';
-import 'package:vitalingu/models/language/user_data/user_topic_data.dart';
-import 'package:vitalingu/models/topic_item_data.dart';
-import 'package:vitalingu/models/topic_item_view_dto.dart';
+import 'package:vitalingu/models/language/learning_unit.dart';
+import 'package:vitalingu/models/language/unit_learning_status_enum.dart';
+import 'package:vitalingu/models/language/user_data/user_unit_data.dart';
+import 'package:vitalingu/models/unit_item_data.dart';
+import 'package:vitalingu/models/unit_item_view_dto.dart';
 import 'package:vitalingu/models/user_app_settings.dart';
-import 'package:vitalingu/repository/grammar_topics_repository.dart';
-import 'package:vitalingu/repository/user_topic_data_repository.dart';
+import 'package:vitalingu/repository/learning_units_repository.dart';
+import 'package:vitalingu/repository/user_unit_data_repository.dart';
 
 @injectable
-class HomeTopicsViewModel {
+class HomeUnitsViewModel {
   final NativeLanguageSignal nativeLanguageSignal;
   final TargetLanguageSignal targetLanguageSignal;
-  final GrammarTopicsRepository _grammarTopicsRepository;
-  final UserTopicDataRepository _userTopicDataRepository;
+  final LearningUnitsRepository _learningUnitsRepository;
+  final UserUnitDataRepository _userUnitDataRepository;
 
-  HomeTopicsViewModel(
+  HomeUnitsViewModel(
     this.nativeLanguageSignal,
     this.targetLanguageSignal,
-    this._grammarTopicsRepository,
-    this._userTopicDataRepository,
+    this._learningUnitsRepository,
+    this._userUnitDataRepository,
   ) {
     _loadTopicCards();
     _registerSelectableEffect();
@@ -31,15 +31,15 @@ class HomeTopicsViewModel {
 
   final isSelectable = signal<bool>(false);
 
-  final ListSignal<TopicItemData> _topicsSignal = listSignal<TopicItemData>([]);
+  final ListSignal<UnitItemData> _topicsSignal = listSignal<UnitItemData>([]);
 
   late final convertedTopics = computed(() {
     return _topicsSignal.value.map((topic) {
-      return TopicItemViewDTO(
+      return UnitItemViewDTO(
         topic.title,
         topic.level.name,
         topic.status.description(nativeLanguageSignal.value),
-        topic.status == TopicLearningStatus.mastered,
+        topic.status == UnitLearningStatus.mastered,
         topic.isSelected,
         _getColorForCefr(topic.level),
       );
@@ -47,13 +47,13 @@ class HomeTopicsViewModel {
   });
 
   late final statusNotStartedText = computed(() =>
-      TopicLearningStatus.notStarted.description(nativeLanguageSignal.value));
+      UnitLearningStatus.notStarted.description(nativeLanguageSignal.value));
   late final statusLearningText = computed(() =>
-      TopicLearningStatus.learning.description(nativeLanguageSignal.value));
+      UnitLearningStatus.learning.description(nativeLanguageSignal.value));
   late final statusReviewingText = computed(() =>
-      TopicLearningStatus.reviewing.description(nativeLanguageSignal.value));
+      UnitLearningStatus.reviewing.description(nativeLanguageSignal.value));
   late final statusMasteredText = computed(() =>
-      TopicLearningStatus.mastered.description(nativeLanguageSignal.value));
+      UnitLearningStatus.mastered.description(nativeLanguageSignal.value));
 
   EffectCleanup? _selectableEffect;
   EffectCleanup? _targetLanguageEffect;
@@ -66,15 +66,15 @@ class HomeTopicsViewModel {
   void updateStatus(int index) async {
     final topic = _topicsSignal[index];
     final newStatus = _getNextStatus(topic.status);
-    await _updateTopicStatus(topic.topicCode, newStatus);
+    await _updateTopicStatus(topic.unitCode, newStatus);
     _topicsSignal[index] = topic.copyWith(status: newStatus);
   }
 
   Future<void> _updateTopicStatus(
-      String topicCode, TopicLearningStatus newStatus) async {
-    final userTopicData = await _userTopicDataRepository.getOrCreate(topicCode);
-    userTopicData.topicLearningStatus = newStatus;
-    await _userTopicDataRepository.update(userTopicData);
+      String unitCode, UnitLearningStatus newStatus) async {
+    final userUnitData = await _userUnitDataRepository.getOrCreate(unitCode);
+    userUnitData.topicLearningStatus = newStatus;
+    await _userUnitDataRepository.update(userUnitData);
   }
 
   void onToggleSelect(int index) {
@@ -89,11 +89,11 @@ class HomeTopicsViewModel {
       final topic = _topicsSignal[index];
       _topicsSignal[index] = topic.copyWith(isSelected: !topic.isSelected);
     } else {
-      _explainTopic(_topicsSignal[index].topicCode);
+      _explainTopic(_topicsSignal[index].unitCode);
     }
   }
 
-  void updateStatusForSelectedTopics(TopicLearningStatus newStatus) async {
+  void updateStatusForSelectedTopics(UnitLearningStatus newStatus) async {
     final selectedTopics =
         _topicsSignal.where((topic) => topic.isSelected).toList();
     if (selectedTopics.isEmpty) {
@@ -102,9 +102,9 @@ class HomeTopicsViewModel {
     }
 
     for (final topic in selectedTopics) {
-      await _updateTopicStatus(topic.topicCode, newStatus);
+      await _updateTopicStatus(topic.unitCode, newStatus);
       final index =
-          _topicsSignal.indexWhere((t) => t.topicCode == topic.topicCode);
+          _topicsSignal.indexWhere((t) => t.unitCode == topic.unitCode);
       if (index != -1) {
         _topicsSignal[index] = _topicsSignal[index].copyWith(status: newStatus);
       }
@@ -119,22 +119,22 @@ class HomeTopicsViewModel {
 
       if (topic.level.level <= selectedLevel.level) {
         await _updateTopicStatus(
-          topic.topicCode,
-          TopicLearningStatus.mastered,
+          topic.unitCode,
+          UnitLearningStatus.mastered,
         );
         _topicsSignal[i] = topic.copyWith(
-          status: TopicLearningStatus.mastered,
+          status: UnitLearningStatus.mastered,
         );
       }
     }
   }
 
-  void _explainTopic(String topicCode) {
+  void _explainTopic(String unitCode) {
     // TODO: Implement explanation navigation
   }
 
-  TopicLearningStatus _getNextStatus(TopicLearningStatus currentStatus) {
-    final allStatuses = TopicLearningStatus.values;
+  UnitLearningStatus _getNextStatus(UnitLearningStatus currentStatus) {
+    final allStatuses = UnitLearningStatus.values;
     final currentIndex = allStatuses.indexOf(currentStatus);
     final nextIndex = (currentIndex + 1) % allStatuses.length;
     return allStatuses[nextIndex];
@@ -183,36 +183,36 @@ class HomeTopicsViewModel {
     final targetLang = targetLanguageSignal.value;
     final nativeLang = nativeLanguageSignal.value;
 
-    final grammarTopics = _grammarTopicsRepository.getAll(targetLang);
-    final topicCodes = grammarTopics.map((e) => e.topicCode).toList();
+    final learningUnits = _learningUnitsRepository.getAll(targetLang);
+    final unitCodes = learningUnits.map((e) => e.unitCode).toList();
 
-    grammarTopics.sort((a, b) => a.topicLearningOrder.compareTo(b.topicLearningOrder));
+    learningUnits.sort((a, b) => a.unitLearningOrder.compareTo(b.unitLearningOrder));
 
-    final userTopicDataList =
-        await _userTopicDataRepository.getOrCreateMany(topicCodes);
-    final userTopicDataMap = {
-      for (var item in userTopicDataList) item.topicCode: item
+    final userUnitDataList =
+        await _userUnitDataRepository.getOrCreateMany(unitCodes);
+    final userUnitDataMap = {
+      for (var item in userUnitDataList) item.unitCode: item
     };
 
     _topicsSignal.clear();
-    final newTopics = <TopicItemData>[];
+    final newTopics = <UnitItemData>[];
 
-    for (var grammarTopic in grammarTopics) {
-      final userTopicData = userTopicDataMap[grammarTopic.topicCode] ??
-          UserTopicData(topicCode: grammarTopic.topicCode);
+    for (var grammarTopic in learningUnits) {
+      final userUnitData = userUnitDataMap[grammarTopic.unitCode] ??
+          UserUnitData(unitCode: grammarTopic.unitCode);
 
       final title = grammarTopic.translations[nativeLang];
       if (title == null) {
         throw Exception(
-            'Missing translation for topic ${grammarTopic.topicCode} in language ${nativeLang.name}');
+            'Missing translation for topic ${grammarTopic.unitCode} in language ${nativeLang.name}');
       }
 
       newTopics.add(
-        TopicItemData(
+        UnitItemData(
           title,
           grammarTopic.cefrLevel,
-          userTopicData.topicLearningStatus,
-          grammarTopic.topicCode,
+          userUnitData.topicLearningStatus,
+          grammarTopic.unitCode,
           false,
         ),
       );

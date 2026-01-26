@@ -1,23 +1,23 @@
 import 'package:injectable/injectable.dart';
 import 'package:sembast/sembast.dart';
-import 'package:vitalingu/models/language/user_data/user_topic_data.dart';
+import 'package:vitalingu/models/language/user_data/user_unit_data.dart';
 
 @singleton
-class UserTopicDataRepository {
+class UserUnitDataRepository {
   final Database _db;
   final _store = intMapStoreFactory.store('user_topic_data');
 
-  UserTopicDataRepository(this._db);
+  UserUnitDataRepository(this._db);
 
-  Future<UserTopicData> getOrCreate(String topicCode) async {
+  Future<UserUnitData> getOrCreate(String unitCode) async {
     return await _db.transaction((txn) async {
-      final finder = Finder(filter: Filter.equals('topicCode', topicCode));
+      final finder = Finder(filter: Filter.equals('unitCode', unitCode));
       var existing = await _store.findFirst(txn, finder: finder);
 
       if (existing != null) {
-        return UserTopicData.fromJson(existing.value, existing.key);
+        return UserUnitData.fromJson(existing.value, existing.key);
       } else {
-        final newProgress = UserTopicData(topicCode: topicCode);
+        final newProgress = UserUnitData(unitCode: unitCode);
         final newKey = await _store.add(txn, newProgress.toJson());
         newProgress.id = newKey;
         return newProgress;
@@ -25,15 +25,15 @@ class UserTopicDataRepository {
     });
   }
 
-  Future<UserTopicData?> get(int id) async {
+  Future<UserUnitData?> get(int id) async {
     final record = await _store.record(id).get(_db);
     if (record != null) {
-      return UserTopicData.fromJson(record, id);
+      return UserUnitData.fromJson(record, id);
     }
     return null;
   }
 
-  Future<UserTopicData?> update(UserTopicData progress) async {
+  Future<UserUnitData?> update(UserUnitData progress) async {
     if (progress.id == null) {
       return null;
     }
@@ -42,29 +42,29 @@ class UserTopicDataRepository {
         await _store.record(progress.id!).update(_db, progress.toJson());
 
     if (updatedRecord != null) {
-      return UserTopicData.fromJson(updatedRecord, progress.id!);
+      return UserUnitData.fromJson(updatedRecord, progress.id!);
     } else {
       return null;
     }
   }
 
-  Future<List<UserTopicData>> getOrCreateMany(List<String> topicCodes) async {
-    final finder = Finder(filter: Filter.inList('topicCode', topicCodes));
+  Future<List<UserUnitData>> getOrCreateMany(List<String> unitCodes) async {
+    final finder = Finder(filter: Filter.inList('unitCode', unitCodes));
     final existingSnapshots = await _store.find(_db, finder: finder);
 
-    final existingProgressMap = <String, UserTopicData>{};
+    final existingProgressMap = <String, UserUnitData>{};
     for (final snapshot in existingSnapshots) {
-      final progress = UserTopicData.fromJson(snapshot.value, snapshot.key);
-      existingProgressMap[progress.topicCode] = progress;
+      final progress = UserUnitData.fromJson(snapshot.value, snapshot.key);
+      existingProgressMap[progress.unitCode] = progress;
     }
 
-    final results = <UserTopicData>[];
+    final results = <UserUnitData>[];
 
-    for (final topicCode in topicCodes) {
-      if (existingProgressMap.containsKey(topicCode)) {
-        results.add(existingProgressMap[topicCode]!);
+    for (final unitCode in unitCodes) {
+      if (existingProgressMap.containsKey(unitCode)) {
+        results.add(existingProgressMap[unitCode]!);
       } else {
-        final newProgress = UserTopicData(topicCode: topicCode);
+        final newProgress = UserUnitData(unitCode: unitCode);
         final newKey = await _store.add(_db, newProgress.toJson());
         newProgress.id = newKey;
         results.add(newProgress);
@@ -73,15 +73,15 @@ class UserTopicDataRepository {
     return results;
   }
 
-  Future<List<UserTopicData>?> updateMany(
-      List<UserTopicData> progresses) async {
+  Future<List<UserUnitData>?> updateMany(
+      List<UserUnitData> progresses) async {
     try {
       final updatedList = await _db.transaction((txn) async {
-        final List<UserTopicData> result = [];
+        final List<UserUnitData> result = [];
         for (final progress in progresses) {
           if (progress.id == null) {
             throw ArgumentError(
-                'One of the UserTopicData objects has a null ID.');
+                'One of the UserUnitData objects has a null ID.');
           }
           await _store.record(progress.id!).update(txn, progress.toJson());
           result.add(progress);

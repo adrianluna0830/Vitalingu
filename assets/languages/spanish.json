@@ -1,7 +1,7 @@
 [
   {
-    "topicCode": "spa_ser_estar",
-    "topicLearningOrder": 1,
+    "unitCode": "spa_ser_estar",
+    "unitLearningOrder": 1,
     "cefrLevel": "A1",
     "language": "Spanish",
     "difficulty": "easy",
@@ -11,8 +11,8 @@
     }
   },
   {
-    "topicCode": "spa_genero_numero",
-    "topicLearningOrder": 2,
+    "unitCode": "spa_genero_numero",
+    "unitLearningOrder": 2,
     "cefrLevel": "A1",
     "language": "Spanish",
     "difficulty": "easy",
@@ -22,8 +22,8 @@
     }
   },
   {
-    "topicCode": "spa_articulos",
-    "topicLearningOrder": 3,
+    "unitCode": "spa_articulos",
+    "unitLearningOrder": 3,
     "cefrLevel": "A1",
     "language": "Spanish",
     "difficulty": "easy",
@@ -33,8 +33,8 @@
     }
   },
   {
-    "topicCode": "spa_presente_indicativo",
-    "topicLearningOrder": 4,
+    "unitCode": "spa_presente_indicativo",
+    "unitLearningOrder": 4,
     "cefrLevel": "A1",
     "language": "Spanish",
     "difficulty": "easy",
@@ -44,8 +44,8 @@
     }
   },
   {
-    "topicCode": "spa_adjetivos_posesivos",
-    "topicLearningOrder": 5,
+    "unitCode": "spa_adjetivos_posesivos",
+    "unitLearningOrder": 5,
     "cefrLevel": "A1",
     "language": "Spanish",
     "difficulty": "easy",
@@ -55,8 +55,8 @@
     }
   },
   {
-    "topicCode": "spa_tener_idioms",
-    "topicLearningOrder": 6,
+    "unitCode": "spa_tener_idioms",
+    "unitLearningOrder": 6,
     "cefrLevel": "A1",
     "language": "Spanish",
     "difficulty": "medium",
@@ -66,8 +66,8 @@
     }
   },
   {
-    "topicCode": "spa_ir_a_infinitivo",
-    "topicLearningOrder": 7,
+    "unitCode": "spa_ir_a_infinitivo",
+    "unitLearningOrder": 7,
     "cefrLevel": "A1",
     "language": "Spanish",
     "difficulty": "easy",
@@ -77,8 +77,8 @@
     }
   },
   {
-    "topicCode": "spa_reflexivos",
-    "topicLearningOrder": 8,
+    "unitCode": "spa_reflexivos",
+    "unitLearningOrder": 8,
     "cefrLevel": "A2",
     "language": "Spanish",
     "difficulty": "medium",
@@ -88,8 +88,8 @@
     }
   },
   {
-    "topicCode": "spa_preterito_perfecto",
-    "topicLearningOrder": 9,
+    "unitCode": "spa_preterito_perfecto",
+    "unitLearningOrder": 9,
     "cefrLevel": "A2",
     "language": "Spanish",
     "difficulty": "medium",
@@ -99,8 +99,8 @@
     }
   },
   {
-    "topicCode": "spa_preterito_indefinido",
-    "topicLearningOrder": 10,
+    "unitCode": "spa_preterito_indefinido",
+    "unitLearningOrder": 10,
     "cefrLevel": "A2",
     "language": "Spanish",
     "difficulty": "hard",
@@ -110,8 +110,8 @@
     }
   },
   {
-    "topicCode": "spa_preterito_imperfecto",
-    "topicLearningOrder": 11,
+    "unitCode": "spa_preterito_imperfecto",
+    "unitLearningOrder": 11,
     "cefrLevel": "A2",
     "language": "Spanish",
     "difficulty": "medium",
@@ -121,8 +121,8 @@
     }
   },
   {
-    "topicCode": "spa_por_para",
-    "topicLearningOrder": 12,
+    "unitCode": "spa_por_para",
+    "unitLearningOrder": 12,
     "cefrLevel": "A2",
     "language": "Spanish",
     "difficulty": "hard",
@@ -132,8 +132,8 @@
     }
   },
   {
-    "topicCode": "spa_obj_directo_indirecto",
-    "topicLearningOrder": 13,
+    "unitCode": "spa_obj_directo_indirecto",
+    "unitLearningOrder": 13,
     "cefrLevel": "A2",
     "language": "Spanish",
     "difficulty": "hard",
@@ -143,8 +143,8 @@
     }
   },
   {
-    "topicCode": "spa_futuro_simple",
-    "topicLearningOrder": 14,
+    "unitCode": "spa_futuro_simple",
+    "unitLearningOrder": 14,
     "cefrLevel": "B1",
     "language": "Spanish",
     "difficulty": "easy",
@@ -154,8 +154,8 @@
     }
   },
   {
-    "topicCode": "spa_imperativo",
-    "topicLearningOrder": 15,
+    "unitCode": "spa_imperativo",
+    "unitLearningOrder": 15,
     "cefrLevel": "B1",
     "language": "Spanish",
     "difficulty": "medium",
@@ -165,8 +165,8 @@
     }
   },
   {
-    "topicCode": "spa_subjuntivo_presente",
-    "topicLearningOrder": 16,
+    "unitCode": "spa_subjuntivo_presente",
+    "unitLearningOrder": 16,
     "cefrLevel": "B1",
     "language": "Spanish",
     "difficulty": "hard",
@@ -176,8 +176,8 @@
     }
   },
   {
-    "topicCode": "spa_condicional_simple",
-    "topicLearningOrder": 17,
+    "unitCode": "spa_condicional_simple",
+    "unitLearningOrder": 17,
     "cefrLevel": "B1",
     "language": "Spanish",
     "difficulty": "easy",
@@ -187,8 +187,8 @@
     }
   },
   {
-    "topicCode": "spa_subjuntivo_imperfecto",
-    "topicLearningOrder": 18,
+    "unitCode": "spa_subjuntivo_imperfecto",
+    "unitLearningOrder": 18,
     "cefrLevel": "B2",
     "language": "Spanish",
     "difficulty": "hard",
@@ -198,8 +198,8 @@
     }
   },
   {
-    "topicCode": "spa_pluscuamperfecto",
-    "topicLearningOrder": 19,
+    "unitCode": "spa_pluscuamperfecto",
+    "unitLearningOrder": 19,
     "cefrLevel": "B2",
     "language": "Spanish",
     "difficulty": "medium",
@@ -209,8 +209,8 @@
     }
   },
   {
-    "topicCode": "spa_si_clauses",
-    "topicLearningOrder": 20,
+    "unitCode": "spa_si_clauses",
+    "unitLearningOrder": 20,
     "cefrLevel": "C1",
     "language": "Spanish",
     "difficulty": "hard",

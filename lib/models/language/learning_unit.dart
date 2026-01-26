@@ -1,28 +1,28 @@
 import 'package:vitalingu/models/language/cefr_enum.dart';
 import 'package:vitalingu/models/language/language_enum.dart';
-import 'package:vitalingu/models/language/topic_difficulty_enum.dart';
+import 'package:vitalingu/models/language/unit_difficulty_enum.dart';
 
-class GrammarTopic {
-  int topicLearningOrder;
+class LearningUnit {
+  int unitLearningOrder;
   CEFR cefrLevel;
   Language language;
-  String topicCode;
-  TopicDifficulty difficulty;
+  String unitCode;
+  UnitDifficulty difficulty;
   Map<Language, String> translations;
 
-  GrammarTopic({
-    required this.topicCode,
-    required this.topicLearningOrder,
+  LearningUnit({
+    required this.unitCode,
+    required this.unitLearningOrder,
     required this.cefrLevel,
     required this.language,
-    this.difficulty = TopicDifficulty.medium,
+    this.difficulty = UnitDifficulty.medium,
     required this.translations,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'topicCode': topicCode,
-      'topicLearningOrder': topicLearningOrder,
+      'unitCode': unitCode,
+      'unitLearningOrder': unitLearningOrder,
       'cefrLevel': cefrLevel.name,
       'language': language.name,
       'difficulty': difficulty.name,
@@ -31,7 +31,7 @@ class GrammarTopic {
     };
   }
 
-  factory GrammarTopic.fromJson(Map<String, dynamic> json) {
+  factory LearningUnit.fromJson(Map<String, dynamic> json) {
     var translationsMap = <Language, String>{};
     if (json['translations'] != null) {
       (json['translations'] as Map<String, dynamic>).forEach((key, value) {
@@ -42,14 +42,14 @@ class GrammarTopic {
       });
     }
 
-    return GrammarTopic(
-      topicCode: json['topicCode'] ?? '',
-      topicLearningOrder: json['topicLearningOrder'],
+    return LearningUnit(
+      unitCode: json['unitCode'] ?? '',
+      unitLearningOrder: json['unitLearningOrder'],
       cefrLevel: CEFR.values.byName(json['cefrLevel']),
       language: Language.values.byName(json['language']),
       difficulty: json['difficulty'] != null
-          ? TopicDifficulty.values.byName(json['difficulty'])
-          : TopicDifficulty.medium,
+          ? UnitDifficulty.values.byName(json['difficulty'])
+          : UnitDifficulty.medium,
       translations: translationsMap,
     );
   }

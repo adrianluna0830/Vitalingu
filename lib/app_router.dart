@@ -7,7 +7,7 @@ import 'package:vitalingu/pages/guards/has_configured_guard.dart';
 import 'package:vitalingu/pages/home_page/home_page.dart';
 import 'package:vitalingu/pages/home_page/home_settings_page.dart';
 import 'package:vitalingu/pages/home_page/home_tab_page.dart';
-import 'package:vitalingu/pages/home_page/home_topics_page.dart';
+import 'package:vitalingu/pages/home_page/home_units_page.dart';
 import 'package:vitalingu/pages/home_page/home_words_page.dart';
 import 'package:vitalingu/pages/startup_page/startup_introduction_page.dart';
 import 'package:vitalingu/pages/startup_page/startup_level_configure_page.dart';
@@ -32,7 +32,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: HomeTabRoute.page,initial: true, guards: [StartupCompletedGuard()], children: 
     [
       AutoRoute(page: HomeRoute.page),
-      AutoRoute(page: HomeTopicsRoute.page),
+      AutoRoute(page: HomeUnitsRoute.page),
       AutoRoute(page: HomeWordsRoute.page),
       AutoRoute(page: HomeSettingsRoute.page),
     ]),

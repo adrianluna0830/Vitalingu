@@ -2,18 +2,18 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/gen/assets.gen.dart';
-import 'package:vitalingu/models/language/grammar_topic.dart';
+import 'package:vitalingu/models/language/learning_unit.dart';
 import 'package:vitalingu/models/language/language_enum.dart';
 
 @singleton
-class GrammarTopicsRepository {
-  final Map<Language, List<GrammarTopic>> _topicsCache = {};
+class LearningUnitsRepository {
+  final Map<Language, List<LearningUnit>> _topicsCache = {};
 
-  GrammarTopicsRepository._();
+  LearningUnitsRepository._();
 
   @FactoryMethod(preResolve: true)
-  static Future<GrammarTopicsRepository> create() async {
-    final repository = GrammarTopicsRepository._();
+  static Future<LearningUnitsRepository> create() async {
+    final repository = LearningUnitsRepository._();
     await repository._preload();
     return repository;
   }
@@ -27,7 +27,7 @@ class GrammarTopicsRepository {
     try {
       final jsonString = await rootBundle.loadString(assetPath);
       final List<dynamic> jsonList = json.decode(jsonString);
-      final topics = jsonList.map((j) => GrammarTopic.fromJson(j)).toList();
+      final topics = jsonList.map((j) => LearningUnit.fromJson(j)).toList();
       _topicsCache[language] = topics;
     } catch (e) {
       // In case of error (e.g. file not found during dev), initialize with empty list
@@ -36,7 +36,7 @@ class GrammarTopicsRepository {
     }
   }
 
-  List<GrammarTopic> getAll(Language language) {
+  List<LearningUnit> getAll(Language language) {
     return _topicsCache[language] ?? [];
   }
 }

@@ -1,4 +1,4 @@
-enum TopicDifficulty {
+enum UnitDifficulty {
   easy,
   medium,
   hard,

@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/topic_learning_status_enum.dart';
+import 'package:vitalingu/models/language/unit_learning_status_enum.dart';
 
-class TopicItemData {
+class UnitItemData {
   final String title;
   final CEFR level;
-  final TopicLearningStatus status;
-  final String topicCode;
+  final UnitLearningStatus status;
+  final String unitCode;
   final bool isSelected;
 
-  TopicItemData(
+  UnitItemData(
     this.title,
     this.level,
     this.status,
-    this.topicCode,
+    this.unitCode,
     this.isSelected,
   );
 
-  TopicItemData copyWith({
+  UnitItemData copyWith({
     String? title,
     CEFR? level,
-    TopicLearningStatus? status,
-    String? topicCode,
+    UnitLearningStatus? status,
+    String? unitCode,
     bool? isSelected,
     Color? color,
   }) {
-    return TopicItemData(
+    return UnitItemData(
       title ?? this.title,
       level ?? this.level,
       status ?? this.status,
-      topicCode ?? this.topicCode,
+      unitCode ?? this.unitCode,
       isSelected ?? this.isSelected,
     );
   }

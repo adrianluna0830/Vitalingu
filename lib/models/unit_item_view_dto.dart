@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TopicItemViewDTO {
+class UnitItemViewDTO {
   final String title;
   final String level;
   final String status;
@@ -8,7 +8,7 @@ class TopicItemViewDTO {
   final bool isSelected;
   final Color color;
 
-  TopicItemViewDTO(
+  UnitItemViewDTO(
     this.title,
     this.level,
     this.status,

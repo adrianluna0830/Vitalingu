@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/models/topic_item_view_dto.dart';
-import 'package:vitalingu/view_models/home_topics_view_model.dart';
-import 'package:vitalingu/widgets/topic_item_widget.dart';
+import 'package:vitalingu/models/unit_item_view_dto.dart';
+import 'package:vitalingu/widgets/unit_item_widget.dart';
 
-class TopicsListWidget extends StatelessWidget {
-  final List<TopicItemViewDTO> topics;
+class UnitsListWidget extends StatelessWidget {
+  final List<UnitItemViewDTO> topics;
   final bool isSelectable;
   final Function(int index) onTopicTap;
   final Function(int index) onLongTap;
   final Function(int index) onStatusTap;
 
-  const TopicsListWidget({
+  const UnitsListWidget({
     super.key,
     required this.topics,
     required this.isSelectable,
@@ -29,7 +28,7 @@ class TopicsListWidget extends StatelessWidget {
       itemCount: topics.length,
       itemBuilder: (context, index) {
         final topic = topics[index];
-        return TopicItemWidget(
+        return UnitItemWidget(
           isCompleted: topic.isCompleted,
           isSelectable: isSelectable,
           title: topic.title,

@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/topic_learning_status_enum.dart';
-import 'package:vitalingu/models/topic_item_view_dto.dart';
-import 'package:vitalingu/view_models/home_topics_view_model.dart';
+import 'package:vitalingu/models/language/unit_learning_status_enum.dart';
+import 'package:vitalingu/models/unit_item_view_dto.dart';
+import 'package:vitalingu/view_models/home_units_view_model.dart';
 import 'package:vitalingu/widgets/select_level_dialog.dart';
 import 'package:vitalingu/widgets/select_status_dialog.dart';
-import 'package:vitalingu/widgets/topics_list_widget.dart';
+import 'package:vitalingu/widgets/units_list_widget.dart';
 
 @RoutePage()
-class HomeTopicsPage extends StatefulWidget {
-  const HomeTopicsPage({super.key});
+class HomeUnitsPage extends StatefulWidget {
+  const HomeUnitsPage({super.key});
 
   @override
-  State<HomeTopicsPage> createState() => _HomeTopicsPageState();
+  State<HomeUnitsPage> createState() => _HomeUnitsPageState();
 }
 
-class _HomeTopicsPageState extends State<HomeTopicsPage> {
-  final vm = getIt<HomeTopicsViewModel>();
+class _HomeUnitsPageState extends State<HomeUnitsPage> {
+  final vm = getIt<HomeUnitsViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +43,13 @@ class _HomeTopicsPageState extends State<HomeTopicsPage> {
             reviewingText: vm.statusReviewingText.watch(context),
             masteredText: vm.statusMasteredText.watch(context),
             onNotStarted: () =>
-                vm.updateStatusForSelectedTopics(TopicLearningStatus.notStarted),
+                vm.updateStatusForSelectedTopics(UnitLearningStatus.notStarted),
             onLearning: () =>
-                vm.updateStatusForSelectedTopics(TopicLearningStatus.learning),
+                vm.updateStatusForSelectedTopics(UnitLearningStatus.learning),
             onReviewing: () =>
-                vm.updateStatusForSelectedTopics(TopicLearningStatus.reviewing),
+                vm.updateStatusForSelectedTopics(UnitLearningStatus.reviewing),
             onMastered: () =>
-                vm.updateStatusForSelectedTopics(TopicLearningStatus.mastered),
+                vm.updateStatusForSelectedTopics(UnitLearningStatus.mastered),
           ),
         if (!isSelectable)
           _ChangeLevelButton(
@@ -62,8 +62,8 @@ class _HomeTopicsPageState extends State<HomeTopicsPage> {
     );
   }
 
-  Widget _buildBody(List<TopicItemViewDTO> topics, bool isSelectable) {
-    return TopicsListWidget(
+  Widget _buildBody(List<UnitItemViewDTO> topics, bool isSelectable) {
+    return UnitsListWidget(
       topics: topics,
       isSelectable: isSelectable,
       onTopicTap: vm.onTopicTap,

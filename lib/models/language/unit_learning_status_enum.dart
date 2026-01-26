@@ -1,27 +1,27 @@
 import 'package:vitalingu/models/language/language_enum.dart';
 
-enum TopicLearningStatus {
+enum UnitLearningStatus {
   notStarted,
   learning,
   reviewing,
   mastered,
 }
 
-extension TopicLearningStatusX on TopicLearningStatus {
+extension UnitLearningStatusX on UnitLearningStatus {
   static const _descriptions = {
-    TopicLearningStatus.notStarted: {
+    UnitLearningStatus.notStarted: {
       Language.English: 'Not Started',
       Language.Spanish: 'No iniciado',
     },
-    TopicLearningStatus.learning: {
+    UnitLearningStatus.learning: {
       Language.English: 'Learning',
       Language.Spanish: 'Aprendiendo',
     },
-    TopicLearningStatus.reviewing: {
+    UnitLearningStatus.reviewing: {
       Language.English: 'Reviewing',
       Language.Spanish: 'Repasando',
     },
-    TopicLearningStatus.mastered: {
+    UnitLearningStatus.mastered: {
       Language.English: 'Mastered',
       Language.Spanish: 'Dominado',
     },

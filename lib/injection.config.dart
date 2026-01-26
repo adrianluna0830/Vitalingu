@@ -23,10 +23,10 @@ import 'package:vitalingu/models/private_settings.dart' as _i806;
 import 'package:vitalingu/models/sembast_module.dart' as _i228;
 import 'package:vitalingu/models/shared_preferences_store.dart' as _i680;
 import 'package:vitalingu/models/user_app_settings.dart' as _i70;
-import 'package:vitalingu/repository/grammar_topics_repository.dart' as _i700;
-import 'package:vitalingu/repository/user_topic_data_repository.dart' as _i769;
+import 'package:vitalingu/repository/learning_units_repository.dart' as _i438;
+import 'package:vitalingu/repository/user_unit_data_repository.dart' as _i186;
 import 'package:vitalingu/view_models/home_settings_view_model.dart' as _i764;
-import 'package:vitalingu/view_models/home_topics_view_model.dart' as _i668;
+import 'package:vitalingu/view_models/home_units_view_model.dart' as _i342;
 import 'package:vitalingu/view_models/startup/startup_introduction_view_model.dart'
     as _i377;
 import 'package:vitalingu/view_models/startup/startup_level_configure_view_model.dart'
@@ -56,13 +56,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i680.EncryptedSharedPreferencesStore(),
     );
     gh.singleton<_i641.AppRouter>(() => _i641.AppRouter());
-    await gh.singletonAsync<_i700.GrammarTopicsRepository>(
-      () => _i700.GrammarTopicsRepository.create(),
+    await gh.singletonAsync<_i438.LearningUnitsRepository>(
+      () => _i438.LearningUnitsRepository.create(),
       preResolve: true,
     );
     gh.lazySingleton<_i361.Dio>(() => dioModule.dio);
-    gh.singleton<_i769.UserTopicDataRepository>(
-      () => _i769.UserTopicDataRepository(gh<_i310.Database>()),
+    gh.singleton<_i186.UserUnitDataRepository>(
+      () => _i186.UserUnitDataRepository(gh<_i310.Database>()),
     );
     await gh.singletonAsync<_i70.GeminiApiKeySignal>(
       () => _i70.GeminiApiKeySignal.create(
@@ -106,14 +106,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i377.StartupIntroductionViewModel>(
       () =>
           _i377.StartupIntroductionViewModel(appRouter: gh<_i641.AppRouter>()),
-    );
-    gh.factory<_i668.HomeTopicsViewModel>(
-      () => _i668.HomeTopicsViewModel(
-        gh<_i70.NativeLanguageSignal>(),
-        gh<_i70.TargetLanguageSignal>(),
-        gh<_i700.GrammarTopicsRepository>(),
-        gh<_i769.UserTopicDataRepository>(),
-      ),
     );
     gh.factory<_i1048.StartupLevelConfigureViewModel>(
       () => _i1048.StartupLevelConfigureViewModel(
@@ -169,6 +161,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i70.NativeLanguageSignal>(),
         gh<_i70.TargetLanguageSignal>(),
         gh<_i70.GeminiApiKeySignal>(),
+      ),
+    );
+    gh.factory<_i342.HomeUnitsViewModel>(
+      () => _i342.HomeUnitsViewModel(
+        gh<_i70.NativeLanguageSignal>(),
+        gh<_i70.TargetLanguageSignal>(),
+        gh<_i438.LearningUnitsRepository>(),
+        gh<_i186.UserUnitDataRepository>(),
       ),
     );
     return this;
