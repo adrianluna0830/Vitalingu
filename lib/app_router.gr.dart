@@ -11,6 +11,53 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [ChatPage]
+class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
+  ChatRoute({
+    Key? key,
+    required LearningUnit learningUnit,
+    List<PageRouteInfo>? children,
+  }) : super(
+         ChatRoute.name,
+         args: ChatRouteArgs(key: key, learningUnit: learningUnit),
+         initialChildren: children,
+       );
+
+  static const String name = 'ChatRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ChatRouteArgs>();
+      return ChatPage(key: args.key, learningUnit: args.learningUnit);
+    },
+  );
+}
+
+class ChatRouteArgs {
+  const ChatRouteArgs({this.key, required this.learningUnit});
+
+  final Key? key;
+
+  final LearningUnit learningUnit;
+
+  @override
+  String toString() {
+    return 'ChatRouteArgs{key: $key, learningUnit: $learningUnit}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ChatRouteArgs) return false;
+    return key == other.key && learningUnit == other.learningUnit;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ learningUnit.hashCode;
+}
+
+/// generated route for
 /// [HomePage]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})

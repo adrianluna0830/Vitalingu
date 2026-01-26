@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_core.dart';
+import 'package:vitalingu/app_router.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
 import 'package:vitalingu/models/language/learning_unit.dart';
 import 'package:vitalingu/models/language/unit_learning_status_enum.dart';
@@ -17,12 +18,13 @@ class HomeUnitsViewModel {
   final TargetLanguageSignal targetLanguageSignal;
   final LearningUnitsRepository _learningUnitsRepository;
   final UserUnitDataRepository _userUnitDataRepository;
-
+  final AppRouter _appRouter;
   HomeUnitsViewModel(
     this.nativeLanguageSignal,
     this.targetLanguageSignal,
     this._learningUnitsRepository,
     this._userUnitDataRepository,
+    this._appRouter,
   ) {
     _loadTopicCards();
     _registerSelectableEffect();
@@ -130,7 +132,10 @@ class HomeUnitsViewModel {
   }
 
   void _explainTopic(String unitCode) {
-    // TODO: Implement explanation navigation
+    if(isSelectable.value) throw Exception('Cannot explain topic while in selection mode');
+    final learningUnit =  _learningUnitsRepository.get(unitCode);
+    if(learningUnit == null) throw Exception('Learning unit not found for code: $unitCode');
+    _appRouter.push(ChatRoute(learningUnit: learningUnit));
   }
 
   UnitLearningStatus _getNextStatus(UnitLearningStatus currentStatus) {

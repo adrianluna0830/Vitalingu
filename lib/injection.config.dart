@@ -19,7 +19,6 @@ import 'package:vitalingu/app_router.dart' as _i641;
 import 'package:vitalingu/models/ai_client.dart' as _i715;
 import 'package:vitalingu/models/dio_module.dart' as _i31;
 import 'package:vitalingu/models/gemini_ai_client.dart' as _i25;
-import 'package:vitalingu/models/language/learning_unit.dart' as _i320;
 import 'package:vitalingu/models/language_specific_settings.dart' as _i582;
 import 'package:vitalingu/models/private_settings.dart' as _i806;
 import 'package:vitalingu/models/sembast_module.dart' as _i228;
@@ -72,9 +71,6 @@ extension GetItInjectableX on _i174.GetIt {
         encryptedStore: gh<_i680.EncryptedSharedPreferencesStore>(),
       ),
       preResolve: true,
-    );
-    gh.factory<_i312.ChatViewModel>(
-      () => _i312.ChatViewModel(learningUnit: gh<_i320.LearningUnit>()),
     );
     gh.singleton<_i715.AiClient>(
       () => _i25.GeminiAiClient(gh<_i361.Dio>(), gh<_i70.GeminiApiKeySignal>()),
@@ -162,6 +158,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i641.AppRouter>(),
       ),
     );
+    gh.factory<_i342.HomeUnitsViewModel>(
+      () => _i342.HomeUnitsViewModel(
+        gh<_i70.NativeLanguageSignal>(),
+        gh<_i70.TargetLanguageSignal>(),
+        gh<_i438.LearningUnitsRepository>(),
+        gh<_i186.UserUnitDataRepository>(),
+        gh<_i641.AppRouter>(),
+      ),
+    );
     gh.factory<_i764.HomeSettingsViewModel>(
       () => _i764.HomeSettingsViewModel(
         gh<_i70.NativeLanguageSignal>(),
@@ -169,12 +174,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i70.GeminiApiKeySignal>(),
       ),
     );
-    gh.factory<_i342.HomeUnitsViewModel>(
-      () => _i342.HomeUnitsViewModel(
+    gh.factory<_i312.ChatViewModel>(
+      () => _i312.ChatViewModel(
+        gh<_i715.AiClient>(),
         gh<_i70.NativeLanguageSignal>(),
         gh<_i70.TargetLanguageSignal>(),
-        gh<_i438.LearningUnitsRepository>(),
-        gh<_i186.UserUnitDataRepository>(),
       ),
     );
     return this;

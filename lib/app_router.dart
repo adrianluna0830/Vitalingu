@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/models/language/cefr_enum.dart';
 import 'package:vitalingu/models/language/language_enum.dart';
+import 'package:vitalingu/models/language/learning_unit.dart';
+import 'package:vitalingu/pages/chat_page.dart';
 import 'package:vitalingu/pages/guards/has_configured_guard.dart';
 import 'package:vitalingu/pages/home_page/home_page.dart';
 import 'package:vitalingu/pages/home_page/home_settings_page.dart';
@@ -36,5 +38,6 @@ class AppRouter extends RootStackRouter {
       AutoRoute(page: HomeWordsRoute.page),
       AutoRoute(page: HomeSettingsRoute.page),
     ]),
+    AutoRoute(page: ChatRoute.page),
   ];
 }

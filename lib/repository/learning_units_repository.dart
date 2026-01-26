@@ -39,4 +39,15 @@ class LearningUnitsRepository {
   List<LearningUnit> getAll(Language language) {
     return _topicsCache[language] ?? [];
   }
+
+  LearningUnit? get(String unitCode) {
+    for (var topics in _topicsCache.values) {
+      for (var topic in topics) {
+        if (topic.unitCode == unitCode) {
+          return topic;
+        }
+      }
+    }
+    return null;
+  }
 }
