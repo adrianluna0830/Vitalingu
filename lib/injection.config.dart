@@ -38,6 +38,8 @@ import 'package:vitalingu/view_models/startup/startup_native_language_view_model
     as _i75;
 import 'package:vitalingu/view_models/startup/startup_target_language_view_model.dart'
     as _i731;
+import 'package:vitalingu/view_models/unit_explanation_page_view_model.dart'
+    as _i726;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -155,6 +157,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i70.TargetLanguageSignal>(),
         gh<_i641.AppRouter>(),
         nativeLanguageSignal: gh<_i70.NativeLanguageSignal>(),
+      ),
+    );
+    gh.factory<_i726.UnitExplanationPageViewModel>(
+      () => _i726.UnitExplanationPageViewModel(
+        gh<_i715.AiClient>(),
+        gh<_i70.NativeLanguageSignal>(),
+        gh<_i70.TargetLanguageSignal>(),
+        gh<_i715.AiClient>(),
       ),
     );
     gh.factory<_i75.StartupNativeLanguageViewModel>(

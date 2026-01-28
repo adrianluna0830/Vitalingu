@@ -200,3 +200,50 @@ class StartupTargetLanguageRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [UnitExplanationPage]
+class UnitExplanationRoute extends PageRouteInfo<UnitExplanationRouteArgs> {
+  UnitExplanationRoute({
+    Key? key,
+    required LearningUnit unit,
+    List<PageRouteInfo>? children,
+  }) : super(
+         UnitExplanationRoute.name,
+         args: UnitExplanationRouteArgs(key: key, unit: unit),
+         initialChildren: children,
+       );
+
+  static const String name = 'UnitExplanationRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<UnitExplanationRouteArgs>();
+      return UnitExplanationPage(key: args.key, unit: args.unit);
+    },
+  );
+}
+
+class UnitExplanationRouteArgs {
+  const UnitExplanationRouteArgs({this.key, required this.unit});
+
+  final Key? key;
+
+  final LearningUnit unit;
+
+  @override
+  String toString() {
+    return 'UnitExplanationRouteArgs{key: $key, unit: $unit}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! UnitExplanationRouteArgs) return false;
+    return key == other.key && unit == other.unit;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ unit.hashCode;
+}

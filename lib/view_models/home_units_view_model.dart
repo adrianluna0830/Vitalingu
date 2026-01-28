@@ -135,7 +135,7 @@ class HomeUnitsViewModel {
     if(isSelectable.value) throw Exception('Cannot explain topic while in selection mode');
     final learningUnit =  _learningUnitsRepository.get(unitCode);
     if(learningUnit == null) throw Exception('Learning unit not found for code: $unitCode');
-    _appRouter.push(ChatRoute(learningUnit: learningUnit));
+    _appRouter.push(UnitExplanationRoute(unit: learningUnit));
   }
 
   UnitLearningStatus _getNextStatus(UnitLearningStatus currentStatus) {

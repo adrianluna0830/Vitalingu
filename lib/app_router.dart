@@ -15,6 +15,7 @@ import 'package:vitalingu/pages/startup_page/startup_introduction_page.dart';
 import 'package:vitalingu/pages/startup_page/startup_level_configure_page.dart';
 import 'package:vitalingu/pages/startup_page/startup_native_language_page.dart';
 import 'package:vitalingu/pages/startup_page/startup_target_language_page.dart';
+import 'package:vitalingu/pages/unit_explanation_page.dart';
 
 part 'app_router.gr.dart';
 
@@ -39,5 +40,6 @@ class AppRouter extends RootStackRouter {
       AutoRoute(page: HomeSettingsRoute.page),
     ]),
     AutoRoute(page: ChatRoute.page),
+    AutoRoute(page: UnitExplanationRoute.page),
   ];
 }

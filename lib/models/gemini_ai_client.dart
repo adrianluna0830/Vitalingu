@@ -122,4 +122,40 @@ class GeminiAiClient implements AiClient {
     }
     return text;
   }
+  
+  @override
+  Future<String> thinkAndSendMessage(String message) async {
+ final apiKey = _apiKeySignal.value;
+
+    if (apiKey.isEmpty) {
+      throw Exception(
+        'Gemini API Key is missing. Please configure it in settings.',
+      );
+    }
+
+    try {
+      final response = await _dio.post(
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey,
+          },
+        ),
+        data: {
+          "contents": [
+            {
+              "parts": [
+                {"text": message},
+              ],
+            },
+          ],
+        },
+      );
+
+      return _parseResponse(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
