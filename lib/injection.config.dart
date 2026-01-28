@@ -82,6 +82,12 @@ extension GetItInjectableX on _i174.GetIt {
       (systemInstruction, _) =>
           _i547.AiClientChat.create(gh<_i715.AiClient>(), systemInstruction),
     );
+    gh.factoryParamAsync<_i806.UnitExplanationCacheSignal, String?, dynamic>(
+      (unitCode, _) => _i806.UnitExplanationCacheSignal.create(
+        sharedPreferencesStore: gh<_i680.SharedPreferencesStore>(),
+        unitCode: unitCode,
+      ),
+    );
     await gh.singletonAsync<_i806.HasLoadedDataSignal>(
       () => _i806.HasLoadedDataSignal.create(
         sharedPreferencesStore: gh<_i680.SharedPreferencesStore>(),

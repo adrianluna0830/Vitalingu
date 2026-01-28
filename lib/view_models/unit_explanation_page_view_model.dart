@@ -1,8 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
+import 'package:vitalingu/injection.dart';
 import 'package:vitalingu/models/ai_client.dart';
 import 'package:vitalingu/models/language/language_enum.dart';
 import 'package:vitalingu/models/language/learning_unit.dart';
+import 'package:vitalingu/models/private_settings.dart';
 import 'package:vitalingu/models/prompts/unit_explanation_promts.dart';
 import 'package:vitalingu/models/user_app_settings.dart';
 
@@ -23,6 +25,12 @@ class UnitExplanationPageViewModel {
   );
 
   Future<void> fetchExplanation(LearningUnit unit) async {
+    final cache = await getIt.getAsync<UnitExplanationCacheSignal>(param1: unit.unitCode);
+    if(cache.value != null) {
+      print("Using cached explanation for unit ${cache.value}");
+      explanation.value = AsyncState.data(cache.value!);
+      return;
+    }
     final response = await aiClient.sendMessage(unitExplanationPrompt(
       topicLanguage: nativeLanguageSignal.value.name,
       explanationLanguage: targetLanguageSignal.value.name,
@@ -30,5 +38,6 @@ class UnitExplanationPageViewModel {
     ));
     final designResponse = await aiClient.sendMessage(unitExplanationDesignPrompt(content: response));
     explanation.value = AsyncState.data(designResponse);
+    cache.value = designResponse;
   }
 }

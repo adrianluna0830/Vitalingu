@@ -17,18 +17,31 @@ class UnitExplanationPage extends StatefulWidget {
 }
 
 class _UnitExplanationPageState extends State<UnitExplanationPage> {
-
   final vm = getIt<UnitExplanationPageViewModel>();
 
-@override
-void initState() {
-  super.initState();
-  vm.fetchExplanation(widget.unit);
-}
+  @override
+  void initState() {
+    super.initState();
+    vm.fetchExplanation(widget.unit);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final future = vm.explanation.watch(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Explicación ')),
+      appBar: AppBar(
+        title: const Text('Explicación '),
+        actions: [
+          if (vm.explanation.value.hasValue)
+            Row(
+              children: [
+                IconButton(onPressed: null, icon: const Icon(Icons.refresh)),
+                IconButton(onPressed: null, icon: const Icon(Icons.fact_check)),
+                IconButton(onPressed: null, icon: const Icon(Icons.help)),
+              ],
+            ),
+        ],
+      ),
       body: Watch((context) {
         return vm.explanation.value.map(
           data: (explanation) => Markdown(

@@ -43,3 +43,34 @@ class IsStartupCompletedSignal extends PersistedSignal<bool>
 
 
 }
+@injectable
+class UnitExplanationCacheSignal extends PersistedSignal<String?> {
+  final String unitCodeId;
+
+  UnitExplanationCacheSignal({
+    required SharedPreferencesStore sharedPreferencesStore,
+    required this.unitCodeId,
+  }) : super(
+          null,
+          key: unitCodeId,
+          store: sharedPreferencesStore,
+          autoInit: false,
+        );
+@factoryMethod
+  static Future<UnitExplanationCacheSignal> create({
+    required SharedPreferencesStore sharedPreferencesStore,
+    @factoryParam String? unitCode,
+  }) async {
+    if (unitCode == null) {
+      throw ArgumentError('unitCode cannot be null');
+    }
+
+    final signal = UnitExplanationCacheSignal(
+      sharedPreferencesStore: sharedPreferencesStore,
+      unitCodeId: unitCode,
+    );
+
+    await signal.init();
+    return signal;
+  }
+}
