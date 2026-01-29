@@ -24,16 +24,16 @@ import 'package:vitalingu/core/models/sembast_module.dart' as _i935;
 import 'package:vitalingu/core/models/shared_preferences_store.dart' as _i999;
 import 'package:vitalingu/core/models/user_app_settings.dart' as _i568;
 import 'package:vitalingu/core/router/app_router.dart' as _i344;
-import 'package:vitalingu/features/chat/services/ai_client_chat.dart' as _i661;
+import 'package:vitalingu/core/services/ai_client_chat.dart' as _i661;
 import 'package:vitalingu/features/chat/view_models/chat_view_model.dart'
     as _i719;
 import 'package:vitalingu/features/home/view_models/home_settings_view_model.dart'
     as _i871;
 import 'package:vitalingu/features/home/view_models/home_units_view_model.dart'
     as _i807;
-import 'package:vitalingu/features/learning/repositories/learning_units_repository.dart'
+import 'package:vitalingu/core/repositories/learning_units_repository.dart'
     as _i226;
-import 'package:vitalingu/features/learning/repositories/user_unit_data_repository.dart'
+import 'package:vitalingu/core/repositories/user_unit_data_repository.dart'
     as _i26;
 import 'package:vitalingu/features/learning/view_models/unit_explanation_page_view_model.dart'
     as _i328;

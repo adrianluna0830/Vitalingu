@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/features/chat/models/chat_conversation.dart';
+import 'package:vitalingu/core/models/chat_conversation.dart';
 
 class ChatMessagesListWidget extends StatelessWidget {
   const ChatMessagesListWidget(this.conversation, {super.key});

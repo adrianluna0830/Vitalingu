@@ -1,4 +1,4 @@
-import 'package:vitalingu/features/chat/models/chat_conversation.dart';
+import 'package:vitalingu/core/models/chat_conversation.dart';
 
 abstract interface class AiClient {
   Future<String> sendMessage(String message);

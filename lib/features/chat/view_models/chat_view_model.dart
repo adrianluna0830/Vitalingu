@@ -5,7 +5,7 @@ import 'package:vitalingu/core/models/ai_client.dart';
 import 'package:vitalingu/core/models/language/language_enum.dart';
 import 'package:vitalingu/core/models/language/learning_unit.dart';
 import 'package:vitalingu/core/models/user_app_settings.dart';
-import 'package:vitalingu/features/chat/services/ai_client_chat.dart';
+import 'package:vitalingu/core/services/ai_client_chat.dart';
 
 
 String unitExplanationPromptTemplate(String nativeLanguage, String targetLanguage, String unitTitle) {

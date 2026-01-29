@@ -4,8 +4,8 @@ import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/core/di/injection.dart';
 import 'package:vitalingu/core/models/language/learning_unit.dart';
 import 'package:vitalingu/features/chat/view_models/chat_view_model.dart';
-import 'package:vitalingu/features/chat/widgets/chat_messages_list_widget.dart';
-import 'package:vitalingu/features/chat/widgets/message_input_bottom_bar_widget.dart';
+import 'package:vitalingu/core/widgets/chat_messages_list_widget.dart';
+import 'package:vitalingu/core/widgets/message_input_bottom_bar_widget.dart';
 
 @RoutePage()
 class ChatPage extends StatefulWidget {

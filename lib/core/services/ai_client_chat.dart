@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/core/models/ai_client.dart';
-import 'package:vitalingu/features/chat/models/chat_conversation.dart';
+import 'package:vitalingu/core/models/chat_conversation.dart';
 
 
 class ReadOnlyComputedSignal<T> extends Computed<T> {

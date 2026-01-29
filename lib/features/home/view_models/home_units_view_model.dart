@@ -5,11 +5,11 @@ import 'package:vitalingu/core/router/app_router.dart';
 import 'package:vitalingu/core/models/language/cefr_enum.dart';
 import 'package:vitalingu/core/models/language/unit_learning_status_enum.dart';
 import 'package:vitalingu/core/models/language/user_data/user_unit_data.dart';
-import 'package:vitalingu/features/learning/models/unit_item_data.dart';
-import 'package:vitalingu/features/learning/models/unit_item_view_dto.dart';
+import 'package:vitalingu/features/home/models/unit_item_data.dart';
+import 'package:vitalingu/features/home/models/unit_item_view_dto.dart';
 import 'package:vitalingu/core/models/user_app_settings.dart';
-import 'package:vitalingu/features/learning/repositories/learning_units_repository.dart';
-import 'package:vitalingu/features/learning/repositories/user_unit_data_repository.dart';
+import 'package:vitalingu/core/repositories/learning_units_repository.dart';
+import 'package:vitalingu/core/repositories/user_unit_data_repository.dart';
 
 @injectable
 class HomeUnitsViewModel {
