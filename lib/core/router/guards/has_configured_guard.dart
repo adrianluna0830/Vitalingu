@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:vitalingu/app_router.dart';
-import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/private_settings.dart';
+import 'package:vitalingu/core/router/app_router.dart';
+import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/core/models/private_settings.dart';
 
 class StartupCompletedGuard extends AutoRouteGuard {
   final startupCompletedSignal = getIt<IsStartupCompletedSignal>();

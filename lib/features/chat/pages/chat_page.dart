@@ -1,12 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language/learning_unit.dart';
-import 'package:vitalingu/view_models/chat_view_model.dart';
-import 'package:vitalingu/widgets/chat_messages_list_widget.dart';
-import 'package:vitalingu/widgets/message_input_bottom_bar_widget.dart';
-
+import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/core/models/language/learning_unit.dart';
+import 'package:vitalingu/features/chat/view_models/chat_view_model.dart';
+import 'package:vitalingu/features/chat/widgets/chat_messages_list_widget.dart';
+import 'package:vitalingu/features/chat/widgets/message_input_bottom_bar_widget.dart';
 
 @RoutePage()
 class ChatPage extends StatefulWidget {

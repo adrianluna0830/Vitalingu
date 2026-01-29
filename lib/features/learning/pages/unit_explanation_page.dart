@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language/learning_unit.dart';
-import 'package:vitalingu/models/markdown_style.dart';
-import 'package:vitalingu/view_models/unit_explanation_page_view_model.dart';
+import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/core/models/language/learning_unit.dart';
+import 'package:vitalingu/core/models/markdown_style.dart';
+import 'package:vitalingu/features/learning/view_models/unit_explanation_page_view_model.dart';
 
 @RoutePage()
 class UnitExplanationPage extends StatefulWidget {

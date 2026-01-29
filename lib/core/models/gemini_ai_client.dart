@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/models/ai_client.dart';
-import 'package:vitalingu/models/chat_conversation.dart';
-import 'package:vitalingu/models/user_app_settings.dart';
+import 'package:vitalingu/core/models/ai_client.dart';
+import 'package:vitalingu/features/chat/models/chat_conversation.dart';
+import 'package:vitalingu/core/models/user_app_settings.dart';
 
 @Singleton(as: AiClient)
 class GeminiAiClient implements AiClient {

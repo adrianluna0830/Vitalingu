@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/unit_learning_status_enum.dart';
+import 'package:vitalingu/core/models/language/cefr_enum.dart';
+import 'package:vitalingu/core/models/language/unit_learning_status_enum.dart';
 
 class UnitItemData {
   final String title;

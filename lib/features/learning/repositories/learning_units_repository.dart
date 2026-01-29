@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vitalingu/gen/assets.gen.dart';
-import 'package:vitalingu/models/language/learning_unit.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
+import 'package:vitalingu/core/models/language/learning_unit.dart';
+import 'package:vitalingu/core/models/language/language_enum.dart';
 
 @singleton
 class LearningUnitsRepository {

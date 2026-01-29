@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:sembast/sembast.dart';
-import 'package:vitalingu/models/language/user_data/user_unit_data.dart';
+import 'package:vitalingu/core/models/language/user_data/user_unit_data.dart';
 
 @singleton
 class UserUnitDataRepository {

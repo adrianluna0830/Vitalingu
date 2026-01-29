@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:sembast/utils/database_utils.dart';
 import 'package:signals/signals.dart';
-import 'package:vitalingu/models/shared_preferences_store.dart';
-import 'package:vitalingu/models/user_app_settings.dart';
+import 'package:vitalingu/core/models/shared_preferences_store.dart';
+import 'package:vitalingu/core/models/user_app_settings.dart';
 
 @injectable
 class SpeakingSkillSignal extends PersistedSignal<double> {

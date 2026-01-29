@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/widgets/page_slider/navigation_arrow.dart';
-import 'package:vitalingu/widgets/page_slider/page_indicators.dart';
+import 'package:vitalingu/core/widgets/page_slider/navigation_arrow.dart';
+import 'package:vitalingu/core/widgets/page_slider/page_indicators.dart';
 
 class NavigationControls extends StatelessWidget {
   final int currentIndex;

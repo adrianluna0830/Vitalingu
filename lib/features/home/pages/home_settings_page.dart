@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
-import 'package:vitalingu/view_models/home_settings_view_model.dart';
-import 'package:vitalingu/widgets/text_field_and_validator.dart';
+import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/core/models/language/language_enum.dart';
+import 'package:vitalingu/features/home/view_models/home_settings_view_model.dart';
+import 'package:vitalingu/core/widgets/text_field_and_validator.dart';
 
 @RoutePage()
 class HomeSettingsPage extends StatefulWidget {

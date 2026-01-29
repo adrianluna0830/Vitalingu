@@ -1,12 +1,12 @@
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/ai_client.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
-import 'package:vitalingu/models/language/learning_unit.dart';
-import 'package:vitalingu/models/private_settings.dart';
-import 'package:vitalingu/models/prompts/unit_explanation_promts.dart';
-import 'package:vitalingu/models/user_app_settings.dart';
+import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/core/models/ai_client.dart';
+import 'package:vitalingu/core/models/language/language_enum.dart';
+import 'package:vitalingu/core/models/language/learning_unit.dart';
+import 'package:vitalingu/core/models/private_settings.dart';
+import 'package:vitalingu/features/learning/models/prompts/unit_explanation_promts.dart';
+import 'package:vitalingu/core/models/user_app_settings.dart';
 
 @injectable
 class UnitExplanationPageViewModel {

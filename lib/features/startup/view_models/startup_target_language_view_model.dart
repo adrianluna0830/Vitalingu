@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals.dart';
-import 'package:vitalingu/app_router.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
-import 'package:vitalingu/models/user_app_settings.dart';
+import 'package:vitalingu/core/router/app_router.dart';
+import 'package:vitalingu/core/models/language/language_enum.dart';
+import 'package:vitalingu/core/models/user_app_settings.dart';
 
 @injectable
 class StartupTargetLanguageViewModel {

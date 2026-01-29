@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/models/unit_item_view_dto.dart';
-import 'package:vitalingu/widgets/unit_item_widget.dart';
+import 'package:vitalingu/features/learning/models/unit_item_view_dto.dart';
+import 'package:vitalingu/features/learning/widgets/unit_item_widget.dart';
 
 class UnitsListWidget extends StatelessWidget {
   final List<UnitItemViewDTO> topics;

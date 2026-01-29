@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:vitalingu/app_router.dart';
+import 'package:vitalingu/core/router/app_router.dart';
 
 @RoutePage()
 class HomeTabPage extends StatelessWidget {

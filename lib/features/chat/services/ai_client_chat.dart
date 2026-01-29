@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/models/ai_client.dart';
-import 'package:vitalingu/models/chat_conversation.dart';
+import 'package:vitalingu/core/models/ai_client.dart';
+import 'package:vitalingu/features/chat/models/chat_conversation.dart';
 
 
 class ReadOnlyComputedSignal<T> extends Computed<T> {
@@ -29,7 +29,7 @@ class AiClientChat extends ReadOnlyComputedSignal<ChatConversation> {
   final AiClient aiClient;
   final String? systemInstruction;
   
-  AiClientChat(super.conversationSignal,this.aiClient, this.systemInstruction);
+  AiClientChat(super.mySignal,this.aiClient, this.systemInstruction);
   
   @factoryMethod 
   static AiClientChat create(

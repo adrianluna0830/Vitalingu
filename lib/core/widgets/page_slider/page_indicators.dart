@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/widgets/page_slider/page_dot.dart';
+import 'package:vitalingu/core/widgets/page_slider/page_dot.dart';
 
 class PageIndicators extends StatelessWidget {
   final int currentIndex;

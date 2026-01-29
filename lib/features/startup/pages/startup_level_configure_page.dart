@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/view_models/startup/startup_level_configure_view_model.dart';
+import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/core/models/language/cefr_enum.dart';
+import 'package:vitalingu/features/startup/view_models/startup_level_configure_view_model.dart';
 
 @RoutePage()
 class StartupLevelConfigurePage extends StatefulWidget {

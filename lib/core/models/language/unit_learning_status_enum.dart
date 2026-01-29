@@ -1,4 +1,4 @@
-import 'package:vitalingu/models/language/language_enum.dart';
+import 'package:vitalingu/core/models/language/language_enum.dart';
 
 enum UnitLearningStatus {
   notStarted,

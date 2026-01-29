@@ -6,7 +6,7 @@ class TextFieldAndValidator extends StatefulWidget {
   final int maxWidth;
   final String? errorMessage;
 
-  TextFieldAndValidator({
+  const TextFieldAndValidator({
     super.key, 
     required this.onChanged, 
     required this.initialValue,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:signals/signals.dart';
-import 'package:vitalingu/app_router.dart';
-import 'package:vitalingu/injection.dart';
+import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/core/router/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

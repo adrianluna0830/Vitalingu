@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals.dart';
-import 'package:vitalingu/models/shared_preferences_store.dart';
+import 'package:vitalingu/core/models/shared_preferences_store.dart';
 
 @singleton
 class HasLoadedDataSignal extends PersistedSignal<bool>

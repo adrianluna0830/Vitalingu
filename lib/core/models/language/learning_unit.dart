@@ -1,6 +1,6 @@
-import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
-import 'package:vitalingu/models/language/unit_difficulty_enum.dart';
+import 'package:vitalingu/core/models/language/cefr_enum.dart';
+import 'package:vitalingu/core/models/language/language_enum.dart';
+import 'package:vitalingu/core/models/language/unit_difficulty_enum.dart';
 
 class LearningUnit {
   int unitLearningOrder;

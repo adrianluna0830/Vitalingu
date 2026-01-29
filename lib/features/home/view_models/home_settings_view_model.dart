@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
-import 'package:vitalingu/models/user_app_settings.dart';
+import 'package:vitalingu/core/models/language/language_enum.dart';
+import 'package:vitalingu/core/models/user_app_settings.dart';
 @injectable
 class HomeSettingsViewModel {
   final NativeLanguageSignal nativeLanguageSignal;

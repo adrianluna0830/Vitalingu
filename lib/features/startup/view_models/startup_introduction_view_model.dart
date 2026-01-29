@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/app_router.dart';
+import 'package:vitalingu/core/router/app_router.dart';
 
 @injectable
 class StartupIntroductionViewModel {

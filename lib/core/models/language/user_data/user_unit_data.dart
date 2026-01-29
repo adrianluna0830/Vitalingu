@@ -1,4 +1,4 @@
-import 'package:vitalingu/models/language/unit_learning_status_enum.dart';
+import 'package:vitalingu/core/models/language/unit_learning_status_enum.dart';
 
 class UserUnitData {
   int? id;

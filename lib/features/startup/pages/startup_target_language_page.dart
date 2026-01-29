@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/core/models/language/language_enum.dart';
+import 'package:vitalingu/features/startup/view_models/startup_target_language_view_model.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
-import 'package:vitalingu/view_models/startup/startup_target_language_view_model.dart';
 
 @RoutePage()
 class StartupTargetLanguagePage extends StatefulWidget {

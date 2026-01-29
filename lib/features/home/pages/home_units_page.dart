@@ -1,14 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/injection.dart';
-import 'package:vitalingu/models/language/cefr_enum.dart';
-import 'package:vitalingu/models/language/unit_learning_status_enum.dart';
-import 'package:vitalingu/models/unit_item_view_dto.dart';
-import 'package:vitalingu/view_models/home_units_view_model.dart';
-import 'package:vitalingu/widgets/select_level_dialog.dart';
-import 'package:vitalingu/widgets/select_status_dialog.dart';
-import 'package:vitalingu/widgets/units_list_widget.dart';
+import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/core/models/language/cefr_enum.dart';
+import 'package:vitalingu/core/models/language/unit_learning_status_enum.dart';
+import 'package:vitalingu/core/widgets/select_level_dialog.dart';
+import 'package:vitalingu/core/widgets/select_status_dialog.dart';
+import 'package:vitalingu/features/home/view_models/home_units_view_model.dart';
+import 'package:vitalingu/features/learning/models/unit_item_view_dto.dart';
+import 'package:vitalingu/features/learning/widgets/units_list_widget.dart';
 
 @RoutePage()
 class HomeUnitsPage extends StatefulWidget {

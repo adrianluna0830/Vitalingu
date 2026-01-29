@@ -3,7 +3,7 @@ import 'package:sembast/sembast_io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signals/signals.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:vitalingu/models/language/language_enum.dart';
+import 'package:vitalingu/core/models/language/language_enum.dart';
 
 
 @injectable

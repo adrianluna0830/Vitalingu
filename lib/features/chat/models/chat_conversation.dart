@@ -1,4 +1,4 @@
-import 'package:vitalingu/models/chat_message.dart';
+import 'package:vitalingu/features/chat/models/chat_message.dart';
 
 class ChatConversation {
   final List<ChatMessage> _messages;
