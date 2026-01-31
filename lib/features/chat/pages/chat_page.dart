@@ -26,15 +26,15 @@ class _ChatPageState extends State<ChatPage> {
   }
   @override
   Widget build(BuildContext context) {
-    final conversation = vm.aiClientChat.watch(context);
+    // final conversation = vm.aiClientChat.watch(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 192, 192, 192).withOpacity(0.57), 
         title: Text(vm.getUnitTitle(widget.learningUnit)),
       ),
-      body: Center(
-        child: ChatMessagesListWidget(conversation),
-      ),
+      // body: Center(
+      //   child: ChatMessagesListWidget(conversation),
+      // ),
       bottomNavigationBar:  Padding(
         padding: const EdgeInsets.all(20.0),
         child: MessageInputBottomBarWidget(onSend: (message) {

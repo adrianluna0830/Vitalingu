@@ -20,19 +20,19 @@ class ChatViewModel {
   final AiClient aiClient;
   final NativeLanguageSignal nativeLanguageSignal;
   final TargetLanguageSignal targetLanguageSignal;
-  final AiClientChat aiClientChat = getIt<AiClientChat>(
-    param1: null,
-  );
+  // final AiClientChat aiClientChat = getIt<AiClientChat>(
+  //   param1: null,
+  // );
   ChatViewModel(this.aiClient, this.nativeLanguageSignal, this.targetLanguageSignal);
 
   void initiateConversation(LearningUnit learningUnit)  {
-    aiClientChat.addMessage(
-      unitExplanationPromptTemplate(
-        nativeLanguageSignal.value.name,
-        targetLanguageSignal.value.name,
-        getUnitTitle(learningUnit),
-      ),
-    );
+    // aiClientChat.addMessage(
+    //   unitExplanationPromptTemplate(
+    //     nativeLanguageSignal.value.name,
+    //     targetLanguageSignal.value.name,
+    //     getUnitTitle(learningUnit),
+    //   ),
+    // );
   }
 
 
@@ -41,15 +41,15 @@ class ChatViewModel {
   }
 
   void sendMessage(String message) {
-    aiClientChat.addMessage(message);
+    // aiClientChat.addMessage(message);
   }
 
 late final canType = computed(() {
-  if (aiClientChat.value.allMessages.isEmpty || 
-      aiClientChat.value.allMessages.last.isUserMessage) {
+  // if (aiClientChat.value.allMessages.isEmpty || 
+  //     aiClientChat.value.allMessages.last.isUserMessage) {
 
-    return false;
-  }
+  //   return false;
+  // }
   return true;
 });
 
