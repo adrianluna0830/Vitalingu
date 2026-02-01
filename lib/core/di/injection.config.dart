@@ -109,6 +109,12 @@ extension GetItInjectableX on _i174.GetIt {
       ),
       preResolve: true,
     );
+    await gh.singletonAsync<_i568.AlwaysTranslateSignal>(
+      () => _i568.AlwaysTranslateSignal.create(
+        sharedPreferencesStore: gh<_i999.SharedPreferencesStore>(),
+      ),
+      preResolve: true,
+    );
     gh.factory<_i807.HomeUnitsViewModel>(
       () => _i807.HomeUnitsViewModel(
         gh<_i568.NativeLanguageSignal>(),
@@ -121,13 +127,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i382.StartupIntroductionViewModel>(
       () =>
           _i382.StartupIntroductionViewModel(appRouter: gh<_i344.AppRouter>()),
-    );
-    gh.factory<_i871.HomeSettingsViewModel>(
-      () => _i871.HomeSettingsViewModel(
-        gh<_i568.NativeLanguageSignal>(),
-        gh<_i568.TargetLanguageSignal>(),
-        gh<_i568.GeminiApiKeySignal>(),
-      ),
     );
     gh.factoryAsync<_i808.SpeakingSkillSignal>(
       () => _i808.SpeakingSkillSignal.create(
@@ -193,6 +192,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i632.AiClient>(
       () =>
           _i770.GeminiAiClient(gh<_i361.Dio>(), gh<_i568.GeminiApiKeySignal>()),
+    );
+    gh.factory<_i871.HomeSettingsViewModel>(
+      () => _i871.HomeSettingsViewModel(
+        gh<_i568.NativeLanguageSignal>(),
+        gh<_i568.TargetLanguageSignal>(),
+        gh<_i568.GeminiApiKeySignal>(),
+        gh<_i568.AlwaysTranslateSignal>(),
+      ),
     );
     gh.factory<_i719.ChatViewModel>(
       () => _i719.ChatViewModel(gh<_i632.AiClient>(), gh<_i790.ErrorHandler>()),

@@ -6,8 +6,8 @@ class HomeSettingsViewModel {
   final NativeLanguageSignal nativeLanguageSignal;
   final TargetLanguageSignal targetLanguageSignal;
   final GeminiApiKeySignal geminiApiKeySignal;
-
-  HomeSettingsViewModel(this.nativeLanguageSignal, this.targetLanguageSignal, this.geminiApiKeySignal);
+  final AlwaysTranslateSignal alwaysTranslateSignal;
+  HomeSettingsViewModel(this.nativeLanguageSignal, this.targetLanguageSignal, this.geminiApiKeySignal, this.alwaysTranslateSignal);
 
 
   void updateNativeLanguage(Language language) {
@@ -22,4 +22,8 @@ class HomeSettingsViewModel {
   void updateGeminiApiKey(String apiKey) {
     geminiApiKeySignal.value = apiKey;
   }
-}
+
+  void updateAlwaysTranslate(bool alwaysTranslate) {
+    alwaysTranslateSignal.value = alwaysTranslate;
+  }
+} 

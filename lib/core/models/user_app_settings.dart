@@ -90,3 +90,26 @@ class StopTrackingAtRatioSignal extends PersistedSignal<double> {
     return signal;
   }
 }
+
+
+@singleton
+class AlwaysTranslateSignal extends PersistedSignal<bool> {
+  AlwaysTranslateSignal({
+    required SharedPreferencesStore sharedPreferencesStore,
+  }) : super(
+          false,
+          key: 'always_translate',
+          store: sharedPreferencesStore,
+          autoInit: false,
+        );
+
+  @FactoryMethod(preResolve: true)
+  static Future<AlwaysTranslateSignal> create({
+    required SharedPreferencesStore sharedPreferencesStore,
+  }) async {
+    final signal =
+        AlwaysTranslateSignal(sharedPreferencesStore: sharedPreferencesStore);
+    await signal.init();
+    return signal;
+  }
+}

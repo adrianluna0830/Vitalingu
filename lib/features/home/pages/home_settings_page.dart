@@ -5,6 +5,8 @@ import 'package:vitalingu/core/di/injection.dart';
 import 'package:vitalingu/core/models/language/language_enum.dart';
 import 'package:vitalingu/features/home/view_models/home_settings_view_model.dart';
 import 'package:vitalingu/core/widgets/text_field_and_validator.dart';
+import 'package:vitalingu/features/home/widgets/translate_option.dart';
+import 'package:vitalingu/language_dropdown.dart';
 
 @RoutePage()
 class HomeSettingsPage extends StatefulWidget {
@@ -16,7 +18,6 @@ class HomeSettingsPage extends StatefulWidget {
 
 class _HomeSettingsPageState extends State<HomeSettingsPage> {
   final viewModel = getIt<HomeSettingsViewModel>();
-  final textfieldController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +42,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
           TextFieldAndValidator(onChanged: (value) {
             viewModel.updateGeminiApiKey(value);
           }, initialValue: viewModel.geminiApiKeySignal.watch(context),errorMessage: null,),
-
-
+          TranslateOption(value: viewModel.alwaysTranslateSignal.watch(context), onChanged: viewModel.updateAlwaysTranslate),
         
         ],
       ),
@@ -70,35 +70,6 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-
-
-class LanguageDropdown extends StatelessWidget {
-  final Language selectedLanguage;
-  final List<Language> languages;
-  final Function(Language) onChanged;
-  const LanguageDropdown({
-    super.key,
-    required this.selectedLanguage,
-    required this.languages,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton(
-      items: languages.map((language) {
-        return DropdownMenuItem(value: language, child: Text(language.nativeName));
-      }).toList(),
-      onChanged: (Language? newValue) {
-        if (newValue != null) {
-          onChanged(newValue);
-        }
-      },
-      value: selectedLanguage,
     );
   }
 }
