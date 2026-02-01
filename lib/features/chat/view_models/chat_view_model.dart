@@ -2,6 +2,7 @@
 
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals.dart';
+import 'package:vitalingu/core/error_handler.dart';
 import 'package:vitalingu/core/models/ai_client.dart';
 import 'package:vitalingu/core/models/chat_conversation.dart';
 import 'package:vitalingu/core/models/chat_message_dto.dart';
@@ -109,9 +110,10 @@ class MessageExtraData {
 @injectable
 class ChatViewModel {
   final AiClient _aiClient;
+  final ErrorHandler _errorHandler;
   ChatConversation _conversation = ChatConversation();
 
-  ChatViewModel(this._aiClient);
+  ChatViewModel(this._aiClient, this._errorHandler);
 
   final messagesSignal = listSignal(<ChatMessageDTO>[]);
 
@@ -126,7 +128,7 @@ class ChatViewModel {
         _conversation = _conversation..addModelMessage(value);
        messagesSignal.add(ChatMessageDTO.fromChatMessage(_conversation.allMessages.last));
       case Err(:final error):
-        throw error;
+        _errorHandler.setError(error);
     }
 
   }

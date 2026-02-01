@@ -15,6 +15,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:sembast/sembast.dart' as _i310;
 import 'package:sembast/sembast_io.dart' as _i156;
 import 'package:sembast/utils/database_utils.dart' as _i854;
+import 'package:vitalingu/core/error_handler.dart' as _i790;
 import 'package:vitalingu/core/models/ai_client.dart' as _i632;
 import 'package:vitalingu/core/models/dio_module.dart' as _i590;
 import 'package:vitalingu/core/models/gemini_ai_client.dart' as _i770;
@@ -158,6 +159,9 @@ extension GetItInjectableX on _i174.GetIt {
         targetLanguage: gh<_i568.TargetLanguageSignal>(),
       ),
     );
+    gh.singleton<_i790.ErrorHandler>(
+      () => _i790.ErrorHandler(gh<_i344.AppRouter>()),
+    );
     gh.factory<_i618.HomePageViewmodel>(
       () => _i618.HomePageViewmodel(gh<_i344.AppRouter>()),
     );
@@ -191,7 +195,7 @@ extension GetItInjectableX on _i174.GetIt {
           _i770.GeminiAiClient(gh<_i361.Dio>(), gh<_i568.GeminiApiKeySignal>()),
     );
     gh.factory<_i719.ChatViewModel>(
-      () => _i719.ChatViewModel(gh<_i632.AiClient>()),
+      () => _i719.ChatViewModel(gh<_i632.AiClient>(), gh<_i790.ErrorHandler>()),
     );
     return this;
   }
