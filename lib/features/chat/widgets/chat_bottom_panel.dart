@@ -6,6 +6,7 @@ class ChatBottomPanel extends StatelessWidget {
     required this.expanded,
     required this.onToggleExpanded,
     required this.expandableContent,
+    required this.onSend,
     this.expandedHeight = 300.0,
     this.borderRadius = 30.0,
     this.animationDuration = const Duration(milliseconds: 300),
@@ -16,6 +17,7 @@ class ChatBottomPanel extends StatelessWidget {
   final bool expanded;
   final VoidCallback onToggleExpanded;
   final Widget expandableContent;
+  final Function(String) onSend;
   final double expandedHeight;
   final double borderRadius;
   final Duration animationDuration;
@@ -50,6 +52,7 @@ class ChatBottomPanel extends StatelessWidget {
           children: [
             _MessageInputRow(
               onToggleExpanded: onToggleExpanded,
+              onSend: onSend,
               expanded: expanded,
               padding: padding,
               borderRadius: borderRadius,
@@ -73,12 +76,14 @@ class ChatBottomPanel extends StatelessWidget {
 class _MessageInputRow extends StatelessWidget {
   const _MessageInputRow({
     required this.onToggleExpanded,
+    required this.onSend,
     required this.expanded,
     required this.padding,
     required this.borderRadius,
   });
 
   final VoidCallback onToggleExpanded;
+  final Function(String) onSend;
   final bool expanded;
   final double padding;
   final double borderRadius;
@@ -93,7 +98,7 @@ class _MessageInputRow extends StatelessWidget {
           children: [
             Expanded(
               child: MessageInputBottomBarWidget(
-                onSend: (String arg) {},
+                onSend: onSend,
                 canType: true,
                 borderRadius: borderRadius,
               ),
