@@ -30,6 +30,7 @@ import 'package:vitalingu/core/repositories/user_unit_data_repository.dart'
 import 'package:vitalingu/core/router/app_router.dart' as _i344;
 import 'package:vitalingu/features/chat/view_models/chat_view_model.dart'
     as _i719;
+import 'package:vitalingu/features/home/pages/home_page.dart' as _i618;
 import 'package:vitalingu/features/home/view_models/home_settings_view_model.dart'
     as _i871;
 import 'package:vitalingu/features/home/view_models/home_units_view_model.dart'
@@ -157,6 +158,9 @@ extension GetItInjectableX on _i174.GetIt {
         targetLanguage: gh<_i568.TargetLanguageSignal>(),
       ),
     );
+    gh.factory<_i618.HomePageViewmodel>(
+      () => _i618.HomePageViewmodel(gh<_i344.AppRouter>()),
+    );
     gh.factory<_i191.StartupLevelConfigureViewModel>(
       () => _i191.StartupLevelConfigureViewModel(
         gh<_i344.AppRouter>(),
@@ -187,11 +191,7 @@ extension GetItInjectableX on _i174.GetIt {
           _i770.GeminiAiClient(gh<_i361.Dio>(), gh<_i568.GeminiApiKeySignal>()),
     );
     gh.factory<_i719.ChatViewModel>(
-      () => _i719.ChatViewModel(
-        gh<_i632.AiClient>(),
-        gh<_i568.NativeLanguageSignal>(),
-        gh<_i568.TargetLanguageSignal>(),
-      ),
+      () => _i719.ChatViewModel(gh<_i632.AiClient>()),
     );
     return this;
   }

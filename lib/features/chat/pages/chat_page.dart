@@ -2,15 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/core/di/injection.dart';
-import 'package:vitalingu/core/models/language/learning_unit.dart';
-import 'package:vitalingu/features/chat/view_models/chat_view_model.dart';
 import 'package:vitalingu/core/widgets/chat_messages_list_widget.dart';
+import 'package:vitalingu/features/chat/view_models/chat_view_model.dart';
 import 'package:vitalingu/core/widgets/message_input_bottom_bar_widget.dart';
 
 @RoutePage()
 class ChatPage extends StatefulWidget {
-  final LearningUnit learningUnit;
-  const ChatPage({super.key, required this.learningUnit});
+  const ChatPage({super.key});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -22,24 +20,19 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-    vm.initiateConversation(widget.learningUnit);
   }
   @override
   Widget build(BuildContext context) {
-    // final conversation = vm.aiClientChat.watch(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 192, 192, 192).withOpacity(0.57), 
-        title: Text(vm.getUnitTitle(widget.learningUnit)),
+        title: const Text('Chat Page'),
       ),
-      // body: Center(
-      //   child: ChatMessagesListWidget(conversation),
-      // ),
+      body: ChatMessagesListWidget(vm.messagesSignal.watch(context)),
       bottomNavigationBar:  Padding(
         padding: const EdgeInsets.all(20.0),
         child: MessageInputBottomBarWidget(onSend: (message) {
           vm.sendMessage(message);
-        }, canType: vm.canType.watch(context)),
+        }, canType: true),
       ),
     );
   }
