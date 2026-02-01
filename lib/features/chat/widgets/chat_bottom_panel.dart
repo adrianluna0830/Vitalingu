@@ -163,7 +163,12 @@ class _ExpandableArea extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
-            child: child,
+            child: OverflowBox(
+              minHeight: expandedHeight,
+              maxHeight: expandedHeight,
+              alignment: Alignment.topCenter,
+              child: child,
+            ),
           ),
         ),
       ),
