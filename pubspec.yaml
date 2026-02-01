@@ -46,6 +46,7 @@ dependencies:
   sembast: ^3.8.6
   dio: ^5.9.0
   flutter_markdown_plus: ^1.0.7
+  shimmer_animation: ^2.2.2+1
   
 dev_dependencies:
   flutter_test:
