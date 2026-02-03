@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:vitalingu/core/models/language/learning_unit.dart';
 import 'package:vitalingu/features/chat/pages/chat_page.dart';
 import 'package:vitalingu/core/router/guards/has_configured_guard.dart';
 import 'package:vitalingu/features/home/pages/home_page.dart';
@@ -13,7 +11,6 @@ import 'package:vitalingu/features/startup/pages/startup_introduction_page.dart'
 import 'package:vitalingu/features/startup/pages/startup_level_configure_page.dart';
 import 'package:vitalingu/features/startup/pages/startup_native_language_page.dart';
 import 'package:vitalingu/features/startup/pages/startup_target_language_page.dart';
-import 'package:vitalingu/features/learning/pages/unit_explanation_page.dart';
 
 part 'app_router.gr.dart';
 

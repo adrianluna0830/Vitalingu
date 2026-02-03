@@ -2,8 +2,8 @@ import 'package:vitalingu/core/models/chat_conversation.dart';
 import 'package:vitalingu/core/models/result.dart';
 
 abstract interface class AiClient {
-  Future<Result<AIClientException, String>> generateContent(String prompt,{String? systemInstructions, Map<String, dynamic>? outputJsonSchema,bool think = false});
-  Future<Result<AIClientException, ChatConversation>> generateChatResponse(
+  Future<Either<AIClientException, String>> generateContent(String prompt,{String? systemInstructions, Map<String, dynamic>? outputJsonSchema,bool think = false});
+  Future<Either<AIClientException, ChatConversation>> generateChatResponse(
       ChatConversation conversation,
       {String? systemInstructions,
       Map<String, dynamic>? outputJsonSchema,

@@ -47,6 +47,7 @@ dependencies:
   dio: ^5.9.0
   flutter_markdown_plus: ^1.0.7
   shimmer_animation: ^2.2.2+1
+  flutter_conditional_rendering: ^2.1.0
   
 dev_dependencies:
   flutter_test:

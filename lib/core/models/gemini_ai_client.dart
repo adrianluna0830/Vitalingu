@@ -48,7 +48,7 @@ class GeminiAiClient implements AiClient {
     return text;
   }
 
-  Future<Result<AIClientException, String>> _performRequest({
+  Future<Either<AIClientException, String>> _performRequest({
     required List<Map<String, dynamic>> contents,
     String? systemInstructions,
     Map<String, dynamic>? outputJsonSchema,
@@ -57,7 +57,7 @@ class GeminiAiClient implements AiClient {
     final apiKey = _apiKeySignal.value;
 
     if (apiKey.isEmpty) {
-      return Err(AIConfigurationException(
+      return Left(AIConfigurationException(
           'Gemini API Key is missing. Please configure it in settings.'));
     }
 
@@ -101,17 +101,17 @@ class GeminiAiClient implements AiClient {
         data: body,
       );
 
-      return Ok(_parseResponse(response));
+      return Right(_parseResponse(response));
     } catch (e) {
       if (e is AIClientException) {
-        return Err(e);
+        return Left(e);
       }
-      return Err(AIRequestException(e.toString()));
+      return Left(AIRequestException(e.toString()));
     }
   }
 
   @override
-  Future<Result<AIClientException, ChatConversation>> generateChatResponse(
+  Future<Either<AIClientException, ChatConversation>> generateChatResponse(
       ChatConversation conversation,
       {String? systemInstructions,
       Map<String, dynamic>? outputJsonSchema,
@@ -133,13 +133,13 @@ class GeminiAiClient implements AiClient {
     );
 
     return switch (result) {
-      Ok(:final value) => Ok(conversation..addModelMessage(value)),
-      Err(:final error) => Err(error),
+      Right(:final value) => Right(conversation..addModelMessage(value)),
+      Left(:final error) => Left(error),
     };
   }
 
   @override
-  Future<Result<AIClientException, String>> generateContent(String prompt,
+  Future<Either<AIClientException, String>> generateContent(String prompt,
       {String? systemInstructions,
       Map<String, dynamic>? outputJsonSchema,
       bool think = false}) async {

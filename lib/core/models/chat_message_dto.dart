@@ -1,18 +1,22 @@
+
 import 'package:vitalingu/core/models/chat_message.dart';
 
-class ChatMessageDTO {
+class ChatMessageWidgetModel {
   final String content;
   final bool isUserMessage;
-
-  ChatMessageDTO({
+  final int id;
+  ChatMessageWidgetModel({
     required this.content,
     required this.isUserMessage,
+    required this.id,
   });
 
-  factory ChatMessageDTO.fromChatMessage(ChatMessage message) {
-    return ChatMessageDTO(
+  factory ChatMessageWidgetModel.fromChatMessage(ChatMessage message, int id) {
+    return ChatMessageWidgetModel(
       content: message.content,
       isUserMessage: message.isUserMessage,
+      id: id,
     );
   }
+
 }
