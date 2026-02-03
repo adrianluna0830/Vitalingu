@@ -2,7 +2,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals.dart';
 import 'package:vitalingu/core/models/language/language_enum.dart';
-import 'package:vitalingu/core/models/shared_preferences_store.dart';
+import 'package:vitalingu/core/models/signals_stores.dart';
 @singleton
 class NativeLanguageSignal extends PersistedEnumSignal<Language> {
   NativeLanguageSignal({required SharedPreferencesStore sharedPreferencesStore})

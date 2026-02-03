@@ -1,4 +1,4 @@
-import 'package:vitalingu/core/models/chat_conversation.dart';
+import 'package:vitalingu/core/models/ai/chat_conversation.dart';
 import 'package:vitalingu/core/models/result.dart';
 
 abstract interface class AiClient {

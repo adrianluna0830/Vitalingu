@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class TextFieldAndValidator extends StatefulWidget {
+class SecretTextField extends StatefulWidget {
   final Function(String value) onChanged;
   final String initialValue;
   final int maxWidth;
   final String? errorMessage;
 
-  const TextFieldAndValidator({
+  const SecretTextField({
     super.key, 
     required this.onChanged, 
     required this.initialValue,
@@ -15,10 +15,10 @@ class TextFieldAndValidator extends StatefulWidget {
   });
   
   @override
-  State<TextFieldAndValidator> createState() => _TextFieldAndValidatorState();
+  State<SecretTextField> createState() => _SecretTextFieldState();
 }
 
-class _TextFieldAndValidatorState extends State<TextFieldAndValidator> {
+class _SecretTextFieldState extends State<SecretTextField> {
   TextEditingController controller = TextEditingController();
   FocusNode focusNode = FocusNode();
   bool hasFocus = false;

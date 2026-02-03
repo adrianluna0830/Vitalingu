@@ -7,10 +7,8 @@ MarkdownStyleSheet customMarkdownStyleSheet(BuildContext context) {
   final isDark = theme.brightness == Brightness.dark;
   
   return MarkdownStyleSheet(
-    // Escala TODO el texto un 50% más grande (1.5 = 150% del tamaño original)
     textScaler: const TextScaler.linear(1.5),
     
-    // Estilo para enlaces (links)
     a: TextStyle(
       color: theme.colorScheme.primary, // Color del tema (azul normalmente)
       decoration: TextDecoration.underline, // Subrayado

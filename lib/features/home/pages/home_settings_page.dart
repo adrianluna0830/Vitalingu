@@ -4,9 +4,9 @@ import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/core/di/injection.dart';
 import 'package:vitalingu/core/models/language/language_enum.dart';
 import 'package:vitalingu/features/home/view_models/home_settings_view_model.dart';
-import 'package:vitalingu/core/widgets/text_field_and_validator.dart';
+import 'package:vitalingu/features/home/widgets/secret_text_field.dart';
 import 'package:vitalingu/features/home/widgets/translate_option.dart';
-import 'package:vitalingu/language_dropdown.dart';
+import 'package:vitalingu/core/widgets/language_dropdown.dart';
 
 @RoutePage()
 class HomeSettingsPage extends StatefulWidget {
@@ -39,7 +39,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
               viewModel.updateTargetLanguage(language);
             },
           ),
-          TextFieldAndValidator(onChanged: (value) {
+          SecretTextField(onChanged: (value) {
             viewModel.updateGeminiApiKey(value);
           }, initialValue: viewModel.geminiApiKeySignal.watch(context),errorMessage: null,),
           TranslateOption(value: viewModel.alwaysTranslateSignal.watch(context), onChanged: viewModel.updateAlwaysTranslate),

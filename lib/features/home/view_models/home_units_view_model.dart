@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals_core.dart';
-import 'package:vitalingu/core/router/app_router.dart';
 import 'package:vitalingu/core/models/language/cefr_enum.dart';
 import 'package:vitalingu/core/models/language/unit_learning_status_enum.dart';
 import 'package:vitalingu/core/models/language/user_data/user_unit_data.dart';
 import 'package:vitalingu/features/home/models/unit_item_data.dart';
 import 'package:vitalingu/features/home/models/unit_item_view_dto.dart';
-import 'package:vitalingu/core/models/user_app_settings.dart';
+import 'package:vitalingu/core/models/settings/user_app_settings.dart';
 import 'package:vitalingu/core/repositories/learning_units_repository.dart';
 import 'package:vitalingu/core/repositories/user_unit_data_repository.dart';
 
@@ -17,14 +16,12 @@ class HomeUnitsViewModel {
   final TargetLanguageSignal targetLanguageSignal;
   final LearningUnitsRepository _learningUnitsRepository;
   final UserUnitDataRepository _userUnitDataRepository;
-  final AppRouter _appRouter;
   HomeUnitsViewModel(
     this.nativeLanguageSignal,
     this.targetLanguageSignal,
     this._learningUnitsRepository,
     this._userUnitDataRepository,
-    this._appRouter,
-  ) {
+    ) {
     _loadTopicCards();
     _registerSelectableEffect();
     _registerLanguageChangedEffects();

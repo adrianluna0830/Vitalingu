@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/core/di/injection.dart';
-import 'package:vitalingu/core/error_handler.dart';
+import 'package:vitalingu/core/models/error_handler.dart';
 import 'package:vitalingu/core/router/app_router.dart';
 
 class ErrorDisplayer extends StatefulWidget {

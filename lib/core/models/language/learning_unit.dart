@@ -38,6 +38,7 @@ class LearningUnit {
         try {
           translationsMap[Language.values.byName(key)] = value as String;
         } catch (e) {
+          throw Exception('LearningUnit.fromJson: Language enum value $key not found');
         }
       });
     }

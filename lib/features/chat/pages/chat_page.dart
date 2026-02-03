@@ -2,9 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/core/di/injection.dart';
-import 'package:vitalingu/core/models/chat_message_dto.dart';
-import 'package:vitalingu/core/widgets/chat_bottom_inputs.dart';
-import 'package:vitalingu/core/widgets/chat_messages.dart';
+import 'package:vitalingu/features/chat/widgets/chat_bottom_inputs.dart';
+import 'package:vitalingu/features/chat/widgets/chat_messages.dart';
 import 'package:vitalingu/features/chat/widgets/message_extra_data_display.dart';
 import 'package:vitalingu/features/chat/widgets/user_extra_data_display.dart';
 import 'package:vitalingu/features/chat/view_models/chat_view_model.dart';
@@ -28,7 +27,7 @@ class _ChatPageState extends State<ChatPage> {
         return switch (state) {
           NoExtraDataState() => const SizedBox.shrink(),
           
-          UserMessageExtraDataState(:final extraData) => Padding(
+          UserMessageExtraDataState() => Padding(
             padding: const EdgeInsets.all(16.0),
             child: MessageExtraDataDisplay(
               onClose: vm.closeExtraDataDisplay,

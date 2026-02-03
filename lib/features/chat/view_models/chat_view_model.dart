@@ -1,9 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:signals/signals.dart';
-import 'package:vitalingu/core/error_handler.dart';
-import 'package:vitalingu/core/models/ai_client.dart';
-import 'package:vitalingu/core/models/chat_conversation.dart';
-import 'package:vitalingu/core/models/chat_message_dto.dart';
+import 'package:vitalingu/core/models/error_handler.dart';
+import 'package:vitalingu/core/models/ai/ai_client.dart';
+import 'package:vitalingu/core/models/ai/chat_conversation.dart';
+import 'package:vitalingu/features/chat/model/chat_message_dto.dart';
 import 'package:vitalingu/core/models/result.dart';
 import 'package:vitalingu/features/chat/model/messages_extra_data.dart';
 

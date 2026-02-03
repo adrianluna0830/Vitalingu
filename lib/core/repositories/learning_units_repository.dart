@@ -30,9 +30,7 @@ class LearningUnitsRepository {
       final topics = jsonList.map((j) => LearningUnit.fromJson(j)).toList();
       _topicsCache[language] = topics;
     } catch (e) {
-      // In case of error (e.g. file not found during dev), initialize with empty list
-      print('Error loading topics for $language: $e');
-      _topicsCache[language] = [];
+      throw Exception('Error loading learning units for $language: $e');
     }
   }
 

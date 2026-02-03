@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/core/models/chat_message_dto.dart';
-import 'package:vitalingu/core/widgets/interactable_message_box.dart';
+import 'package:vitalingu/features/chat/model/chat_message_dto.dart';
+import 'package:vitalingu/features/chat/widgets/interactable_message_box.dart';
 
 class ChatMessages extends StatelessWidget {
   const ChatMessages(
