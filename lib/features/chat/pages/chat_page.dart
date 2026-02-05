@@ -28,7 +28,10 @@ class _ChatPageState extends State<ChatPage> {
           vm.sendMessage(message);
         },
         canType: true,
-        onChat: () {},
+        onChat: () {
+                        vm.test();
+
+        },
       ),
     );
   }
@@ -37,10 +40,12 @@ class _ChatPageState extends State<ChatPage> {
     return Expanded(
       child: Watch((context) {
         return Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 7.0),
           child: ChatMessages(
             vm.messagesSignal.value,
-            onMessageTap: (messageId) {},
+            onMessageTap: (messageId) {
+            },
+            showIsTyping: vm.showIsTypingSignal.watch(context),
           ),
         );
       }),

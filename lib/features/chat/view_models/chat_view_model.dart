@@ -21,7 +21,13 @@ class ChatViewModel {
   });
 
   final _extraDataDisplayStateSignal = signal<ExtraOptionsDisplayState>(EmptyOptionsState());
+  final _showIsTypingSignal = signal<bool>(false);
+  late final showIsTypingSignal = computed(() => _showIsTypingSignal.value);
   
+  void test()
+  {
+    _showIsTypingSignal.value = !_showIsTypingSignal.value;
+  }
   Future<void> sendMessage(String content) async {
     _conversation.addUserMessage(content);
 

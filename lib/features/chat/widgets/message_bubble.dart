@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vitalingu/features/chat/widgets/triangle_painter.dart';
 
 enum BubbleInnerDesignAlignment { left, right, none }
 
@@ -6,28 +7,46 @@ class MessageBubble extends StatelessWidget {
   final Widget child;
   final double triangleWidth;
   final double triangleHeight;
-  final BorderRadius borderRadius;
+  final double borderRadius;
   final BubbleInnerDesignAlignment alignment;
   final Color backgroundColor;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
+  final double triangleOffset; 
 
   const MessageBubble({
     super.key,
     required this.child,
-    this.triangleWidth = 22.0,
-    this.triangleHeight = 22.0,
-    this.borderRadius = const BorderRadius.all(Radius.circular(12.0)),
+    this.triangleWidth = 20.0,
+    this.triangleHeight =35.0,
+    this.borderRadius = 11.0,
     this.alignment = BubbleInnerDesignAlignment.left,
     this.backgroundColor = const Color.fromARGB(255, 114, 114, 114),
     this.onTap,
     this.onLongPress,
+    this.triangleOffset = 7, 
   });
 
   @override
   Widget build(BuildContext context) {
     final isLeft = alignment == BubbleInnerDesignAlignment.left;
     final isNone = alignment == BubbleInnerDesignAlignment.none;
+
+    final BorderRadius effectiveBorderRadius = isNone
+        ? BorderRadius.all(Radius.circular(borderRadius))
+        : isLeft
+            ? BorderRadius.only(
+                topLeft: Radius.zero,
+                topRight: Radius.circular(borderRadius),
+                bottomLeft: Radius.circular(borderRadius),
+                bottomRight: Radius.circular(borderRadius),
+              )
+            : BorderRadius.only(
+                topLeft: Radius.circular(borderRadius),
+                topRight: Radius.zero,
+                bottomLeft: Radius.circular(borderRadius),
+                bottomRight: Radius.circular(borderRadius),
+              );
 
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: 0, minHeight: 0),
@@ -38,8 +57,8 @@ class MessageBubble extends StatelessWidget {
             children: [
               if (!isNone)
                 Positioned(
-                  left: isLeft ? -(triangleWidth/2) : null,
-                  right: isLeft ? null : -(triangleWidth/2),
+                  left: isLeft ? -triangleOffset : null,
+                  right: isLeft ? null : -triangleOffset,
                   top: 0,
                   child: CustomPaint(
                     size: Size(triangleWidth, triangleHeight),
@@ -55,11 +74,11 @@ class MessageBubble extends StatelessWidget {
                 child: onTap != null
                     ? Material(
                         color: backgroundColor,
-                        borderRadius: borderRadius,
+                        borderRadius: effectiveBorderRadius,
                         child: InkWell(
                           onLongPress: onLongPress,
                           onTap: onTap,
-                          borderRadius: borderRadius,
+                          borderRadius: effectiveBorderRadius,
                           splashColor: Colors.black.withOpacity(0.1),
                           highlightColor: Colors.black.withOpacity(0.05),
                           hoverColor: Colors.black.withOpacity(0.05),
@@ -71,7 +90,7 @@ class MessageBubble extends StatelessWidget {
                         height: double.infinity,
                         decoration: BoxDecoration(
                           color: backgroundColor,
-                          borderRadius: borderRadius,
+                          borderRadius: effectiveBorderRadius,
                         ),
                         child: child,
                       ),
@@ -80,79 +99,6 @@ class MessageBubble extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class TrianglePainter extends CustomPainter {
-  final Color color;
-  final bool isLeft;
-  TrianglePainter({required this.color, required this.isLeft});
-  
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color;
-    final path = Path();
-    
-    if (isLeft) {
-      path.moveTo(size.width, 0);
-      path.lineTo(size.width, size.height);
-      path.lineTo(0, 0);
-    } else {
-      path.moveTo(0, 0);
-      path.lineTo(0, size.height);
-      path.lineTo(size.width, 0);
-    }
-    path.close();
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class TextMessageBubble extends StatelessWidget {
-  final String text;
-  final TextStyle? textStyle;
-  final VoidCallback? onTap;
-  final VoidCallback? onLongPress;
-
-  final BubbleInnerDesignAlignment alignment;
-  final Color backgroundColor;
-  final bool hasTail;
-
-  const TextMessageBubble({
-    this.hasTail = true,
-    super.key,
-    required this.text,
-    this.textStyle = const TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 16,leadingDistribution: TextLeadingDistribution.even),
-    this.onTap,
-    required this.alignment,
-    this.backgroundColor = const Color.fromARGB(255, 91, 91, 91),
-    this.onLongPress,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return MessageBubble(
-      onLongPress: onLongPress,
-      onTap: onTap,
-      alignment: !hasTail ?  BubbleInnerDesignAlignment.none : alignment,
-      backgroundColor: backgroundColor,
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: 11.0,
-          right: 11.0,
-          top: 2.5,
-          bottom: 7.0,
-        ),
-        child: Text(
-          text,
-          style: textStyle,
-          textAlign: alignment == BubbleInnerDesignAlignment.left ? TextAlign.right : TextAlign.left ,
-        ),
-      ),
-      
     );
   }
 }
