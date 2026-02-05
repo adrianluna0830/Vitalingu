@@ -1,82 +1,66 @@
 import 'package:injectable/injectable.dart';
-import 'package:signals/signals.dart';
+import 'package:signals/signals_flutter.dart';
+import 'package:vitalingu/core/models/ai/chat_conversation.dart';
+import 'package:vitalingu/core/models/ai/chat_message.dart';
 import 'package:vitalingu/core/models/error_handler.dart';
 import 'package:vitalingu/core/models/ai/ai_client.dart';
-import 'package:vitalingu/core/models/ai/chat_conversation.dart';
 import 'package:vitalingu/features/chat/model/chat_message_dto.dart';
-import 'package:vitalingu/core/models/result.dart';
 import 'package:vitalingu/features/chat/model/messages_extra_data.dart';
 
 @injectable
 class ChatViewModel {
   final AiClient _aiClient;
   final ErrorHandler _errorHandler;
-  ChatConversation _conversation = ChatConversation();
-
   ChatViewModel(this._aiClient, this._errorHandler);
 
-  final _messagesSignal = listSignal<ChatMessageWidgetModel>([]);
-  late final ReadonlySignal<List<ChatMessageWidgetModel>> computedMessages = _messagesSignal;
+  ChatConversation  _conversation = ChatConversation();
 
-  final _extraDataDisplayStateSignal = Signal<MessageExtraDataDisplayState>(NoExtraDataState());
-  late final ReadonlySignal<MessageExtraDataDisplayState> computedExtraDataDisplayState = _extraDataDisplayStateSignal;
+  final _messagesSignal = listSignal( <ChatMessageWidgetModel>[]);
+  late final messagesSignal = computed(() {
+    return _messagesSignal.toList();
+  });
 
-  void selectMessageExtraData(int messageIndex) {
-    _extraDataDisplayStateSignal.value = AIMessageExtraDataState(
-      AIMessageExtraData(content: "Sample AI extra data for message $messageIndex"),
-    );
-  }
-
-  void selectUserChat() {
-    _extraDataDisplayStateSignal.value = UserChatState();
-  }
-
+  final _extraDataDisplayStateSignal = signal<ExtraOptionsDisplayState>(EmptyOptionsState());
+  
   Future<void> sendMessage(String content) async {
     _conversation.addUserMessage(content);
 
     final messageModel = ChatMessageWidgetModel.fromChatMessage(
-      _conversation.allMessages.last,
-      _messagesSignal.length,
+      _conversation.allMessages.last
     );
-    
+
     _messagesSignal.add(messageModel);
 
-    final result = await _aiClient.generateContent(
-      content,
-      outputJsonSchema: UserMessageExtraData.getJsonSchema(),
-    );
+    // final result = await _aiClient.generateContent(
+    //   content,
+    //   outputJsonSchema: UserMessageExtraData.getJsonSchema(),
+    // );
 
-    switch (result) {
-      case Right(:final value):
-        _conversation = _conversation..addModelMessage(value);
+    // switch (result) {
+    //   case Right(:final value):
+    //     _conversation = _conversation..addModelMessage(value);
         
-        final aiMessageModel = ChatMessageWidgetModel.fromChatMessage(
-          _conversation.allMessages.last,
-          _messagesSignal.length,
-        );
+    //     final aiMessageModel = ChatMessageWidgetModel.fromChatMessage(
+    //       _conversation.allMessages.last,1
+    //     );
         
-        _messagesSignal.add(aiMessageModel);
 
-      case Left(:final error):
-        _errorHandler.setError(error);
-    }
-  }
-
-  void closeExtraDataDisplay() {
-    _extraDataDisplayStateSignal.value = NoExtraDataState();
+    //   case Left(:final error):
+    //     _errorHandler.setError(error);
+    // }
   }
 }
 
-sealed class MessageExtraDataDisplayState {}
+sealed class ExtraOptionsDisplayState {}
 
-class NoExtraDataState extends MessageExtraDataDisplayState {}
-class UserChatState extends MessageExtraDataDisplayState {}
-class UserMessageExtraDataState extends MessageExtraDataDisplayState {
+class EmptyOptionsState extends ExtraOptionsDisplayState {}
+class UserChatState extends ExtraOptionsDisplayState {}
+class UserMessageExtraDataState extends ExtraOptionsDisplayState {
   final UserMessageExtraData extraData;
   UserMessageExtraDataState(this.extraData);
 }
 
-class AIMessageExtraDataState extends MessageExtraDataDisplayState {
+class AIMessageExtraDataState extends ExtraOptionsDisplayState {
   final AIMessageExtraData extraData;
   AIMessageExtraDataState(this.extraData);
 }

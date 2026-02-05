@@ -1,11 +1,12 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/core/di/injection.dart';
+import 'package:vitalingu/features/chat/widgets/expandable_animated_container.dart';
 import 'package:vitalingu/features/chat/widgets/chat_bottom_inputs.dart';
 import 'package:vitalingu/features/chat/widgets/chat_messages.dart';
-import 'package:vitalingu/features/chat/widgets/message_extra_data_display.dart';
-import 'package:vitalingu/features/chat/widgets/user_extra_data_display.dart';
 import 'package:vitalingu/features/chat/view_models/chat_view_model.dart';
 
 @RoutePage()
@@ -19,71 +20,30 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final vm = getIt<ChatViewModel>();
 
-  Widget buildMessageExtraDataDisplay(BuildContext context) {
-    return Watch(
-      (context) {
-        final state = vm.computedExtraDataDisplayState.value;
-        
-        return switch (state) {
-          NoExtraDataState() => const SizedBox.shrink(),
-          
-          UserMessageExtraDataState() => Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: MessageExtraDataDisplay(
-              onClose: vm.closeExtraDataDisplay,
-              child: UserExtraDataDisplay(),
-            ),
-          ),
-          
-          AIMessageExtraDataState(:final extraData) => Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: MessageExtraDataDisplay(
-              onClose: vm.closeExtraDataDisplay,
-              child: Center(
-                child: Text("AI Message Extra Data: ${extraData.content}"),
-              ),
-            ),
-          ),
-          
-          UserChatState() => Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: MessageExtraDataDisplay(
-              onClose: vm.closeExtraDataDisplay,
-              child: Center(child: Text("User Chat Extra Data")),
-            ),
-          ),
-        };
-      },
-    );
-  }
-
   Widget buildInputs(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 13.0, right: 13.0, bottom: 13.0),
+      padding: const EdgeInsets.all(12),
       child: ChatBottomInputs(
-        onSend: (message) {},
-        canType: true,
-        onChat: () {
-          vm.selectUserChat();
+        onSend: (message) {
+          vm.sendMessage(message);
         },
+        canType: true,
+        onChat: () {},
       ),
     );
   }
 
   Widget buildChatMessages(BuildContext context) {
-    return Watch(
-      (context) {
-        final messages = vm.computedMessages.value;
-        
-        return Expanded(
+    return Expanded(
+      child: Watch((context) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
           child: ChatMessages(
-            messages,
-            onMessageTap: (messageId) {
-              vm.selectMessageExtraData(messageId);
-            },
+            vm.messagesSignal.value,
+            onMessageTap: (messageId) {},
           ),
         );
-      },
+      }),
     );
   }
 
@@ -97,7 +57,43 @@ class _ChatPageState extends State<ChatPage> {
           mainAxisSize: MainAxisSize.max,
           children: [
             buildChatMessages(context),
-            buildMessageExtraDataDisplay(context),
+            ExpandableAnimatedContainer(
+              isExpanded: false,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 14.0,
+                  right: 14.0,
+                  top: 14.0,
+                  bottom: 4,
+                ),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                    border: Border.all(
+                      color: const Color.fromARGB(
+                        255,
+                        193,
+                        193,
+                        193,
+                      ), // Cambia 'Colors.blue' por el color deseado
+                      width: 1.25, // Cambia '2.0' por el grosor deseado
+                    ),
+                  ),
+                  child: const Text(
+                    'Contenido Interno',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             buildInputs(context),
           ],
         ),

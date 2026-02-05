@@ -49,6 +49,7 @@ dependencies:
   shimmer_animation: ^2.2.2+1
   flutter_conditional_rendering: ^2.1.0
   path: ^1.9.1
+  simple_animations: ^5.2.0
   
 dev_dependencies:
   flutter_test:

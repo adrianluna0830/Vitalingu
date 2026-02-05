@@ -4,7 +4,6 @@ class ChatBottomInputs extends StatefulWidget {
   final Function(String) onSend;
   final VoidCallback onChat;
   final bool canType;
-  final InputDecoration textFieldInputDecoration;
   final double spacing;
   final int maxLines;
   
@@ -13,14 +12,7 @@ class ChatBottomInputs extends StatefulWidget {
     required this.onSend,
     required this.onChat,
     required this.canType,
-    this.textFieldInputDecoration = const InputDecoration(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(25.0)),
-      ),
-      isDense: true,
-      
-    ),
-    this.spacing = 10.0,
+    this.spacing = 11.0,
     this.maxLines = 6,
   });
 
@@ -30,23 +22,49 @@ class ChatBottomInputs extends StatefulWidget {
 
 class _ChatBottomInputsState extends State<ChatBottomInputs> {
   final TextEditingController _controller = TextEditingController();
+  final GlobalKey _textFieldKey = GlobalKey();
+  double _initialTextFieldHeight = 60.0; 
+  bool _heightCaptured = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _captureInitialHeight();
+    });
+  }
+
+  void _captureInitialHeight() {
+    if (!_heightCaptured) {
+      final RenderBox? renderBox = 
+          _textFieldKey.currentContext?.findRenderObject() as RenderBox?;
+      if (renderBox != null && mounted) {
+        setState(() {
+          _initialTextFieldHeight = renderBox.size.height;
+          _heightCaptured = true;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.end, 
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Expanded(
           child: TextField(
-            minLines: 1, 
-            maxLines: widget.maxLines, 
+            key: _textFieldKey,
+            minLines: 1,
+            maxLines: widget.maxLines,
             keyboardType: TextInputType.multiline,
             controller: _controller,
             enabled: widget.canType,
-            decoration: widget.textFieldInputDecoration.copyWith(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 12.0,
+            decoration: const InputDecoration(
+              hintText: "Type your message...",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),
             ),
           ),
@@ -54,6 +72,7 @@ class _ChatBottomInputsState extends State<ChatBottomInputs> {
         SizedBox(width: widget.spacing),
         IconButton(
           style: IconButton.styleFrom(
+            fixedSize: Size(_initialTextFieldHeight, _initialTextFieldHeight),
             padding: EdgeInsets.zero,
             backgroundColor:
                 widget.canType ? Colors.green : Colors.grey.shade400,
@@ -69,6 +88,7 @@ class _ChatBottomInputsState extends State<ChatBottomInputs> {
         SizedBox(width: widget.spacing),
         IconButton(
           style: IconButton.styleFrom(
+            fixedSize: Size(_initialTextFieldHeight, _initialTextFieldHeight),
             padding: EdgeInsets.zero,
             backgroundColor:
                 widget.canType ? Colors.green : Colors.grey.shade400,
@@ -76,7 +96,7 @@ class _ChatBottomInputsState extends State<ChatBottomInputs> {
           icon: const Icon(Icons.chat, color: Colors.black),
           onPressed: widget.canType
               ? () {
-                  widget.onChat(); // Corregido: usaba onSend en lugar de onChat
+                  widget.onChat();
                 }
               : null,
         ),
