@@ -122,7 +122,7 @@ class TextMessageBubble extends StatelessWidget {
     this.hasTail = true,
     super.key,
     required this.text,
-    this.textStyle = const TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 18,leadingDistribution: TextLeadingDistribution.even),
+    this.textStyle = const TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 16,leadingDistribution: TextLeadingDistribution.even),
     this.onTap,
     required this.alignment,
     this.backgroundColor = const Color.fromARGB(255, 91, 91, 91),

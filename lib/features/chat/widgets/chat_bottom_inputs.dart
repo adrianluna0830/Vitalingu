@@ -71,7 +71,7 @@ Expanded(
       filled: true,
       fillColor: const Color.fromARGB(255, 65, 65, 65),
       contentPadding: const EdgeInsets.symmetric(
-        horizontal: 18.0,
+        horizontal: 14.0,
         vertical: 10,
       ),
       hintText: "Type your message...",
