@@ -40,7 +40,7 @@ class _ChatPageState extends State<ChatPage> {
     return Expanded(
       child: Watch((context) {
         return Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 7.0),
+          padding: const EdgeInsets.symmetric(horizontal: 7),
           child: ChatMessages(
             vm.messagesSignal.value,
             onMessageTap: (messageId) {

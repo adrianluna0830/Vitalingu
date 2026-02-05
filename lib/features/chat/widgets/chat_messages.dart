@@ -15,7 +15,7 @@ class ChatMessages extends StatefulWidget {
     this.aiTextColor = const Color(0xFF5A189A),
     required this.onMessageTap,
     this.messageSpacing = 1.15,
-    this.minWidthFactor = 0.1,
+    this.minWidthFactor = 0.06,
     this.maxWidthFactor = 0.7,
     this.minHeightFactor = 0.035,
     required this.showIsTyping,
