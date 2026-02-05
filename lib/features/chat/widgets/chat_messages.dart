@@ -11,10 +11,10 @@ class ChatMessages extends StatefulWidget {
     this.userTextColor = Colors.white, // Added user text color parameter
     this.aiTextColor = const Color(0xFF0F172A), // Added AI text color parameter
     required this.onMessageTap,
-    this.messageSpacing = 2.0,
+    this.messageSpacing = 1.5,
     this.horizontalPadding = 6.0,
-    this.minWidthFactor = 0.05,
-    this.maxWidthFactor = 0.45,
+    this.minWidthFactor = 0.1,
+    this.maxWidthFactor = 0.7,
     this.minHeightFactor = 0,
   });
 

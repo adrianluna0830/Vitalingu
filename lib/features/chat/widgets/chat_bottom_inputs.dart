@@ -53,22 +53,47 @@ class _ChatBottomInputsState extends State<ChatBottomInputs> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Expanded(
-          child: TextField(
-            key: _textFieldKey,
-            minLines: 1,
-            maxLines: widget.maxLines,
-            keyboardType: TextInputType.multiline,
-            controller: _controller,
-            enabled: widget.canType,
-            decoration: const InputDecoration(
-              hintText: "Type your message...",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25.0)),
-              ),
-            ),
-          ),
-        ),
+Expanded(
+  child: TextField(
+    key: _textFieldKey,
+    minLines: 1,
+    maxLines: widget.maxLines,
+    keyboardType: TextInputType.multiline,
+    controller: _controller,
+    textAlignVertical: TextAlignVertical.center,
+    enabled: widget.canType,
+    style: const TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+    ),
+    decoration: InputDecoration(
+      isDense: true,
+      filled: true,
+      fillColor: const Color.fromARGB(255, 65, 65, 65),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 18.0,
+        vertical: 10,
+      ),
+      hintText: "Type your message...",
+      hintStyle: const TextStyle(
+        color: Colors.white70,
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(22.0),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(22.0),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(22.0),
+        borderSide: BorderSide.none,
+      ),
+    ),
+  ),
+),
+
         SizedBox(width: widget.spacing),
         IconButton(
           style: IconButton.styleFrom(

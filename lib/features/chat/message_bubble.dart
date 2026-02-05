@@ -14,9 +14,9 @@ class MessageBubble extends StatelessWidget {
   const MessageBubble({
     super.key,
     required this.child,
-    this.triangleWidth = 20.0,
-    this.triangleHeight = 20.0,
-    this.borderRadius = const BorderRadius.all(Radius.circular(10.0)),
+    this.triangleWidth = 22.0,
+    this.triangleHeight = 22.0,
+    this.borderRadius = const BorderRadius.all(Radius.circular(12.0)),
     this.alignment = BubbleInnerDesignAlignment.left,
     this.backgroundColor = const Color.fromARGB(255, 114, 114, 114),
     this.onTap,
@@ -25,7 +25,6 @@ class MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLeft = alignment == BubbleInnerDesignAlignment.left;
-    final isRight = alignment == BubbleInnerDesignAlignment.right;
     final isNone = alignment == BubbleInnerDesignAlignment.none;
 
     return ConstrainedBox(
@@ -123,7 +122,7 @@ class TextMessageBubble extends StatelessWidget {
     this.hasTail = true,
     super.key,
     required this.text,
-    this.textStyle = const TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 18),
+    this.textStyle = const TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 18,leadingDistribution: TextLeadingDistribution.even),
     this.onTap,
     required this.alignment,
     this.backgroundColor = const Color.fromARGB(255, 91, 91, 91),
@@ -136,7 +135,12 @@ class TextMessageBubble extends StatelessWidget {
       alignment: !hasTail ?  BubbleInnerDesignAlignment.none : alignment,
       backgroundColor: backgroundColor,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        padding: EdgeInsets.only(
+          left: 11.0,
+          right: 11.0,
+          top: 2.5,
+          bottom: 7.0,
+        ),
         child: Text(
           text,
           style: textStyle,
