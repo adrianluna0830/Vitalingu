@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vitalingu/features/chat/message_bubble.dart';
 import 'package:vitalingu/features/chat/model/chat_message_dto.dart';
+import 'package:vitalingu/features/chat/widgets/message_bubble.dart';
 
 class ChatMessages extends StatefulWidget {
   const ChatMessages(
@@ -8,8 +8,8 @@ class ChatMessages extends StatefulWidget {
     super.key,
     this.userMessageColor = const Color(0xFF2563EB),
     this.aiMessageColor = const Color(0xFFF1F5F9),
-    this.userTextColor = Colors.white, // Added user text color parameter
-    this.aiTextColor = const Color(0xFF0F172A), // Added AI text color parameter
+    this.userTextColor = Colors.white,
+    this.aiTextColor = const Color(0xFF0F172A),
     required this.onMessageTap,
     this.messageSpacing = 1.15,
     this.horizontalPadding = 6.0,
@@ -21,8 +21,8 @@ class ChatMessages extends StatefulWidget {
   final List<ChatMessageWidgetModel> messages;
   final Color userMessageColor;
   final Color aiMessageColor;
-  final Color userTextColor; // Added user text color field
-  final Color aiTextColor; // Added AI text color field
+  final Color userTextColor;
+  final Color aiTextColor;
   final ValueChanged<int> onMessageTap;
   final double messageSpacing;
   final double horizontalPadding;
@@ -51,8 +51,8 @@ class _ChatMessagesState extends State<ChatMessages> {
             : widget.aiMessageColor;
 
         final textColor = message.isUserMessage
-            ? widget.userTextColor // Use user text color
-            : widget.aiTextColor; // Use AI text color
+            ? widget.userTextColor
+            : widget.aiTextColor;
 
         final hasTail = index == messagesReversed.length - 1 ||
             messagesReversed[index + 1].isUserMessage !=
@@ -81,10 +81,13 @@ class _ChatMessagesState extends State<ChatMessages> {
                 backgroundColor: backgroundColor,
                 hasTail: hasTail,
                 textStyle: TextStyle(
-                  color: textColor, // Use the new text color parameter
+                  color: textColor,
                   fontSize: 17,
                 ),
-                onTap: () => widget.onMessageTap(index),
+                onTap: () {
+                },
+                onLongPress: () => {
+                },
               ),
             ),
           ),

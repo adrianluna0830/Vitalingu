@@ -10,6 +10,7 @@ class MessageBubble extends StatelessWidget {
   final BubbleInnerDesignAlignment alignment;
   final Color backgroundColor;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   const MessageBubble({
     super.key,
@@ -20,6 +21,7 @@ class MessageBubble extends StatelessWidget {
     this.alignment = BubbleInnerDesignAlignment.left,
     this.backgroundColor = const Color.fromARGB(255, 114, 114, 114),
     this.onTap,
+    this.onLongPress,
   });
 
   @override
@@ -55,6 +57,7 @@ class MessageBubble extends StatelessWidget {
                         color: backgroundColor,
                         borderRadius: borderRadius,
                         child: InkWell(
+                          onLongPress: onLongPress,
                           onTap: onTap,
                           borderRadius: borderRadius,
                           splashColor: Colors.black.withOpacity(0.1),
@@ -92,12 +95,10 @@ class TrianglePainter extends CustomPainter {
     final path = Path();
     
     if (isLeft) {
-      // Triángulo apuntando hacia la izquierda (lado opuesto)
       path.moveTo(size.width, 0);
       path.lineTo(size.width, size.height);
       path.lineTo(0, 0);
     } else {
-      // Triángulo apuntando hacia la derecha (lado opuesto)
       path.moveTo(0, 0);
       path.lineTo(0, size.height);
       path.lineTo(size.width, 0);
@@ -114,6 +115,8 @@ class TextMessageBubble extends StatelessWidget {
   final String text;
   final TextStyle? textStyle;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+
   final BubbleInnerDesignAlignment alignment;
   final Color backgroundColor;
   final bool hasTail;
@@ -126,11 +129,13 @@ class TextMessageBubble extends StatelessWidget {
     this.onTap,
     required this.alignment,
     this.backgroundColor = const Color.fromARGB(255, 91, 91, 91),
+    this.onLongPress,
   });
 
   @override
   Widget build(BuildContext context) {
     return MessageBubble(
+      onLongPress: onLongPress,
       onTap: onTap,
       alignment: !hasTail ?  BubbleInnerDesignAlignment.none : alignment,
       backgroundColor: backgroundColor,
