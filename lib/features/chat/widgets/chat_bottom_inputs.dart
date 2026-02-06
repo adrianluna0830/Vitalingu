@@ -64,7 +64,7 @@ Expanded(
     enabled: widget.canType,
     style: const TextStyle(
       color: Colors.white,
-      fontSize: 16,
+      fontSize: 17,
     ),
     decoration: InputDecoration(
       isDense: true,
@@ -72,7 +72,7 @@ Expanded(
       fillColor: const Color.fromARGB(255, 65, 65, 65),
       contentPadding: const EdgeInsets.symmetric(
         horizontal: 14.0,
-        vertical: 10,
+        vertical: 12,
       ),
       hintText: "Type your message...",
       hintStyle: const TextStyle(

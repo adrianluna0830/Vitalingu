@@ -37,12 +37,17 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget buildChatMessages(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Expanded(
       child: Watch((context) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 7),
+          padding: const EdgeInsets.symmetric(horizontal: 3),
           child: ChatMessages(
             vm.messagesSignal.value,
+            screenWidth: screenWidth,
+            screenHeight: screenHeight,
             onMessageTap: (messageId) {
             },
             showIsTyping: vm.showIsTypingSignal.watch(context),
