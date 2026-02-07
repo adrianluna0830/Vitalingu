@@ -5,8 +5,8 @@ import 'package:vitalingu/features/chat/widgets/text_message_bubble.dart';
 import 'package:vitalingu/features/chat/widgets/typing_indicator.dart';
 import 'package:simple_animations/simple_animations.dart';
 
-class ChatMessages extends StatefulWidget {
-  const ChatMessages(
+class ChatMessageList extends StatefulWidget {
+  const ChatMessageList(
     this.messagesInSendOrder, {
     super.key,
     required this.screenWidth,
@@ -44,10 +44,10 @@ class ChatMessages extends StatefulWidget {
   final double typingIndicatorWidth;
 
   @override
-  State<ChatMessages> createState() => _ChatMessagesState();
+  State<ChatMessageList> createState() => _ChatMessageListState();
 }
 
-class _ChatMessagesState extends State<ChatMessages> {
+class _ChatMessageListState extends State<ChatMessageList> {
   @override
   Widget build(BuildContext context) {
     final messagesReversed = widget.messagesInSendOrder.reversed.toList();

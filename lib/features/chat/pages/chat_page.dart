@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/core/di/injection.dart';
 import 'package:vitalingu/features/chat/widgets/extra_options_display_state.dart';
-import 'package:vitalingu/features/chat/widgets/chat_bottom_inputs.dart';
-import 'package:vitalingu/features/chat/widgets/chat_messages.dart';
+import 'package:vitalingu/features/chat/widgets/chat_input_bar.dart';
+import 'package:vitalingu/features/chat/widgets/chat_message_list.dart';
 import 'package:vitalingu/features/chat/view_models/chat_view_model.dart';
-import 'package:vitalingu/features/chat/widgets/expandable_bottom_menu.dart';
-import 'package:vitalingu/features/chat/widgets/user_message_options.dart';
+import 'package:vitalingu/features/chat/widgets/expandable_bottom_panel.dart';
+import 'package:vitalingu/features/chat/widgets/message_analysis_panel.dart';
 
 @RoutePage()
 class ChatPage extends StatefulWidget {
@@ -26,7 +26,7 @@ class _ChatPageState extends State<ChatPage> {
       color: Colors.blueGrey[100],
       child: Padding(
         padding: const EdgeInsets.all(12),
-        child: ChatBottomInputs(
+        child: ChatInputBar(
           onSend: (message) {
             vm.sendMessage(message);
           },
@@ -51,7 +51,7 @@ class _ChatPageState extends State<ChatPage> {
       child: Watch((context) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 3),
-          child: ChatMessages(
+          child: ChatMessageList(
             vm.messagesSignal.value,
             screenWidth: screenWidth,
             screenHeight: screenHeight,
@@ -77,7 +77,7 @@ class _ChatPageState extends State<ChatPage> {
       _ => const SizedBox.shrink(), // Add a default case for the switch statement
     };
 
-    return ExpandableBottomMenu(
+    return ExpandableBottomPanel(
       isExpanded: vm.expanded.watch(ctx),
       expandedHeight: expandedHeight,
       onClose: vm.closeExtraDataDisplay,
@@ -90,7 +90,7 @@ class _ChatPageState extends State<ChatPage> {
       final extraData = vm.getUserMessageExtraData(index).watch(context);
       return Padding(
         padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15, top: 10),
-        child: UserMessageOptions(),
+        child: MessageAnalysisPanel(),
       );
     });
   }
@@ -100,7 +100,7 @@ class _ChatPageState extends State<ChatPage> {
       final extraData = vm.getAIMessageExtraData(index).watch(context);
       return Padding(
         padding: const EdgeInsets.all(15.0),
-        child: UserMessageOptions(),
+        child: MessageAnalysisPanel(),
       );
     });
   }

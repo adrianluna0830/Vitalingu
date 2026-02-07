@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:simple_animations/animation_builder/custom_animation_builder.dart';
 import 'package:vitalingu/features/chat/widgets/scale_fade_content_transition.dart';
 
-class ExpandableBottomMenu extends StatelessWidget {
+class ExpandableBottomPanel extends StatelessWidget {
   final Widget child;
   final bool isExpanded;
   final VoidCallback onClose;
   final double expandedHeight;
   final Duration animationDuration;
 
-  const ExpandableBottomMenu({
+  const ExpandableBottomPanel({
     super.key,
     required this.isExpanded,
     required this.onClose,

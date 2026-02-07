@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ChatBottomInputs extends StatefulWidget {
+class ChatInputBar extends StatefulWidget {
   final Function(String) onSend;
   final VoidCallback onChat;
   final VoidCallback onMic; // New callback for microphone action
@@ -9,7 +9,7 @@ class ChatBottomInputs extends StatefulWidget {
   final int maxLines;
   final VoidCallback? onFocusStarted;
 
-  const ChatBottomInputs({
+  const ChatInputBar({
     super.key,
     required this.onSend,
     required this.onChat,
@@ -21,10 +21,10 @@ class ChatBottomInputs extends StatefulWidget {
   });
 
   @override
-  State<ChatBottomInputs> createState() => _ChatBottomInputsState();
+  State<ChatInputBar> createState() => _ChatInputBarState();
 }
 
-class _ChatBottomInputsState extends State<ChatBottomInputs> {
+class _ChatInputBarState extends State<ChatInputBar> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _textFieldKey = GlobalKey();

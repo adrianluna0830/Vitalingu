@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class OutlinedButtonTemplate extends StatelessWidget {
+class AnalysisOptionButton extends StatelessWidget {
   final String text;
   final IconData icon;
   final VoidCallback onPressed;
   final bool isSelected;
   final bool isDisabled;
 
-  const OutlinedButtonTemplate({
+  const AnalysisOptionButton({
     super.key,
     required this.text,
     required this.icon,

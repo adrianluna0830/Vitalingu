@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:vitalingu/features/chat/widgets/outlined_button_template.dart';
+import 'package:vitalingu/features/chat/widgets/analysis_option_button.dart';
 import 'package:vitalingu/features/chat/pages/chat_page.dart';
 import 'package:vitalingu/features/chat/widgets/user_message_option.dart';
 
-class UserMessageOptions extends StatefulWidget {
-  const UserMessageOptions({super.key});
+class MessageAnalysisPanel extends StatefulWidget {
+  const MessageAnalysisPanel({super.key});
 
   @override
-  State<UserMessageOptions> createState() => _UserMessageOptionsState();
+  State<MessageAnalysisPanel> createState() => _MessageAnalysisPanelState();
 }
-class _UserMessageOptionsState extends State<UserMessageOptions>
+class _MessageAnalysisPanelState extends State<MessageAnalysisPanel>
     with SignalsMixin {
   late final counter = createSignal(UserMessageOption.none);
 
@@ -53,7 +53,7 @@ class _UserMessageOptionsState extends State<UserMessageOptions>
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                OutlinedButtonTemplate(
+                AnalysisOptionButton(
                   text: 'Grammar',
                   icon: Icons.spellcheck,
                   isSelected: counter.value == UserMessageOption.grammar,
@@ -66,7 +66,7 @@ class _UserMessageOptionsState extends State<UserMessageOptions>
                   },
                 ),
                 SizedBox(width: 20),
-                OutlinedButtonTemplate(
+                AnalysisOptionButton(
                   text: 'Fluency',
                   icon: Icons.chat_bubble_outline,
                   isSelected: counter.value == UserMessageOption.fluency,
