@@ -22,7 +22,7 @@ class ChatMessages extends StatefulWidget {
     required this.showIsTyping,
     this.typingAnimationDuration = const Duration(milliseconds: 250),
     this.typingIndicatorHeight = 35.0,
-    this.typingIndicatorWidth = 60.0,
+    this.typingIndicatorWidth = 60.0, required this.onLongMessageTap,
   });
 
   final List<ChatMessageWidgetModel> messagesInSendOrder;
@@ -33,6 +33,8 @@ class ChatMessages extends StatefulWidget {
   final Color userTextColor;
   final Color aiTextColor;
   final ValueChanged<int> onMessageTap;
+    final ValueChanged<int> onLongMessageTap;
+
   final double messageSpacing;
   final double minWidthFactor;
   final double maxWidthFactor;
@@ -148,8 +150,8 @@ class _ChatMessagesState extends State<ChatMessages> {
                   backgroundColor: backgroundColor,
                   hasTail: hasTail,
                   textStyle: TextStyle(color: textColor, fontSize: 17),
-                  onTap: () {},
-                  onLongPress: () => {},
+                  onTap: () => widget.onMessageTap(messagesReversed.length - 1 - index),
+                  onLongPress: () => widget.onLongMessageTap(messagesReversed.length - 1 - index),
                 ),
               ),
             ),

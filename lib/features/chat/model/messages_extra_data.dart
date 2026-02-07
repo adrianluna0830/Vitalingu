@@ -2,24 +2,18 @@ import 'package:vitalingu/features/chat/model/fluency_suggestion.dart';
 import 'package:vitalingu/features/chat/model/grammar_correction.dart';
 
 
-sealed class MessageExtraData {
-  String content;
-  MessageExtraData({required this.content});
-  
-}
-class AIMessageExtraData extends MessageExtraData {
-  AIMessageExtraData({required super.content});
-
+class AIMessageExtraData  {
+  String? translation;
 }
 
 
-class UserMessageExtraData extends MessageExtraData {
+class UserMessageExtraData {
   final GrammarCorrection? grammarCorrection;
   final FluencySuggestion? fluencySuggestion;
 
-  UserMessageExtraData(this.grammarCorrection, this.fluencySuggestion, {required super.content});
+  UserMessageExtraData(this.grammarCorrection, this.fluencySuggestion);
 
-  factory UserMessageExtraData.fromJson(Map<String, dynamic> json, {required String content}) {
+  factory UserMessageExtraData.fromJson(Map<String, dynamic> json) {
     return UserMessageExtraData(
       json['grammar_correction'] != null
           ? GrammarCorrection.fromJson(json['grammar_correction'])
@@ -27,7 +21,7 @@ class UserMessageExtraData extends MessageExtraData {
       json['fluency_suggestion'] != null
           ? FluencySuggestion.fromJson(json['fluency_suggestion'])
           : null,
-          content: content,
+          
     );
   }
 
