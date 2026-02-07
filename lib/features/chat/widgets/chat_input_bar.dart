@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 class ChatInputBar extends StatefulWidget {
   final Function(String) onSend;
   final VoidCallback onChat;
-  final VoidCallback onMic; // New callback for microphone action
+  final VoidCallback onMic;
   final bool canType;
   final double spacing;
   final int maxLines;
@@ -13,7 +14,7 @@ class ChatInputBar extends StatefulWidget {
     super.key,
     required this.onSend,
     required this.onChat,
-    required this.onMic, // Request microphone callback
+    required this.onMic,
     required this.canType,
     this.spacing = 11.0,
     this.maxLines = 6,
@@ -39,18 +40,19 @@ class _ChatInputBarState extends State<ChatInputBar> {
       _captureInitialHeight();
     });
     _focusNode.addListener(_onFocusChange);
-    _controller.addListener(_onTextChanged);
+    _controller.addListener(_onTextChange);
   }
 
   void _onFocusChange() {
     if (_focusNode.hasFocus) {
       widget.onFocusStarted?.call();
     }
+    setState(() {});
   }
 
-  void _onTextChanged() {
-    final hasText = _controller.text.isNotEmpty;
-    if (hasText != _hasText) {
+  void _onTextChange() {
+    final hasText = _controller.text.trim().isNotEmpty;
+    if (_hasText != hasText) {
       setState(() {
         _hasText = hasText;
       });
@@ -72,65 +74,46 @@ class _ChatInputBarState extends State<ChatInputBar> {
 
   @override
   Widget build(BuildContext context) {
+    final showSendIcon = _hasText || _focusNode.hasFocus;
+    final showChatPanel = !_focusNode.hasFocus;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-
       crossAxisAlignment: CrossAxisAlignment.end,
-
       children: [
         Expanded(
           child: TapRegion(
             onTapOutside: (event) {
               _focusNode.unfocus();
             },
-
             child: _MessageTextField(
               textFieldKey: _textFieldKey,
-
               focusNode: _focusNode,
-
               controller: _controller,
-
               canType: widget.canType,
-
               maxLines: widget.maxLines,
             ),
           ),
         ),
-
         SizedBox(width: widget.spacing),
-
         _SendOrMicButton(
-          hasText: _hasText,
-
+          textEnabled: showSendIcon,
           buttonSize: _initialTextFieldHeight,
-
           canType: widget.canType,
-
           onSend: () {
             widget.onSend(_controller.text);
-
             _controller.clear();
           },
-
-          onMic: widget.onMic, // Pass microphone callback
-
-          sendIconSize: 24.0, // Default size for send icon
-
-          micIconSize: 24.0, // Default size for mic icon
-
-          animationDuration: const Duration(milliseconds: 150), // Default value
+          onMic: widget.onMic,
         ),
-
-        SizedBox(width: widget.spacing),
-
-        _ChatPanelToggleButton(
-          buttonSize: _initialTextFieldHeight,
-
-          canType: widget.canType,
-
-          onChat: widget.onChat,
-        ),
+        if (showChatPanel) ...[
+          SizedBox(width: widget.spacing),
+          _ChatPanelToggleButton(
+            buttonSize: _initialTextFieldHeight,
+            canType: widget.canType,
+            onChat: widget.onChat,
+          ),
+        ],
       ],
     );
   }
@@ -138,8 +121,8 @@ class _ChatInputBarState extends State<ChatInputBar> {
   @override
   void dispose() {
     _focusNode.removeListener(_onFocusChange);
+    _controller.removeListener(_onTextChange);
     _focusNode.dispose();
-    _controller.removeListener(_onTextChanged);
     _controller.dispose();
     super.dispose();
   }
@@ -200,24 +183,18 @@ class _MessageTextField extends StatelessWidget {
 }
 
 class _SendOrMicButton extends StatelessWidget {
-  final bool hasText;
+  final bool textEnabled;
   final double buttonSize;
   final bool canType;
   final VoidCallback onSend;
   final VoidCallback onMic;
-  final double sendIconSize;
-  final double micIconSize;
-  final Duration animationDuration;
 
   const _SendOrMicButton({
-    required this.hasText,
+    required this.textEnabled,
     required this.buttonSize,
     required this.canType,
     required this.onSend,
     required this.onMic,
-    this.sendIconSize = 18.0,
-    this.micIconSize = 28.0,
-    this.animationDuration = const Duration(milliseconds: 125),
   });
 
   @override
@@ -228,24 +205,14 @@ class _SendOrMicButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         backgroundColor: canType ? Colors.green : Colors.grey.shade400,
       ),
-      icon: AnimatedSwitcher(
-        duration: animationDuration, // Use the new parameter
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return ScaleTransition(
-            scale: animation,
-            child: FadeTransition(opacity: animation, child: child),
-          );
-        },
-        child: Icon(
-          hasText ? Icons.send : Icons.mic,
-          key: ValueKey<bool>(hasText), // Clave única para cada icono
-          color: Colors.black,
-          size: hasText ? sendIconSize : micIconSize, // Tamaño dinámico
-        ),
+      icon: Icon(
+        textEnabled ? Icons.send : Icons.mic,
+        color: Colors.black,
+        size: textEnabled ? 24 : 28,
       ),
       onPressed: canType
           ? () {
-              if (hasText) {
+              if (textEnabled) {
                 onSend();
               } else {
                 onMic();
