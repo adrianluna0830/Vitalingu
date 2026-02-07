@@ -17,7 +17,6 @@ class ChatViewModel {
   // Private fields
   ChatConversation _conversation = ChatConversation();
   final _messagesSignal = listSignal(<ChatMessageWidgetModel>[]);
-  final _userIsTypingSignal = signal<bool>(false);
   final _expanded = signal<bool>(false);
   final _extraDataDisplayStateSignal = signal<ExtraOptionsDisplayState>(
     EmptyOptionsState(),
@@ -32,12 +31,7 @@ class ChatViewModel {
     cache: true,
   );
 
-  void setUserIsTyping(bool hasFocus) {
-    _userIsTypingSignal.value = hasFocus;
-  }
-
   late final messagesSignal = computed(() => _messagesSignal.toList());
-  late final userIsTypingSignal = computed(() => _userIsTypingSignal.value);
   late final expanded = computed(() => _expanded.value);
   late final extraDataDisplayStateSignal = computed(
     () => _extraDataDisplayStateSignal.value,

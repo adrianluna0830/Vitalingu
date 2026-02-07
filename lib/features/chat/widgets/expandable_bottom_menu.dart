@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_animations/animation_builder/custom_animation_builder.dart';
-import 'package:vitalingu/features/chat/widgets/bottom_menu_background.dart';
 import 'package:vitalingu/features/chat/widgets/scale_fade_content_transition.dart';
-
 
 class ExpandableBottomMenu extends StatelessWidget {
   final Widget child;
@@ -38,10 +36,38 @@ class ExpandableBottomMenu extends StatelessWidget {
                   maxHeight: expandedHeight,
                   child: SizedBox(
                     height: expandedHeight,
-                    child: BottomMenuBackground(
-                      onClose: onClose,
-                      child: ScaleFadeContentTransition(
-                        child: child,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.brown[100],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 8.0, right: 8.0),
+                              child: IconButton(
+                                style: IconButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  fixedSize: const Size(40, 40),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
+                                onPressed: onClose,
+                                icon: const Icon(Icons.close,
+                                    size: 20, color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: ScaleFadeContentTransition(
+                              child: child,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

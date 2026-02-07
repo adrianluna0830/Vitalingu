@@ -7,7 +7,7 @@ class ChatBottomInputs extends StatefulWidget {
   final bool canType;
   final double spacing;
   final int maxLines;
-  final ValueChanged<bool>? onFocusChanged;
+  final VoidCallback? onFocusStarted;
 
   const ChatBottomInputs({
     super.key,
@@ -17,7 +17,7 @@ class ChatBottomInputs extends StatefulWidget {
     required this.canType,
     this.spacing = 11.0,
     this.maxLines = 6,
-    this.onFocusChanged,
+    this.onFocusStarted,
   });
 
   @override
@@ -43,7 +43,9 @@ class _ChatBottomInputsState extends State<ChatBottomInputs> {
   }
 
   void _onFocusChange() {
-    widget.onFocusChanged?.call(_focusNode.hasFocus);
+    if (_focusNode.hasFocus) {
+      widget.onFocusStarted?.call();
+    }
   }
 
   void _onTextChanged() {
@@ -68,44 +70,91 @@ class _ChatBottomInputsState extends State<ChatBottomInputs> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Expanded(
-          child: _MessageTextField(
-            textFieldKey: _textFieldKey,
-            focusNode: _focusNode,
-            controller: _controller,
-            canType: widget.canType,
-            maxLines: widget.maxLines,
+    @override
+
+    Widget build(BuildContext context) {
+
+      return Row(
+
+        mainAxisAlignment: MainAxisAlignment.center,
+
+        crossAxisAlignment: CrossAxisAlignment.end,
+
+        children: [
+
+          Expanded(
+
+            child: TapRegion(
+
+              onTapOutside: (event) {
+
+                _focusNode.unfocus();
+
+              },
+
+              child: _MessageTextField(
+
+                textFieldKey: _textFieldKey,
+
+                focusNode: _focusNode,
+
+                controller: _controller,
+
+                canType: widget.canType,
+
+                maxLines: widget.maxLines,
+
+              ),
+
+            ),
+
           ),
-        ),
-        SizedBox(width: widget.spacing),
-        _SendOrMicButton(
-          hasText: _hasText,
-          buttonSize: _initialTextFieldHeight,
-          canType: widget.canType,
-          onSend: () {
-            widget.onSend(_controller.text);
-            _controller.clear();
-          },
-          onMic: widget.onMic, // Pass microphone callback
-          sendIconSize: 24.0, // Default size for send icon
-          micIconSize: 24.0,  // Default size for mic icon
-          animationDuration: const Duration(milliseconds: 150), // Default value
-        ),
-        SizedBox(width: widget.spacing),
-        _ChatButton(
-          buttonSize: _initialTextFieldHeight,
-          canType: widget.canType,
-          onChat: widget.onChat,
-        ),
-      ],
-    );
-  }
+
+          SizedBox(width: widget.spacing),
+
+          _SendOrMicButton(
+
+            hasText: _hasText,
+
+            buttonSize: _initialTextFieldHeight,
+
+            canType: widget.canType,
+
+            onSend: () {
+
+              widget.onSend(_controller.text);
+
+              _controller.clear();
+
+            },
+
+            onMic: widget.onMic, // Pass microphone callback
+
+            sendIconSize: 24.0, // Default size for send icon
+
+            micIconSize: 24.0, // Default size for mic icon
+
+            animationDuration: const Duration(milliseconds: 150), // Default value
+
+          ),
+
+          SizedBox(width: widget.spacing),
+
+          _ChatButton(
+
+            buttonSize: _initialTextFieldHeight,
+
+            canType: widget.canType,
+
+            onChat: widget.onChat,
+
+          ),
+
+        ],
+
+      );
+
+    }
 
   @override
   void dispose() {

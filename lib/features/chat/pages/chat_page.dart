@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:vitalingu/core/di/injection.dart';
 import 'package:vitalingu/features/chat/widgets/extra_options_display_state.dart';
-import 'package:vitalingu/features/chat/widgets/outlined_button_template.dart';
 import 'package:vitalingu/features/chat/widgets/chat_bottom_inputs.dart';
 import 'package:vitalingu/features/chat/widgets/chat_messages.dart';
 import 'package:vitalingu/features/chat/view_models/chat_view_model.dart';
@@ -35,8 +34,8 @@ class _ChatPageState extends State<ChatPage> {
           onChat: () {
             vm.startUserChat();
           },
-          onFocusChanged: (hasFocus) {
-            vm.setUserIsTyping(hasFocus);
+          onFocusStarted: () {
+            vm.closeExtraDataDisplay();
           },
           onMic: () {},
         ),
@@ -79,7 +78,7 @@ class _ChatPageState extends State<ChatPage> {
     };
 
     return ExpandableBottomMenu(
-      isExpanded: vm.expanded.watch(ctx) && !vm.userIsTypingSignal.watch(ctx),
+      isExpanded: vm.expanded.watch(ctx),
       expandedHeight: expandedHeight,
       onClose: vm.closeExtraDataDisplay,
       child: child,
