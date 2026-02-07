@@ -21,23 +21,26 @@ class _ChatPageState extends State<ChatPage> {
   final vm = getIt<ChatViewModel>();
 
   Widget buildInputs(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Colors.blueGrey[100],
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: ChatInputBar(
-          onSend: (message) {
-            vm.sendMessage(message);
-          },
-          canType: true,
-          onChat: () {
-            vm.startUserChat();
-          },
-          onFocusStarted: () {
-            vm.closeExtraDataDisplay();
-          },
-          onMic: () {},
+    return TapRegion(
+      groupId: 'bottom_panel_overlay',
+      child: Container(
+        width: double.infinity,
+        color: Colors.blueGrey[100],
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: ChatInputBar(
+            onSend: (message) {
+              vm.sendMessage(message);
+            },
+            canType: true,
+            onChat: () {
+              vm.startUserChat();
+            },
+            onFocusStarted: () {
+              vm.closeExtraDataDisplay();
+            },
+            onMic: () {},
+          ),
         ),
       ),
     );
@@ -53,6 +56,7 @@ class _ChatPageState extends State<ChatPage> {
           padding: const EdgeInsets.symmetric(horizontal: 3),
           child: ChatMessageList(
             vm.messagesSignal.value,
+            tapRegionGroupId: 'bottom_panel_overlay',
             screenWidth: screenWidth,
             screenHeight: screenHeight,
             onMessageTap: (messageId) {
@@ -78,6 +82,7 @@ class _ChatPageState extends State<ChatPage> {
     };
 
     return ExpandableBottomPanel(
+      tapRegionGroupId: 'bottom_panel_overlay',
       isExpanded: vm.expanded.watch(ctx),
       expandedHeight: expandedHeight,
       onClose: vm.closeExtraDataDisplay,

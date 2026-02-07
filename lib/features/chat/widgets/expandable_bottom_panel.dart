@@ -8,6 +8,7 @@ class ExpandableBottomPanel extends StatelessWidget {
   final VoidCallback onClose;
   final double expandedHeight;
   final Duration animationDuration;
+  final String? tapRegionGroupId;
 
   const ExpandableBottomPanel({
     super.key,
@@ -16,6 +17,89 @@ class ExpandableBottomPanel extends StatelessWidget {
     this.expandedHeight = 100.0,
     this.animationDuration = const Duration(milliseconds: 400),
     required this.child,
+    this.tapRegionGroupId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpandableAnimation(
+      isExpanded: isExpanded,
+      expandedHeight: expandedHeight,
+      animationDuration: animationDuration,
+      builder: (context, height) {
+        return SizedBox(
+          width: double.infinity,
+          height: height,
+          child: height > 0
+              ? TapRegion(
+                  groupId: tapRegionGroupId,
+                  onTapOutside: (_) => onClose(),
+                  child: OverflowBox(
+                    alignment: Alignment.topCenter,
+                    minHeight: 0,
+                    maxHeight: expandedHeight,
+                    child: SizedBox(
+                      height: expandedHeight,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[100],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Center(
+                                child: Material(
+                                  color: Colors.brown[200],
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: InkWell(
+                                    onTap: onClose,
+                                    borderRadius: BorderRadius.circular(12),
+                                    hoverColor: Colors.brown[300],
+                                    splashColor: Colors.brown[400],
+                                    highlightColor: Colors.brown[100],
+                                    child: Container(
+                                      width: 60,
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: ScaleFadeContentTransition(
+                                child: child,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
+        );
+      },
+    );
+  }
+}
+
+class ExpandableAnimation extends StatelessWidget {
+  final bool isExpanded;
+  final double expandedHeight;
+  final Duration animationDuration;
+  final Widget Function(BuildContext, double) builder;
+
+  const ExpandableAnimation({
+    super.key,
+    required this.isExpanded,
+    required this.expandedHeight,
+    required this.animationDuration,
+    required this.builder,
   });
 
   @override
@@ -26,54 +110,7 @@ class ExpandableBottomPanel extends StatelessWidget {
       duration: animationDuration,
       curve: Curves.easeInOut,
       builder: (context, height, _) {
-        return SizedBox(
-          width: double.infinity,
-          height: height,
-          child: height > 0
-              ? OverflowBox(
-                  alignment: Alignment.topCenter,
-                  minHeight: 0,
-                  maxHeight: expandedHeight,
-                  child: SizedBox(
-                    height: expandedHeight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.brown[100],
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 8.0, right: 8.0),
-                              child: IconButton(
-                                style: IconButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  fixedSize: const Size(40, 40),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                ),
-                                onPressed: onClose,
-                                icon: const Icon(Icons.close,
-                                    size: 20, color: Colors.black),
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            child: ScaleFadeContentTransition(
-                              child: child,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : const SizedBox.shrink(),
-        );
+        return builder(context, height);
       },
     );
   }

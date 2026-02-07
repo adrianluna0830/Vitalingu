@@ -70,91 +70,70 @@ class _ChatInputBarState extends State<ChatInputBar> {
     }
   }
 
-    @override
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
 
-    Widget build(BuildContext context) {
+      crossAxisAlignment: CrossAxisAlignment.end,
 
-      return Row(
-
-        mainAxisAlignment: MainAxisAlignment.center,
-
-        crossAxisAlignment: CrossAxisAlignment.end,
-
-        children: [
-
-          Expanded(
-
-            child: TapRegion(
-
-              onTapOutside: (event) {
-
-                _focusNode.unfocus();
-
-              },
-
-              child: _MessageTextField(
-
-                textFieldKey: _textFieldKey,
-
-                focusNode: _focusNode,
-
-                controller: _controller,
-
-                canType: widget.canType,
-
-                maxLines: widget.maxLines,
-
-              ),
-
-            ),
-
-          ),
-
-          SizedBox(width: widget.spacing),
-
-          _SendOrMicButton(
-
-            hasText: _hasText,
-
-            buttonSize: _initialTextFieldHeight,
-
-            canType: widget.canType,
-
-            onSend: () {
-
-              widget.onSend(_controller.text);
-
-              _controller.clear();
-
+      children: [
+        Expanded(
+          child: TapRegion(
+            onTapOutside: (event) {
+              _focusNode.unfocus();
             },
 
-            onMic: widget.onMic, // Pass microphone callback
+            child: _MessageTextField(
+              textFieldKey: _textFieldKey,
 
-            sendIconSize: 24.0, // Default size for send icon
+              focusNode: _focusNode,
 
-            micIconSize: 24.0, // Default size for mic icon
+              controller: _controller,
 
-            animationDuration: const Duration(milliseconds: 150), // Default value
+              canType: widget.canType,
 
+              maxLines: widget.maxLines,
+            ),
           ),
+        ),
 
-          SizedBox(width: widget.spacing),
+        SizedBox(width: widget.spacing),
 
-          _ChatButton(
+        _SendOrMicButton(
+          hasText: _hasText,
 
-            buttonSize: _initialTextFieldHeight,
+          buttonSize: _initialTextFieldHeight,
 
-            canType: widget.canType,
+          canType: widget.canType,
 
-            onChat: widget.onChat,
+          onSend: () {
+            widget.onSend(_controller.text);
 
-          ),
+            _controller.clear();
+          },
 
-        ],
+          onMic: widget.onMic, // Pass microphone callback
 
-      );
+          sendIconSize: 24.0, // Default size for send icon
 
-    }
+          micIconSize: 24.0, // Default size for mic icon
+
+          animationDuration: const Duration(milliseconds: 150), // Default value
+        ),
+
+        SizedBox(width: widget.spacing),
+
+        _ChatPanelToggleButton(
+          buttonSize: _initialTextFieldHeight,
+
+          canType: widget.canType,
+
+          onChat: widget.onChat,
+        ),
+      ],
+    );
+  }
 
   @override
   void dispose() {
@@ -228,7 +207,7 @@ class _SendOrMicButton extends StatelessWidget {
   final VoidCallback onMic;
   final double sendIconSize;
   final double micIconSize;
-  final Duration animationDuration; 
+  final Duration animationDuration;
 
   const _SendOrMicButton({
     required this.hasText,
@@ -241,7 +220,6 @@ class _SendOrMicButton extends StatelessWidget {
     this.animationDuration = const Duration(milliseconds: 125),
   });
 
-  
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -255,10 +233,7 @@ class _SendOrMicButton extends StatelessWidget {
         transitionBuilder: (Widget child, Animation<double> animation) {
           return ScaleTransition(
             scale: animation,
-            child: FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
+            child: FadeTransition(opacity: animation, child: child),
           );
         },
         child: Icon(
@@ -281,13 +256,12 @@ class _SendOrMicButton extends StatelessWidget {
   }
 }
 
-
-class _ChatButton extends StatelessWidget {
+class _ChatPanelToggleButton extends StatelessWidget {
   final double buttonSize;
   final bool canType;
   final VoidCallback onChat;
 
-  const _ChatButton({
+  const _ChatPanelToggleButton({
     required this.buttonSize,
     required this.canType,
     required this.onChat,

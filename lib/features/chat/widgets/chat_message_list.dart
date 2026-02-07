@@ -22,7 +22,9 @@ class ChatMessageList extends StatefulWidget {
     required this.showIsTyping,
     this.typingAnimationDuration = const Duration(milliseconds: 250),
     this.typingIndicatorHeight = 35.0,
-    this.typingIndicatorWidth = 60.0, required this.onLongMessageTap,
+    this.typingIndicatorWidth = 60.0,
+    required this.onLongMessageTap,
+    this.tapRegionGroupId,
   });
 
   final List<ChatMessageWidgetModel> messagesInSendOrder;
@@ -33,7 +35,7 @@ class ChatMessageList extends StatefulWidget {
   final Color userTextColor;
   final Color aiTextColor;
   final ValueChanged<int> onMessageTap;
-    final ValueChanged<int> onLongMessageTap;
+  final ValueChanged<int> onLongMessageTap;
 
   final double messageSpacing;
   final double minWidthFactor;
@@ -42,6 +44,7 @@ class ChatMessageList extends StatefulWidget {
   final Duration typingAnimationDuration;
   final double typingIndicatorHeight;
   final double typingIndicatorWidth;
+  final String? tapRegionGroupId;
 
   @override
   State<ChatMessageList> createState() => _ChatMessageListState();
@@ -68,9 +71,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
         children: [
           SizedBox(height: widget.messageSpacing),
           CustomAnimationBuilder<Movie>(
-            control: widget.showIsTyping
-                ? Control.play
-                : Control.playReverse,
+            control: widget.showIsTyping ? Control.play : Control.playReverse,
             tween: MovieTween()
               ..tween('opacity', Tween<double>(begin: 0.0, end: 1.0),
                   duration: widget.typingAnimationDuration)
@@ -101,7 +102,8 @@ class _ChatMessageListState extends State<ChatMessageList> {
                       spacing: 3,
                       amplitude: 1.85,
                       startPositionIncrement: 0.2,
-                      animationDuration: const Duration(seconds: 1, milliseconds: 200),
+                      animationDuration:
+                          const Duration(seconds: 1, milliseconds: 200),
                     ),
                   ),
                 ),
@@ -126,8 +128,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             ? widget.userTextColor
             : widget.aiTextColor;
 
-        final hasTail =
-            index == messagesReversed.length - 1 ||
+        final hasTail = index == messagesReversed.length - 1 ||
             messagesReversed[index + 1].isUserMessage != message.isUserMessage;
 
         return Column(
@@ -142,16 +143,21 @@ class _ChatMessageListState extends State<ChatMessageList> {
                   minWidth: widget.screenWidth * widget.minWidthFactor,
                   maxWidth: widget.screenWidth * widget.maxWidthFactor,
                 ),
-                child: TextMessageBubble(
-                  text: message.content,
-                  alignment: message.isUserMessage
-                      ? BubbleInnerDesignAlignment.right
-                      : BubbleInnerDesignAlignment.left,
-                  backgroundColor: backgroundColor,
-                  hasTail: hasTail,
-                  textStyle: TextStyle(color: textColor, fontSize: 17),
-                  onTap: () => widget.onMessageTap(messagesReversed.length - 1 - index),
-                  onLongPress: () => widget.onLongMessageTap(messagesReversed.length - 1 - index),
+                child: TapRegion(
+                  groupId: widget.tapRegionGroupId,
+                  child: TextMessageBubble(
+                    text: message.content,
+                    alignment: message.isUserMessage
+                        ? BubbleInnerDesignAlignment.right
+                        : BubbleInnerDesignAlignment.left,
+                    backgroundColor: backgroundColor,
+                    hasTail: hasTail,
+                    textStyle: TextStyle(color: textColor, fontSize: 17),
+                    onTap: () => widget
+                        .onMessageTap(messagesReversed.length - 1 - index),
+                    onLongPress: () => widget
+                        .onLongMessageTap(messagesReversed.length - 1 - index),
+                  ),
                 ),
               ),
             ),
